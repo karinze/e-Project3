@@ -1,0 +1,13 @@
+D:\#FPTAPTECH\eProject-3\AptitudeClassLib\bin\Debug\net8.0\AptitudeClassLib.deps.json
+D:\#FPTAPTECH\eProject-3\AptitudeClassLib\bin\Debug\net8.0\AptitudeClassLib.dll
+D:\#FPTAPTECH\eProject-3\AptitudeClassLib\bin\Debug\net8.0\AptitudeClassLib.pdb
+D:\#FPTAPTECH\eProject-3\AptitudeClassLib\obj\Debug\net8.0\AptitudeClassLib.csproj.AssemblyReference.cache
+D:\#FPTAPTECH\eProject-3\AptitudeClassLib\obj\Debug\net8.0\AptitudeClassLib.GeneratedMSBuildEditorConfig.editorconfig
+D:\#FPTAPTECH\eProject-3\AptitudeClassLib\obj\Debug\net8.0\AptitudeClassLib.AssemblyInfoInputs.cache
+D:\#FPTAPTECH\eProject-3\AptitudeClassLib\obj\Debug\net8.0\AptitudeClassLib.AssemblyInfo.cs
+D:\#FPTAPTECH\eProject-3\AptitudeClassLib\obj\Debug\net8.0\AptitudeClassLib.csproj.CoreCompileInputs.cache
+D:\#FPTAPTECH\eProject-3\AptitudeClassLib\obj\Debug\net8.0\AptitudeClassLib.sourcelink.json
+D:\#FPTAPTECH\eProject-3\AptitudeClassLib\obj\Debug\net8.0\AptitudeClassLib.dll
+D:\#FPTAPTECH\eProject-3\AptitudeClassLib\obj\Debug\net8.0\refint\AptitudeClassLib.dll
+D:\#FPTAPTECH\eProject-3\AptitudeClassLib\obj\Debug\net8.0\AptitudeClassLib.pdb
+D:\#FPTAPTECH\eProject-3\AptitudeClassLib\obj\Debug\net8.0\ref\AptitudeClassLib.dll

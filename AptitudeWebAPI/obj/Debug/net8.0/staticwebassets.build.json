@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "OVPEB2DljbD7Culed8aKmp/bX67xfiPkKVx2VEYAP2Y=",
+  "Source": "AptitudeWebAPI",
+  "BasePath": "_content/AptitudeWebAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
