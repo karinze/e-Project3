@@ -8,6 +8,10 @@ namespace AptitudeWebApp
     [Table("Applicants")]
     public class Applicant
     {
+        public Applicant() {
+            ApplicantCompanies = new List<ApplicantCompanies>();
+            ApplicantEducation = new List<ApplicantEducation>();    
+        }  
         [Key]
         public Guid ApplicantId { get; set; }
         [Display(Name = "First Name")]
@@ -28,18 +32,19 @@ namespace AptitudeWebApp
         public string? Email { get; set; }
         [StringLength(255)]
         public string? City { get; set; }
-
+        [StringLength(255)]
+        public string? PhoneNumber { get; set; }
         [StringLength(3000)]
         public string? Notes { get; set; }
         public string? ImagePath { get; set; }
-
+        [Required(ErrorMessage = "Username must exist")]
         [StringLength(512)]
-        public string? Username { get; set; }
+        public string Username { get; set; }
+        [Required(ErrorMessage = "Password must exist")]
         [StringLength(512)]
-        public string? Password { get; set; }
-        public ICollection<ApplicantCompanies>? ApplicantCompanies { get; set; } = new List<ApplicantCompanies>();
-        public ICollection<ApplicantEducation>? ApplicantEducation { get; set; } = new List<ApplicantEducation>();
-
+        public string Password { get; set; }
+        public ICollection<ApplicantCompanies>? ApplicantCompanies { get; set; }
+        public ICollection<ApplicantEducation>? ApplicantEducation { get; set; }
 
     }
 }

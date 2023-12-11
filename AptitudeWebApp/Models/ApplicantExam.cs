@@ -7,9 +7,8 @@ namespace AptitudeWebApp.Models
         [Key]
         public int ApplicantExamId { get; set; }
         public Guid ApplicantId { get; set; }
+        public int ExamId { get; set; }
         public int? ApplicantScore { get; set; } = 0;
-        public bool IsCompleted { get; set; } = false;
-        public DateTime? ExamStartDate { get; set; }
-
+        public int CurrentExamTypeId { get; set; } = 1;
     }
 }

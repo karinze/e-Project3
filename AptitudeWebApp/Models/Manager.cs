@@ -7,7 +7,7 @@ namespace AptitudeWebApp
     {
         [Key]
         public Guid ManagerId { get; set; }
-        [Display(Name = "")]
+        [Display(Name = "First Name")]
         [Required(ErrorMessage = "Name required")]
         [StringLength(255)]
 
@@ -15,7 +15,12 @@ namespace AptitudeWebApp
         [StringLength(255)]
 
         public string? LastName { get; set; }
+        [StringLength(255)]
 
+        public string? Email { get; set; }
+        [StringLength(255)]
+
+        public string? PhoneNumber { get; set; }
         [Required(ErrorMessage = "Username required")]
         [StringLength(512)]
 

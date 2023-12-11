@@ -15,12 +15,10 @@ namespace AptitudeWebApp.DAL
         {
         }
         public DbSet<Applicant> Applicants { get; set; }
-        public DbSet<ApplicantCategory> ApplicantCategories { get; set; }
         public DbSet<ApplicantCompanies> ApplicantCompanies { get; set; }
         public DbSet<ApplicantEducation> ApplicantEducations { get; set; }
         public DbSet<ApplicantExam> ApplicantExams { get; set; }
         public DbSet<Exam> Exams { get; set; }
-        public DbSet<ExamCategory> ExamCategories { get; set; }
         public DbSet<ExamQuestion> ExamQuestions { get; set; }
         public DbSet<Manager> Managers { get; set; }
 

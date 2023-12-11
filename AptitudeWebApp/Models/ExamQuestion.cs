@@ -9,8 +9,10 @@ namespace AptitudeWebApp.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Key]
         public int QuestionId { get; set; }
-        public int? CategoryId { get; set; }
-        public int? QuestionMark { get; set; }
+
+        [Required(ErrorMessage = "Type of Question must be set!")]
+        public int ExamTypeId { get; set; } = 1;
+        public int? QuestionScore { get; set; } = 0;
         [StringLength(3000)]
         public string? QuestionText { get; set; }
         [StringLength(512)]

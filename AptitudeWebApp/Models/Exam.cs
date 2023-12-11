@@ -1,17 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AptitudeWebApp.Models
 {
     public class Exam
     {
+        public Exam()
+        {
+            ExamQuestions = new List<ExamQuestion>();
+        }
         [Key]
         public int ExamId { get; set; }
-        public int ApplicantId { get; set; }
-        public ICollection<ExamCategory>? ExamCategories { get; set; } = new List<ExamCategory>();
-        public DateTime? StartTime { get; set; }    
-        public DateTime? EndTime {  get; set; }
-        
-        public int HasStartedYet { get; set; }
+        public int ExamTypeId { get; set; }
+        public ICollection<ExamQuestion>? ExamQuestions { get; set; } 
+        public DateTime? StartTime { get; set; }
+
+        public bool IsActive { get; set; } = false;
 
     }
 }
