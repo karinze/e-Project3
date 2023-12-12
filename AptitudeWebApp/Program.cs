@@ -1,6 +1,12 @@
+using AptitudeWebApp;
 using AptitudeWebApp.DAL;
+using AptitudeWebApp.Repository;
+using AptitudeWebApp.Service;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

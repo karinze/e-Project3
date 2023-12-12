@@ -1,21 +1,24 @@
 using AptitudeWebApp.Models;
+using AptitudeWebApp.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace AptitudeWebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IGenericRepository<Applicant> _db;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IGenericRepository<Applicant> db)
         {
-            _logger = logger;
+            _db = db;
         }
+        
 
         public IActionResult Index()
         {
-            return View();
+            return View(_db.GetAll());
         }
 
         public IActionResult Privacy()
