@@ -8,7 +8,7 @@ namespace AptitudeWebApp.DAL
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(local);Database=AptitudeDB;Encrypt=False;User=sa;Password=123456789.t");
+            optionsBuilder.UseSqlServer(@"Server=.;Database=AptitudeDB;Encrypt=False;User=sa;Password=1");
         }
         public AptitudeContext(DbContextOptions<AptitudeContext> options)
          : base(options)
