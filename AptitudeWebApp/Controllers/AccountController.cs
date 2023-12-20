@@ -60,7 +60,7 @@ namespace AptitudeWebApp.Controllers
         {
             HttpContext.Session.Clear();
             HttpContext.Session.Remove("Manager");
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("LoginManager", "Account");
         }
     }
 }
