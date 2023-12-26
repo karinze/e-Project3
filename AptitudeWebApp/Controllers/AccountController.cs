@@ -10,7 +10,7 @@ namespace AptitudeWebApp.Controllers
         {
             _db = db;
         }
-        public IActionResult LoginManager()
+        public IActionResult Login()
         {
             if(HttpContext.Session.GetString("Manager") != null)
             {
@@ -26,41 +26,35 @@ namespace AptitudeWebApp.Controllers
             }
         }
         [HttpPost]
-        public IActionResult LoginManager(string uname, string pass)
+        public IActionResult Login(string uname, string pass)
         {
-            if (HttpContext.Session.GetString("Applicant") ==null)
+            if (HttpContext.Session.GetString("Manager") ==null)
             {
                 var acc = _db.Applicants.Where(x => x.Username.ToLower().Equals(uname) && x.Password.Equals(pass)).FirstOrDefault();
-                if (acc != null)
+                if (uname == "admin" && pass == "123")
+                {
+                    HttpContext.Session.SetString("Manager", "admin");
+                    return RedirectToAction("ApplicantDashboard", "Manager");
+                }else if (acc != null)
                 {
                     HttpContext.Session.SetString("Applicant", acc.Username.ToString());
                     return RedirectToAction("ExamDashboard", "Applicant");
                 }
             }
+            
             return View();
             
-        }
-
-        [HttpPost]
-        public IActionResult LoginApplicant (string uname, string pass)
-        {
-            if (HttpContext.Session.GetString("Manager") == null)
-            {
-                if (uname == "admin" && pass=="123")
-                {
-                    HttpContext.Session.SetString("Manager","admin");
-                    return RedirectToAction("ApplicantDashboard", "Manager");
-                }
-            }
-            return View();
-
         }
 
         public IActionResult LogOut()
         {
             HttpContext.Session.Clear();
             HttpContext.Session.Remove("Manager");
-            return RedirectToAction("LoginManager", "Account");
+            return RedirectToAction("Login", "Account");
         }
+
+
+
+
     }
 }

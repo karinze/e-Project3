@@ -12,7 +12,7 @@ namespace AptitudeWebApp.Models.Authentication
                 context.Result = new RedirectToRouteResult(new RouteValueDictionary
                 {
                     {"Controller", "Account" },
-                    {"Action", "LoginManager" }
+                    {"Action", "Login" }
                 });
             }
         }

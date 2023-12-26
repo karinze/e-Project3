@@ -1,6 +1,66 @@
 ﻿@model AptitudeWebApp.Applicant
 
+@* <h3>Login</h3>
+ *@
+
 @{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<!-- Created By CodingNepal -->
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+
+</head>
+<body>
+    
+    <div class="col-xs-12 col-md-6 textlogo">
+        <div class="text">
+            <h1>WEBSTER</h1>
+            <p>Corporation Exam Portal</p>
+        </div>
+        <br />
+        <img class="logo" src="images/logo.png">
+    </div>
+
+    <div class="wrapper">
+        <div class="title">
+            Login 
+        </div>
+        <div class="col-xs-12 col-md-6">
+            <form asp-action="Login" asp-controller="Account" enctype="multipart/form-data" method="post">
+                <div class="field">
+                    <input asp-for="Username" name="uname" required>
+                    <label>Email Address</label>
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+
+                <div class="field">
+                    <input asp-for="Password" name="pass" type="password" required>
+                    <label>Password</label>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="field" style="display:flex;justify-content:center">
+                    <input style="width:50%" type="submit" value="Login">
+                </div>
+
+            </form>
+        </div>
+        
+    </div>
+    <footer class=" col-xs-12 col-md-6 footer">
+        <div>© Webster Corporation 2023. For internal use only</div>
+        
+    </footer>
+</body>
+</html>
+
+@* @{
     Layout = null;
 }
 
@@ -71,4 +131,4 @@
         }
     }
 </body>
-</html>
+</html> *@
