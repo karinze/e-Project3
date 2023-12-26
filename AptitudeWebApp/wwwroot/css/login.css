@@ -186,6 +186,7 @@ form .signup-link {
         width: 100%;
         outline: none;
         font-size: 17px;
+        padding-left: 20px;
         border: 1px solid lightgrey;
         border-radius: 25px;
         transition: all 0.3s ease;
@@ -249,6 +250,7 @@ form .signup-link {
         width: 100%;
         outline: none;
         font-size: 17px;
+        padding-left: 20px;
         border: 1px solid lightgrey;
         border-radius: 25px;
         transition: all 0.3s ease;
