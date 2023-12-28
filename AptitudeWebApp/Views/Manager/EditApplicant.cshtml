@@ -1,28 +1,23 @@
 ﻿@model AptitudeWebApp.Applicant
 
 @{
-    ViewData["Title"] = "EditApplicant";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Layout = null;
 }
-@section navheader {
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a asp-action="ApplicantDashboard" asp-controller="Manager" class="nav-link">Home</a>
-        </li>
 
-    </ul>
-}
-<h1>EditApplicant</h1>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>EditApplicant</title>
+</head>
+<body>
 
 <h4>Applicant</h4>
 <hr />
-<div class="row" style="margin-left: 10px">
+<div class="row">
     <div class="col-md-4">
-        <form asp-action="EditApplicant" asp-controller="Manager" enctype="multipart/form-data" method="post">
+        <form asp-action="EditApplicant">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ApplicantId" />
             <div class="form-group">
@@ -40,7 +35,11 @@
                 <input asp-for="Age" class="form-control" />
                 <span asp-validation-for="Age" class="text-danger"></span>
             </div>
-           
+            <div class="form-group">
+                <label asp-for="HasPassedExam" class="control-label"></label>
+                <input asp-for="HasPassedExam" class="form-control" />
+                <span asp-validation-for="HasPassedExam" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Address" class="control-label"></label>
                 <input asp-for="Address" class="form-control" />
@@ -68,7 +67,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ImagePath" class="control-label"></label>
-                <input type="file" name="file" class="form-control" />
+                <input asp-for="ImagePath" class="form-control" />
                 <span asp-validation-for="ImagePath" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -92,6 +91,5 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+</body>
+</html>

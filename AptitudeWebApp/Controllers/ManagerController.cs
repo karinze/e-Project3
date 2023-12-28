@@ -4,14 +4,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Net.Mail;
 using System.Net;
 using AptitudeWebApp.Models.Authentication;
+using AptitudeWebApp.Models;
+using Newtonsoft.Json;
+using AptitudeWebApp.Repository;
+using System.Dynamic;
+using Microsoft.EntityFrameworkCore;
 
 namespace AptitudeWebApp.Controllers
 {
     public class ManagerController : Controller
     {
+        private readonly IEducation _education;
+        private readonly ICompanies _companies;
         private readonly AptitudeContext _db;
-        public ManagerController(AptitudeContext db)
+        public ManagerController(AptitudeContext db,IEducation education, ICompanies companies)
         {
+            _companies = companies;
+            _education = education;
             _db = db;
         }
         [Authentication]
@@ -31,8 +40,10 @@ namespace AptitudeWebApp.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult AddApplicant(Applicant applicant, IFormFile file)
+        public IActionResult AddApplicant(Applicant applicant, IFormFile file, string? education, string? companies)
         {
+            ApplicantEducation applicantEducation = new ApplicantEducation();
+            ApplicantCompanies applicantCompanies = new ApplicantCompanies();
             if (file != null)
             {
                 // xử lý upload thumbnail
@@ -43,6 +54,12 @@ namespace AptitudeWebApp.Controllers
                 applicant.ImagePath = "images/" + file.FileName;
             }
             _db.Applicants.Add(applicant);
+            applicantEducation.ApplicantId = applicant.ApplicantId;
+            applicantEducation.COEName = education;
+            applicantCompanies.ApplicantId = applicant.ApplicantId;
+            applicantCompanies.CompanyName = companies;
+            _db.ApplicantCompanies.Add(applicantCompanies);
+            _db.ApplicantEducations.Add(applicantEducation);
             _db.SaveChanges();
             MailMessage mail = new MailMessage();
             mail.From = new MailAddress("chientestphp@gmail.com");
@@ -72,7 +89,7 @@ namespace AptitudeWebApp.Controllers
             //var model = _db.Applicants;
             //ViewBag.news = new SelectList(model, "Id", "Title");
             var item = _db.Applicants.Find(id);
-            return View(item);
+            return View(item);  
         }
         [HttpPost]
         public IActionResult EditApplicant(Applicant applicant, IFormFile file)
@@ -94,7 +111,7 @@ namespace AptitudeWebApp.Controllers
 
             return RedirectToAction("ViewApplicant", "Manager");
         }
-
+        
         public IActionResult DeleteApplicant(Guid id)
         {
             var item = _db.Applicants.Find(id);
@@ -108,6 +125,6 @@ namespace AptitudeWebApp.Controllers
         }
 
         
-
+        
     }
 }

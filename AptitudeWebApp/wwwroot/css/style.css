@@ -1,0 +1,123 @@
+/*header{
+    display:flex;
+}
+.headerlink a {
+    margin-left:5%;
+    margin-top:2%;
+    font-size:25px;
+}*/
+body{
+    margin:0px;
+}
+@media (min-width : 981px) {
+    .topnav2 {
+        display: none;
+    }
+    .topnav1 {
+        background-color: #5484BB;
+        overflow: hidden;
+    }
+
+        .topnav1 img {
+            float: left;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+        }
+        /* Style the links inside the navigation bar */
+        .topnav1 a {
+            float: left;
+            text-align: center;
+            text-decoration: none;
+        }
+
+    .link {
+        float: left;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 2% 3%;
+        text-decoration: none;
+        font-size: 23px;
+    }
+
+    .topnav1 a.l {
+        float: right;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 2% 1%;
+        text-decoration: none;
+        font-size: 20px;
+    }
+    /* Change the color of links on hover */
+
+
+    /* Create a right-aligned (split) link inside the navigation bar */
+    .topnav1 a.split {
+        margin: 2%;
+        float: right;
+        background-color: white;
+        padding: 10px 3%;
+        color: black;
+        border-radius: 30px 30px 30px 30px;
+    }
+}
+.c {
+    overflow-x: auto;
+}
+
+.table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 90%;
+    margin: 0 5%;
+
+}
+
+@media only screen and (max-width: 980px) {
+
+    .topnav1{
+        display:none;
+    }
+    .c {
+        overflow-x: auto;
+    }
+    .topnav2 {
+        overflow: hidden;
+        background-color: #5484BB;
+        position: relative;
+    }
+
+        /* Hide the links inside the navigation menu (except for logo/home) */
+        .topnav2 #myLinks {
+            display: none;
+        }
+
+        /* Style navigation menu links */
+        .topnav2 a {
+            color: white;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+            display: block;
+        }
+
+            /* Style the hamburger menu */
+            .topnav2 a.icon {
+                background: black;
+                display: block;
+                position: absolute;
+                right: 0;
+                top: 0;
+            }
+
+            /* Add a grey background color on mouse-over */
+            .topnav2 a:hover {
+                background-color: #ddd;
+                color: black;
+            }
+
+    /* Style the active link (or home/logo) */
+    .active {
+        width:46px;
+    }
+}

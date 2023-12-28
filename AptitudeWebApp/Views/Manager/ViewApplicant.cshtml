@@ -1,100 +1,157 @@
 ﻿@model IEnumerable<AptitudeWebApp.Applicant>
 
 @{
-    ViewData["Title"] = "ViewApplicant";
-    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    Layout = null;
 }
-@section navheader {
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a asp-action="ApplicantDashboard" asp-controller="Manager" class="nav-link">Home</a>
-        </li>
+<!DOCTYPE html>
+<!-- Created By CodingNepal -->
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
 
-    </ul>
-}
+</head>
+<body>
+<header>
+    
+        <div class="topnav1">
+            <img class="logo" src="/images/logo.png" style="width:60px">
+            <a class="link" href="#home">Dashboash</a>
+            <a class="link" href="#news">Applicants</a>
+            <a class="link" href="#contact">Questions</a>
+            
+            <a href="#about" class="split">LOGOUT</a>
+            <a class="l">Hello, Manager</a>
+        </div>
+
+    @* <div class="headerlink">
+            <a asp-action="ApplicantDashboard">Dashboard</a>
+            <a asp-action="ApplicantDashboard">Applicants</a>
+            <a asp-action="ApplicantDashboard">Questions</a>
+    </div>
+    
+    <div>
+        <p>Hello, Manager</p>
+        <a asp-action="LogOut">LOGOUT</a>
+    </div>
+     *@
+
+        
+
+        <!-- Top Navigation Menu -->
+        <div class="topnav2">
+            <img class="active" src="/images/logo.png" >
+            <!-- Navigation links (hidden by default) -->
+            <div id="myLinks">
+                <a href="#news">News</a>
+                <a href="#contact">Contact</a>
+                <a href="#about">About</a>
+            </div>
+            <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                <i class="fa fa-bars"></i>
+            </a>
+        </div>
+</header>
+<section>
 <h1>ViewApplicant</h1>
+    <p>
+        <a asp-action="AddApplicant">Create New</a>
+    </p>
+    <div class=" c" style="overflow-x:auto;">
+        
+        <table class="table" border="1">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FirstName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LastName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Age)
+                    </th>
 
-<p>
-    <a asp-action="AddApplicant">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Age)
-            </th>
-            
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.City)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImagePath)
-            </th>
-            
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Age)
-            </td>
-            
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-                <td>
-                    <img src="/@item.ImagePath" width="110">
-                </td>
-            
-            <td>
-                    @Html.ActionLink("Edit", "EditApplicant", new { id = item.ApplicantId }, new { @class = "btn btn-sm btn-primary" })
-@*                 <a asp-action="Details" asp-route-id="@item.ApplicantId">Details</a> | *@
-                    @Html.ActionLink("Delete", "DeleteApplicant", new { id = item.ApplicantId }, new { @class = "btn btn-sm btn-primary" })
-                    
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Address)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.City)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.PhoneNumber)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Notes)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ImagePath)
+                    </th>
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LastName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Age)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.City)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PhoneNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Notes)
+                        </td>
+                        <td>
+                            <img src="/@item.ImagePath" width="110">
+                        </td>
+
+                        <td>
+                            @Html.ActionLink("Edit", "EditApplicant", new { id = item.ApplicantId }, new { @class = "btn btn-sm btn-primary" })
+                            @*                 <a asp-action="Details" asp-route-id="@item.ApplicantId">Details</a> | *@
+                            @Html.ActionLink("Delete", "DeleteApplicant", new { id = item.ApplicantId }, new { @class = "btn btn-sm btn-primary" })
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+</div>
+    </section>
+</body>
+</html>
+<script>
+    function myFunction() {
+        var x = document.getElementById("myLinks");
+        if (x.style.display === "block") {
+            x.style.display = "none";
+        } else {
+            x.style.display = "block";
+        }
+    }
+</script>
