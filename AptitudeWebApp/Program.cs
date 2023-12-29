@@ -5,8 +5,7 @@ using AptitudeWebApp.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<IEducation, Education>();
-builder.Services.AddScoped<ICompanies, Companies>();
+
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddSession();
 

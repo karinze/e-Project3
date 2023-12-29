@@ -1,17 +1,17 @@
-﻿
+﻿@model IEnumerable<AptitudeWebApp.Models.ExamQuestion>
 
 @{
     Layout = null;
 }
+
 <!DOCTYPE html>
-<!-- Created By CodingNepal -->
-<html lang="en" dir="ltr">
+
+<html>
 <head>
-    <meta charset="utf-8">
-    <title>Login</title>
+    <meta name="viewport" content="width=device-width" />
+    <title>ViewQuestion</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
-
 </head>
 <body>
     <header>
@@ -55,7 +55,50 @@
             </a>
         </div>
     </header>
-    <h1>Dashboard</h1>
+<p>
+    <a asp-action="AddQuestion">Create New</a>
+</p>
+<table class="table" border="1">
+    <thead>
+        <tr>
+            
+            <th>
+                Id
+            </th>
+            <th>
+                Question Text
+            </th>
+            <th>
+                Marks
+            </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ExamTypeId)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+                    <td>@Html.DisplayFor(modelItem => item.QuestionId)</td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.QuestionText)
+                    </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuestionScore)
+            </td>
+            
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ExamTypeId)
+                    </td>
+            <td>
+                <a asp-action="EditQuestion" asp-route-id="@item.QuestionId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.QuestionId">Details</a> |
+                <a asp-action="DeleteQuestion" asp-route-id="@item.QuestionId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
 </body>
 </html>
-

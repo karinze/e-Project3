@@ -14,13 +14,9 @@ namespace AptitudeWebApp.Controllers
 {
     public class ManagerController : Controller
     {
-        private readonly IEducation _education;
-        private readonly ICompanies _companies;
         private readonly AptitudeContext _db;
-        public ManagerController(AptitudeContext db,IEducation education, ICompanies companies)
+        public ManagerController(AptitudeContext db)
         {
-            _companies = companies;
-            _education = education;
             _db = db;
         }
         [Authentication]
@@ -111,7 +107,7 @@ namespace AptitudeWebApp.Controllers
 
             return RedirectToAction("ViewApplicant", "Manager");
         }
-        
+        [Authentication]
         public IActionResult DeleteApplicant(Guid id)
         {
             var item = _db.Applicants.Find(id);
@@ -123,8 +119,118 @@ namespace AptitudeWebApp.Controllers
             }
             return View(item);
         }
+        [Authentication]
+        public IActionResult ViewQuestion()
+        {
+            var model = _db.ExamQuestions.ToList();
+            return View(model);
+        }
 
-        
-        
+        [Authentication]
+        public IActionResult AddQuestion()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddQuestion(ExamQuestion exam,int btnradiotype, int btnradio)
+        {
+            if (btnradiotype == 1)
+            {
+                exam.ExamTypeId = 1;
+            }
+            else if (btnradiotype == 2)
+            {
+                exam.ExamTypeId = 2;
+            }
+            else if (btnradiotype == 3)
+            {
+                exam.ExamTypeId = 3;
+            }
+            exam.QuestionId = 3;
+
+            if (btnradio == 1) 
+            {
+                exam.CorrectQuestion = exam.QuestionA;
+            }
+            else if (btnradio == 2)
+            {
+                exam.CorrectQuestion = exam.QuestionB;
+            }
+            else if (btnradio == 3)
+            {
+                exam.CorrectQuestion = exam.QuestionC;
+            }
+            else if (btnradio == 4)
+            {
+                exam.CorrectQuestion = exam.QuestionD;
+            }
+            
+            _db.ExamQuestions.Add(exam);
+            _db.SaveChanges();
+            return RedirectToAction("ViewQuestion", "Manager");
+
+        }
+
+        [Authentication]
+        public IActionResult EditQuestion(int id)
+        {
+            //var model = _db.Applicants;
+            //ViewBag.news = new SelectList(model, "Id", "Title");
+            var item = _db.ExamQuestions.Find(id);
+            return View(item);
+        }
+        [HttpPost]
+        public IActionResult EditQuestion(ExamQuestion exam, int btnradiotype, int btnradio)
+        {
+
+
+            if (btnradiotype == 1)
+            {
+                exam.ExamTypeId = 1;
+            }
+            else if (btnradiotype == 2)
+            {
+                exam.ExamTypeId = 2;
+            }
+            else if (btnradiotype == 3)
+            {
+                exam.ExamTypeId = 3;
+            }
+            exam.QuestionId = 3;
+
+            if (btnradio == 1)
+            {
+                exam.CorrectQuestion = exam.QuestionA;
+            }
+            else if (btnradio == 2)
+            {
+                exam.CorrectQuestion = exam.QuestionB;
+            }
+            else if (btnradio == 3)
+            {
+                exam.CorrectQuestion = exam.QuestionC;
+            }
+            else if (btnradio == 4)
+            {
+                exam.CorrectQuestion = exam.QuestionD;
+            }
+
+            _db.ExamQuestions.Update(exam);
+            _db.SaveChanges();
+            return RedirectToAction("ViewQuestion", "Manager");
+        }
+
+        [Authentication]
+        public IActionResult DeleteQuestion(int id)
+        {
+            var item = _db.ExamQuestions.SingleOrDefault(c=>c.QuestionId.Equals(id));
+            if (item != null)
+            {
+                _db.ExamQuestions.Remove(item);
+                _db.SaveChanges();
+                return RedirectToAction("ViewQuestion", "Manager");
+            }
+            return View(item);
+        }
     }
 }

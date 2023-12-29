@@ -1,0 +1,106 @@
+
+
+
+
+
+
+.wrapper {
+    width: 90%;
+    height: 6.25em;
+    margin-top: 1.875em;
+    margin-left: 8%;
+    background: #5484BB;
+    border-radius: 1em;
+    padding-bottom: 40%;
+    position: relative;
+}
+
+.summit {
+    width: 9.5em;
+    height: 2em;
+    margin-top: 2em;
+    margin-left: 1.2em;
+    background: #ffffff;
+    border-radius: 1em;
+    text-align: center;
+    position: absolute;
+    font-size: larger;
+    padding-top: 0.1em;
+    text-decoration: none;
+    color: black;
+}
+
+.logout {
+    width: 9.3em;
+    height: 1.875em;
+    margin-top: 1.875em;
+    background: #ffffff;
+    border-radius: 1em;
+    text-align: center;
+    position: absolute;
+    font-size: larger;
+    padding-top: 0.1em;
+    text-decoration: none;
+    color: black;
+    right: 3.2em;
+}
+
+.exam {
+    width: 64.3em;
+    height: 1.84em;
+    margin-top: 12.5em;
+    margin-left: 1.25em;
+    background: #ffffff;
+    border-radius: 1em;
+    position: absolute;
+    font-size: larger;
+    padding-top: 0.1em;
+    text-decoration: none;
+    color: black;
+    padding-left: 2.5em;
+}
+
+.exam1 {
+    width: 64.3em;
+    height: 1.84em;
+    margin-top: 15.625em;
+    margin-left: 1.25em;
+    background: #ffffff;
+    border-radius: 1em;
+    position: absolute;
+    font-size: larger;
+    padding-top: 0.1em;
+    text-decoration: none;
+    color: black;
+    padding-left: 2.5em;
+}
+
+.exam2 {
+    width: 64.3em;
+    height: 1.84em;
+    margin-top: 18.75em;
+    margin-left: 1.25em;
+    background: #ffffff;
+    border-radius: 1em;
+    position: absolute;
+    font-size: larger;
+    padding-top: 0.1em;
+    text-decoration: none;
+    color: black;
+    padding-left: 2.5em;
+}
+
+.enter {
+    width: 9.3em;
+    height: 1.875em;
+    margin-top: 12.5em;
+    background: #808080;
+    border-radius: 1em;
+    text-align: center;
+    position: absolute;
+    font-size: larger;
+    padding-top: 0.1em;
+    text-decoration: none;
+    color: black;
+    right: 3.125em;
+}

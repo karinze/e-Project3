@@ -1,0 +1,378 @@
+﻿@model AptitudeWebApp.Models.ExamQuestion
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+          crossorigin="anonymous">
+    <title>EditQuestion</title>
+</head>
+<body>
+
+<h4>ExamQuestion</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditQuestion">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="QuestionId" />
+                @if (Model.ExamTypeId == 1)
+                {
+                    <section class="btn-group" style="margin-top:5px">
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradiotype"
+                               value=1
+                               id="gfg" checked>
+                        <label class="btn btn-outline-danger"
+                               for="gfg">
+                            GENERIC KNOWLEDGE
+                        </label>
+
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradiotype"
+                               value=2
+                               id="gfg2">
+                        <label class="btn btn-outline-danger"
+                               for="gfg2">
+                            MATHEMATICS
+                        </label>
+
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradiotype"
+                               value=3
+                               id="gfg3">
+                        <label class="btn btn-outline-danger"
+                               for="gfg3">
+                            COMPUTER TECHNOLOGY
+                        </label>
+                    </section>
+                }
+                else if (Model.ExamTypeId == 2)
+                {
+                    <section class="btn-group" style="margin-top:5px">
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradiotype"
+                               value=1
+                               id="gfg" >
+                        <label class="btn btn-outline-danger"
+                               for="gfg">
+                            GENERIC KNOWLEDGE
+                        </label>
+
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradiotype"
+                               value=2
+                               id="gfg2" checked>
+                        <label class="btn btn-outline-danger"
+                               for="gfg2">
+                            MATHEMATICS
+                        </label>
+
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradiotype"
+                               value=3
+                               id="gfg3">
+                        <label class="btn btn-outline-danger"
+                               for="gfg3">
+                            COMPUTER TECHNOLOGY
+                        </label>
+                    </section>
+                }
+                else if (Model.ExamTypeId == 3)
+                {
+                    <section class="btn-group" style="margin-top:5px">
+                        <input type="radio"
+                        class="btn-check"
+                        name="btnradiotype"
+                        value=1
+                        id="gfg">
+                        <label class="btn btn-outline-danger"
+                        for="gfg">
+                            GENERIC KNOWLEDGE
+                        </label>
+
+                        <input type="radio"
+                        class="btn-check"
+                        name="btnradiotype"
+                        value=2
+                        id="gfg2" >
+                        <label class="btn btn-outline-danger"
+                        for="gfg2">
+                            MATHEMATICS
+                        </label>
+
+                        <input type="radio"
+                        class="btn-check"
+                        name="btnradiotype"
+                        value=3
+                        id="gfg3" checked>
+                        <label class="btn btn-outline-danger"
+                        for="gfg3">
+                            COMPUTER TECHNOLOGY
+                        </label>
+                    </section>
+                }
+                else
+                {
+                    <section class="btn-group" style="margin-top:5px">
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradiotype"
+                               value=1
+                               id="gfg">
+                        <label class="btn btn-outline-danger"
+                               for="gfg">
+                            GENERIC KNOWLEDGE
+                        </label>
+
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradiotype"
+                               value=2
+                               id="gfg2">
+                        <label class="btn btn-outline-danger"
+                               for="gfg2">
+                            MATHEMATICS
+                        </label>
+
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradiotype"
+                               value=3
+                               id="gfg3" >
+                        <label class="btn btn-outline-danger"
+                               for="gfg3">
+                            COMPUTER TECHNOLOGY
+                        </label>
+                    </section>
+                }
+                <div class="form-group">
+                <label asp-for="QuestionScore" class="control-label"></label>
+                <input asp-for="QuestionScore" class="form-control" />
+                <span asp-validation-for="QuestionScore" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuestionText" class="control-label"></label>
+                <input asp-for="QuestionText" class="form-control" />
+                <span asp-validation-for="QuestionText" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuestionA" class="control-label"></label>
+                <input asp-for="QuestionA" class="form-control" />
+                <span asp-validation-for="QuestionA" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuestionB" class="control-label"></label>
+                <input asp-for="QuestionB" class="form-control" />
+                <span asp-validation-for="QuestionB" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuestionC" class="control-label"></label>
+                <input asp-for="QuestionC" class="form-control" />
+                <span asp-validation-for="QuestionC" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuestionD" class="control-label"></label>
+                <input asp-for="QuestionD" class="form-control" />
+                <span asp-validation-for="QuestionD" class="text-danger"></span>
+            </div>
+
+                @if (Model.CorrectQuestion == Model.QuestionA)
+                {
+                    <section class="btn-group" style="margin-top:5px">
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradio"
+                               value=1
+                               id="gfg4" checked>
+                        <label class="btn btn-outline-danger"
+                               for="gfg4">
+                            A
+                        </label>
+
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradio"
+                               value=2
+                               id="gfg5">
+                        <label class="btn btn-outline-danger"
+                               for="gfg5">
+                            B
+                        </label>
+
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradio"
+                               value=3
+                               id="gfg6">
+                        <label class="btn btn-outline-danger"
+                               for="gfg6">
+                            C
+                        </label>
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradio"
+                               value=4
+                               id="gfg7">
+                        <label class="btn btn-outline-danger"
+                               for="gfg7">
+                            D
+                        </label>
+                    </section>
+                }
+                else if (Model.CorrectQuestion == Model.QuestionB)
+                {
+                    <section class="btn-group" style="margin-top:5px">
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradio"
+                               value=1
+                               id="gfg4" >
+                        <label class="btn btn-outline-danger"
+                               for="gfg4">
+                            A
+                        </label>
+
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradio"
+                               value=2
+                               id="gfg5" checked>
+                        <label class="btn btn-outline-danger"
+                               for="gfg5">
+                            B
+                        </label>
+
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradio"
+                               value=3
+                               id="gfg6">
+                        <label class="btn btn-outline-danger"
+                               for="gfg6">
+                            C
+                        </label>
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradio"
+                               value=4
+                               id="gfg7">
+                        <label class="btn btn-outline-danger"
+                               for="gfg7">
+                            D
+                        </label>
+                    </section>
+                }
+                else if (Model.CorrectQuestion == Model.QuestionC)
+                {
+                    <section class="btn-group" style="margin-top:5px">
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradio"
+                               value=1
+                               id="gfg4" >
+                        <label class="btn btn-outline-danger"
+                               for="gfg4">
+                            A
+                        </label>
+
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradio"
+                               value=2
+                               id="gfg5">
+                        <label class="btn btn-outline-danger"
+                               for="gfg5">
+                            B
+                        </label>
+
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradio"
+                               value=3
+                               id="gfg6" checked>
+                        <label class="btn btn-outline-danger"
+                               for="gfg6">
+                            C
+                        </label>
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradio"
+                               value=4
+                               id="gfg7">
+                        <label class="btn btn-outline-danger"
+                               for="gfg7">
+                            D
+                        </label>
+                    </section>
+                }
+                else if (Model.CorrectQuestion == Model.QuestionD)
+                {
+                    <section class="btn-group" style="margin-top:5px">
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradio"
+                               value=1
+                               id="gfg4" >
+                        <label class="btn btn-outline-danger"
+                               for="gfg4">
+                            A
+                        </label>
+
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradio"
+                               value=2
+                               id="gfg5">
+                        <label class="btn btn-outline-danger"
+                               for="gfg5">
+                            B
+                        </label>
+
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradio"
+                               value=3
+                               id="gfg6">
+                        <label class="btn btn-outline-danger"
+                               for="gfg6">
+                            C
+                        </label>
+                        <input type="radio"
+                               class="btn-check"
+                               name="btnradio"
+                               value=4
+                               id="gfg7" checked>
+                        <label class="btn btn-outline-danger"
+                               for="gfg7">
+                            D
+                        </label>
+                    </section>
+                }
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+</body>
+</html>
