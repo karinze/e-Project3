@@ -8,26 +8,52 @@ namespace AptitudeWebApp.Controllers
         {
             return View();
         }
+
+       
         public IActionResult ExamDashboard()
         {
+            if (HttpContext.Session.GetString("Applicant") == null) 
+            { 
+                return RedirectToAction("Login", "Account");
+            }
             return View();
         }
 
         public IActionResult ExamPage1()
         {
+
+            if (HttpContext.Session.GetString("Applicant") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             return View();
         }
 
         public IActionResult ExamPage2()
         {
+
+            if (HttpContext.Session.GetString("Applicant") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             return View();
         }
         public IActionResult ExamPage3()
         {
+
+            if (HttpContext.Session.GetString("Applicant") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             return View();
         }
         public IActionResult Result()
         {
+
+            if (HttpContext.Session.GetString("Applicant") == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
             return View();
         }
     }
