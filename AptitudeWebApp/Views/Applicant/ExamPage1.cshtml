@@ -18,8 +18,17 @@
     <div class="wrapper">
 
         <div>
-            <a class="result">Gen. knowledge</a>
+            <a class="result">General knowledge</a>
         </div>
+        <form asp-controller="Exam" asp-action="Submit"></form>
+        <ol type="1">
+            @foreach(var question in ViewBag.Questions)
+            {
+                <li>
+                    @question.Nam
+                </li>
+            }
+        </ol>
         <div>
             <a class="result1">Question 1:</a>
         </div>

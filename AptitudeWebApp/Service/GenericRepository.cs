@@ -5,23 +5,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AptitudeWebApp.Service
 {
-    public class GenericRepository<I> : IGenericRepository<I> where I : BaseEntity
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly AptitudeContext _db;
-        private DbSet<I> _dbSet;
+        private DbSet<T> _dbSet;
         public GenericRepository(AptitudeContext db)
         {
             _db = db;
-            _dbSet = db.Set<I>();
+            _dbSet = db.Set<T>();
         }
 
-        public async Task Create(I entity)
+        public async Task Create(T entity)
         {
             _dbSet.Add(entity);
             await _db.SaveChangesAsync();
         }
 
-        public async Task<I> Delete(int id)
+        public async Task<T> Delete(int id)
         {
             var product = await _dbSet.FirstOrDefaultAsync(p => p.Id == id);
             if (product != null)
@@ -36,17 +36,17 @@ namespace AptitudeWebApp.Service
             }
         }
 
-        public async Task<IEnumerable<I>> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<I> GetById(int id)
+        public async Task<T> GetById(int id)
         {
             return await _dbSet.SingleOrDefaultAsync(s => s.Id == id);
         }
 
-        public async Task Update(I entity)
+        public async Task Update(T entity)
         {
             _dbSet.Update(entity);
             await _db.SaveChangesAsync();

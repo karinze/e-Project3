@@ -80,7 +80,7 @@ namespace AptitudeWebApp.Controllers
 
         }
         [Authentication]
-        public IActionResult EditApplicant(Guid id)
+        public IActionResult EditApplicant(Guid id) 
         {
             //var model = _db.Applicants;
             //ViewBag.news = new SelectList(model, "Id", "Title");
