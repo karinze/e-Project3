@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AptitudeWebApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d0ae8544743da21f11e65c69fe7415164e49e85e")]
 [assembly: System.Reflection.AssemblyProductAttribute("AptitudeWebApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AptitudeWebApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
