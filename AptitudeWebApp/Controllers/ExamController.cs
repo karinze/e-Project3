@@ -27,7 +27,7 @@ namespace AptitudeWebApp.Controllers
             {
                 Random random = new Random();
                 var questions = _context.ExamQuestions.OrderBy(q => random.Next()).Where(x => x.ExamTypeId == examTypeId);
-                ViewBag.Questions = questions;
+                ViewBag.Questions = questions.ToList();
             }
             
             return View(/*_db.GetAll()*/);
@@ -44,7 +44,7 @@ namespace AptitudeWebApp.Controllers
             int scoreType1 = 0;
             int scoreType2 = 0;
             int scoreType3 = 0;
-
+            List<int> scores = new List<int>();
             string correctAns = "";
             foreach(var q in examQuestions)
             {
@@ -69,16 +69,21 @@ namespace AptitudeWebApp.Controllers
                     switch (q.ExamTypeId)
                     {
                         case 1:
+                            scoreType1++;
                             break;
                         case 2:
+                            scoreType2++;
                             break;
                         case 3:
+                            scoreType3++;
                             break;
                     }
                 }
-
+                scores.Add(scoreType1);
+                scores.Add(scoreType2);
+                scores.Add(scoreType3);
             }
-            return View("ExamResults");
+            return View("ExamResults", scores);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -22,10 +22,9 @@
         </div>
         <form asp-controller="Exam" asp-action="Submit"></form>
         <ol type="1">
-            @foreach(var question in ViewBag.Questions)
+            @foreach(var q in ViewBag.Questions)
             {
                 <li>
-                    @question.Nam
                 </li>
             }
         </ol>
