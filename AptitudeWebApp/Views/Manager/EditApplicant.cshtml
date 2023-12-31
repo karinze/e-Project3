@@ -78,6 +78,56 @@
                     <input asp-for="Password" class="form-control" required />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
+                <h4>Applicant Education</h4>
+                <hr />
+                @foreach (var item in ViewBag.education)
+                {
+                    <div class="form-group">
+                        <label class="control-label">COEName</label>
+                        <input type="text" name="education" value="@item.COEName" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Description</label>
+                        <input type="text" name="education2" value="@item.Description" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Notes</label>
+                        <input type="text" name="education3" value="@item.Notes" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">StartDate</label>
+                        <input  name="education4" value="@item.StartDate" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">EndDate</label>
+                        <input  name="education5" value="@item.EndDate" required />
+                    </div>
+                }
+                <h4>Applicant Companies</h4>
+                <hr />
+                @foreach (var item in ViewBag.companies)
+                {
+                    <div class="form-group">
+                        <label class="control-label">CompanyName</label>
+                        <input type="text" name="companies" value="@item.CompanyName" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Description</label>
+                        <input type="text" name="companies2" value="@item.Description" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Notes</label>
+                        <input type="text" name="companies3" value="@item.Notes" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">StartDate</label>
+                        <input  name="companies4" value="@item.StartDate" required />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">EndDate</label>
+                        <input  name="companies5" value="@item.EndDate"  required />
+                    </div>
+                }
                 <div class="form-group">
                     <input type="submit" value="Save" class="custom-submit" />
                 </div>

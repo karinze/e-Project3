@@ -11,6 +11,7 @@ using System.Dynamic;
 using Microsoft.EntityFrameworkCore;
 
 using System.Drawing.Printing;
+using Microsoft.AspNetCore.Mvc.Razor.TagHelpers;
 
 namespace AptitudeWebApp.Controllers
 {
@@ -64,7 +65,7 @@ namespace AptitudeWebApp.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult AddApplicant(Applicant applicant, IFormFile file, string? education, string? companies)
+        public IActionResult AddApplicant(Applicant applicant, IFormFile file, string? education, string? education2, string? education3, DateTime? education4, DateTime? education5, string? companies, string? companies2, string? companies3, DateTime? companies4, DateTime? companies5)
         {
             ApplicantEducation applicantEducation = new ApplicantEducation();
             ApplicantCompanies applicantCompanies = new ApplicantCompanies();
@@ -78,10 +79,21 @@ namespace AptitudeWebApp.Controllers
                 applicant.ImagePath = "images/" + file.FileName;
             }
             _db.Applicants.Add(applicant);
+
             applicantEducation.ApplicantId = applicant.ApplicantId;
             applicantEducation.COEName = education;
+            applicantEducation.Description = education2;
+            applicantEducation.Notes = education3;
+            applicantEducation.StartDate = education4;
+            applicantEducation.EndDate = education5;
+
             applicantCompanies.ApplicantId = applicant.ApplicantId;
             applicantCompanies.CompanyName = companies;
+            applicantCompanies.Description = companies2;
+            applicantCompanies.Notes = companies3;
+            applicantCompanies.StartDate = companies4;
+            applicantCompanies.EndDate = companies5;
+
             _db.ApplicantCompanies.Add(applicantCompanies);
             _db.ApplicantEducations.Add(applicantEducation);
             _db.SaveChanges();
@@ -110,14 +122,18 @@ namespace AptitudeWebApp.Controllers
         [Authentication]
         public IActionResult EditApplicant(Guid id)
         {
-            //var model = _db.Applicants;
-            //ViewBag.news = new SelectList(model, "Id", "Title");
+            var education = (from s in _db.ApplicantEducations where s.ApplicantId == id select s);
+            ViewBag.education = education.OrderByDescending(x => x.ApplicantEducationId);
+            var companies = (from s in _db.ApplicantCompanies where s.ApplicantId == id select s);
+            ViewBag.companies = companies.OrderByDescending(x => x.ApplicantCompanyId);
             var item = _db.Applicants.Find(id);
             return View(item);
         }
         [HttpPost]
-        public IActionResult EditApplicant(Applicant applicant, IFormFile file)
+        public IActionResult EditApplicant(Applicant applicant, IFormFile file, string? education, string? education2, string? education3, DateTime? education4, DateTime? education5, string? companies, string? companies2, string? companies3, DateTime? companies4, DateTime? companies5)
         {
+            ApplicantEducation applicantEducation = new ApplicantEducation();
+            ApplicantCompanies applicantCompanies = new ApplicantCompanies();
 
             if (file != null)
             {
@@ -128,6 +144,26 @@ namespace AptitudeWebApp.Controllers
                 //add chuoi chua duongdan hinh vao doi tuong  newproduct
                 applicant.ImagePath = "images/" + file.FileName;
             }
+            applicantEducation.ApplicantId = applicant.ApplicantId;
+            applicantEducation.COEName = education;
+            applicantEducation.Description = education2;
+            applicantEducation.Notes= education3;
+            applicantEducation.StartDate = education4;
+            applicantEducation.EndDate= education5; 
+
+            applicantCompanies.ApplicantId= applicant.ApplicantId;
+            applicantCompanies.CompanyName = companies;
+            applicantCompanies.Description = companies2;
+            applicantCompanies.Notes = companies3;
+            applicantCompanies.StartDate = companies4;
+            applicantCompanies.EndDate= companies5;
+
+            var haha= _db.ApplicantCompanies.Where(x => x.ApplicantId == applicant.ApplicantId).FirstOrDefault();
+            var hehe= _db.ApplicantEducations.Where(x=>x.ApplicantId==applicant.ApplicantId).FirstOrDefault();
+            _db.ApplicantCompanies.Remove(haha);
+            _db.ApplicantCompanies.Add(applicantCompanies);
+            _db.ApplicantEducations.Remove(hehe);
+            _db.ApplicantEducations.Add(applicantEducation);
             _db.Applicants.Update(applicant);
             _db.SaveChanges();
 

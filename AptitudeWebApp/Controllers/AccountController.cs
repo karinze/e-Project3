@@ -30,7 +30,7 @@ namespace AptitudeWebApp.Controllers
         {
             if (HttpContext.Session.GetString("Manager") ==null)
             {
-                var acc = _db.Applicants.Where(x => x.Username.ToLower().Equals(uname) && x.Password.Equals(pass)).FirstOrDefault();
+                var acc = _db.Applicants.Where(x => x.Username.Equals(uname) && x.Password.Equals(pass)).FirstOrDefault();
                 if (uname == "admin" && pass == "123")
                 {
                     HttpContext.Session.SetString("Manager", "admin");

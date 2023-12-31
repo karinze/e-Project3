@@ -79,13 +79,32 @@
                     <input asp-for="Password" class="form-control" required />
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
+                <h4>Applicant Education</h4>
+                <hr />
 
-
-                <label class="control-label">Education</label>
+                <label class="control-label">COE Name</label>
                 <input name="education" class="form-control" required />
-                <label class="control-label">Companies</label>
-                <input name="companies" class="form-control" required />
+                <label class="control-label">Description</label>
+                <input name="education2" class="form-control" required />
+                <label class="control-label">Notes</label>
+                <input name="education3" class="form-control"  />
+                <label class="control-label">StartDate</label>
+                <input type="date" name="education4" class="form-control" required />
+                <label class="control-label">Education</label>
+                <input type="date" name="education5" class="form-control" required />
 
+                <h4>Applicant Companies</h4>
+                <hr />
+                <label class="control-label">Company Name</label>
+                <input name="companies" class="form-control" required />
+                <label class="control-label">Description</label>
+                <input name="companies2" class="form-control" required />
+                <label class="control-label">Notes</label>
+                <input name="companies3" class="form-control"  />
+                <label class="control-label">StartDate</label>
+                <input type="date" name="companies4" class="form-control" required />
+                <label class="control-label">Education</label>
+                <input type="date" name="companies5" class="form-control" required />
                 <div class="form-group">
                     <input type="submit" value="Create" class="custom-submit" />
                 </div>
