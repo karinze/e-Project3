@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AptitudeWebApp.Service
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         private readonly AptitudeContext _db;
         private DbSet<T> _dbSet;
@@ -23,7 +23,7 @@ namespace AptitudeWebApp.Service
 
         public async Task<T> Delete(int id)
         {
-            var product = await _dbSet.FirstOrDefaultAsync(p => p.Id == id);
+            var product = await _dbSet.SingleOrDefaultAsync(p =>p.Id  == id);
             if (product != null)
             {
                 _dbSet.Remove(product);

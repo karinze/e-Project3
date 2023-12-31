@@ -10,12 +10,13 @@ namespace AptitudeWebApp.Controllers
     [Route("exam")]
     public class ExamController : Controller
     {
-        private readonly IGenericRepository<Exam> _db;
+        //private readonly IGenericRepository<Exam> _db;
         private readonly AptitudeContext _context;
         ApplicantExam apExam = new ApplicantExam(); //initialize new ApplicantExam
-        public ExamController(IGenericRepository<Exam> db)
+        public ExamController(/*IGenericRepository<Exam> db*/ AptitudeContext context)
         {
-            _db = db;
+            //_db = db;
+            _context = context;
         }
         [Route("index")]
         [Route("")]

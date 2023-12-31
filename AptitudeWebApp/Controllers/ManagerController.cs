@@ -10,6 +10,8 @@ using AptitudeWebApp.Repository;
 using System.Dynamic;
 using Microsoft.EntityFrameworkCore;
 
+using System.Drawing.Printing;
+
 namespace AptitudeWebApp.Controllers
 {
     public class ManagerController : Controller
@@ -25,10 +27,36 @@ namespace AptitudeWebApp.Controllers
             return View();
         }
         [Authentication]
-        public IActionResult ViewApplicant()
+        public IActionResult ViewApplicant(string? txtSearch, int page = 1)
         {
-            var model = _db.Applicants.ToList();
-            return View(model);
+            page = page < 1 ? 1 : page;
+            int pageSize = 2;
+            var data = (from s in _db.Applicants select s);
+            if (!String.IsNullOrEmpty(txtSearch))
+            {
+                ViewBag.txtSearch = txtSearch;
+                data = data.Where(s => s.Email.Contains(txtSearch));
+            }
+
+            if (page > 0)
+            {
+                page = page;
+            }
+            else
+            {
+                page = 1;
+            }
+            int start = (int)(page - 1) * pageSize;
+
+            ViewBag.pageCurrent = page;
+            int totalPage = data.Count();
+            float totalNumsize = (totalPage / (float)pageSize);
+            int numSize = (int)Math.Ceiling(totalNumsize);
+            ViewBag.numSize = numSize;
+            ViewBag.posts = data.OrderByDescending(x => x.ApplicantId).Skip(start).Take(pageSize);
+            return View();
+
+
         }
         [Authentication]
         public IActionResult AddApplicant()
@@ -80,12 +108,12 @@ namespace AptitudeWebApp.Controllers
 
         }
         [Authentication]
-        public IActionResult EditApplicant(Guid id) 
+        public IActionResult EditApplicant(Guid id)
         {
             //var model = _db.Applicants;
             //ViewBag.news = new SelectList(model, "Id", "Title");
             var item = _db.Applicants.Find(id);
-            return View(item);  
+            return View(item);
         }
         [HttpPost]
         public IActionResult EditApplicant(Applicant applicant, IFormFile file)
@@ -103,7 +131,7 @@ namespace AptitudeWebApp.Controllers
             _db.Applicants.Update(applicant);
             _db.SaveChanges();
 
-           
+
 
             return RedirectToAction("ViewApplicant", "Manager");
         }
@@ -120,10 +148,34 @@ namespace AptitudeWebApp.Controllers
             return View(item);
         }
         [Authentication]
-        public IActionResult ViewQuestion()
+        public IActionResult ViewQuestion(string? txtSearch, int page = 1)
         {
-            var model = _db.ExamQuestions.ToList();
-            return View(model);
+            page = page < 1 ? 1 : page;
+            int pageSize = 2;
+            var data = (from s in _db.ExamQuestions select s);
+            if (!String.IsNullOrEmpty(txtSearch))
+            {
+                ViewBag.txtSearch = txtSearch;
+                data = data.Where(s => s.QuestionText.Contains(txtSearch));
+            }
+
+            if (page > 0)
+            {
+                page = page;
+            }
+            else
+            {
+                page = 1;
+            }
+            int start = (int)(page - 1) * pageSize;
+
+            ViewBag.pageCurrent = page;
+            int totalPage = data.Count();
+            float totalNumsize = (totalPage / (float)pageSize);
+            int numSize = (int)Math.Ceiling(totalNumsize);
+            ViewBag.numSize = numSize;
+            ViewBag.posts = data.OrderByDescending(x => x.QuestionId).Skip(start).Take(pageSize);
+            return View();
         }
 
         [Authentication]
@@ -132,7 +184,7 @@ namespace AptitudeWebApp.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult AddQuestion(ExamQuestion exam,int btnradiotype, int btnradio)
+        public IActionResult AddQuestion(ExamQuestion exam, int btnradiotype, int btnradio)
         {
             if (btnradiotype == 1)
             {
@@ -146,9 +198,8 @@ namespace AptitudeWebApp.Controllers
             {
                 exam.ExamTypeId = 3;
             }
-            exam.QuestionId = 3;
 
-            if (btnradio == 1) 
+            if (btnradio == 1)
             {
                 exam.CorrectQuestion = exam.QuestionA;
             }
@@ -164,7 +215,7 @@ namespace AptitudeWebApp.Controllers
             {
                 exam.CorrectQuestion = exam.QuestionD;
             }
-            
+
             _db.ExamQuestions.Add(exam);
             _db.SaveChanges();
             return RedirectToAction("ViewQuestion", "Manager");
@@ -196,7 +247,6 @@ namespace AptitudeWebApp.Controllers
             {
                 exam.ExamTypeId = 3;
             }
-            exam.QuestionId = 3;
 
             if (btnradio == 1)
             {
@@ -223,7 +273,7 @@ namespace AptitudeWebApp.Controllers
         [Authentication]
         public IActionResult DeleteQuestion(int id)
         {
-            var item = _db.ExamQuestions.SingleOrDefault(c=>c.QuestionId.Equals(id));
+            var item = _db.ExamQuestions.SingleOrDefault(c => c.QuestionId.Equals(id));
             if (item != null)
             {
                 _db.ExamQuestions.Remove(item);
@@ -232,5 +282,16 @@ namespace AptitudeWebApp.Controllers
             }
             return View(item);
         }
+
+        public IActionResult _Narbar()
+
+        {
+
+            return View();
+        }
+
+
+
+
     }
 }
