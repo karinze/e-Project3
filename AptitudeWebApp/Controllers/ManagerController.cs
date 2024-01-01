@@ -481,14 +481,14 @@ namespace AptitudeWebApp.Controllers
         [Authentication]
         public IActionResult DeleteQuestion(int QuestionId)
         {
-            var item = _db.ExamQuestions.SingleOrDefault(c => c.QuestionId.Equals(QuestionId));
+            var item = _db.ExamQuestions.FirstOrDefault(c => c.QuestionId.Equals(QuestionId));
             if (item != null)
             {
                 _db.ExamQuestions.Remove(item);
                 _db.SaveChanges();
                 return RedirectToAction("ViewQuestion", "Manager");
             }
-            return View(item);
+            return View();
         }
 
         public IActionResult _Narbar()

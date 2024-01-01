@@ -163,9 +163,9 @@
                         @item.ExamTypeId
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "EditQuestion", new { id = @item.QuestionId }, new { @class = "btn btn-sm btn-primary" })
-                        @*                 <a asp-action="Details" asp-route-id="@item.ApplicantId">Details</a> | *@
-                        @Html.ActionLink("Delete", "DeleteQuestion", new { id = item.QuestionId }, new { @class = "btn btn-sm btn-primary" })
+                        @Html.ActionLink("Edit", "EditQuestion", new { QuestionId = @item.QuestionId }, new { @class = "btn btn-sm btn-primary" })
+                        @* <a asp-action="DeleteQuestion" asp-controller="Manager" asp-route-id="@item.QuestionId">Delete</a> | *@
+                        @Html.ActionLink("Delete", "DeleteQuestion", new { QuestionId = item.QuestionId }, new { @class = "btn btn-sm btn-primary" })
                     </td>
                 </tr>
             }
