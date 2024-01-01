@@ -25,6 +25,10 @@
       "PackagePath": "staticwebassets\\css\\result.css"
     },
     {
+      "Id": "D:\\#FPTAPTECH\\eProject-3\\AptitudeWebApp\\wwwroot\\css\\search.css",
+      "PackagePath": "staticwebassets\\css\\search.css"
+    },
+    {
       "Id": "D:\\#FPTAPTECH\\eProject-3\\AptitudeWebApp\\wwwroot\\css\\site.css",
       "PackagePath": "staticwebassets\\css\\site.css"
     },

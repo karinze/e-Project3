@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AptitudeClassLib")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2b36c2710ce75b782af414591d109a2da8a0eaba")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+780eb14851f9e792dfe799002e8d4db2be4314c9")]
 [assembly: System.Reflection.AssemblyProductAttribute("AptitudeClassLib")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AptitudeClassLib")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

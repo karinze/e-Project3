@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AptitudeWebApp.Models.ExamQuestion>
+﻿@model IEnumerable<AptitudeWebApp.Models.ExamQuestions>
 
 @{
     Layout = null;
@@ -122,11 +122,11 @@
     <h1>View Question</h1>
 
     <form asp-action="ViewQuestion" asp-controller="Manager" method="get">
-        <input name="name" placeholder="Search..." />
+        <input name="txtSearch" placeholder="Search..." />
         <input type="submit" value="Search" class="btn btn-primary" />
     </form>
     <p>
-        <a asp-action="AddQuestion">Create New</a>
+        <a asp-action="AddQuestion" asp-controller="Manager">Create New</a>
     </p>
     <table class="table" border="1">
         <thead>
@@ -177,9 +177,9 @@
 
                 @{
                     int position;
-                    int pageCurrent = ViewBag.pageCurrent;
+                    int pageCurrent = ViewBag.CurrentPage;
                     string txtSearch = ViewBag.txtSearch;
-                    float numSize = ViewBag.numSize;
+                    float numSize = ViewBag.TotalPages;
                     if (pageCurrent > 1)
                     {
                         <li class="page-item">
@@ -189,17 +189,14 @@
 
                     for (position = 1; position <= numSize; position++)
                     {
-
                         if (position == pageCurrent)
                         {
                             <li class="page-item active"><a class="page-link" href="@Url.Action("ViewQuestion", "Manager", new { txtSearch = (txtSearch != "" ? txtSearch : null), page = position })">@position</a></li>
                         }
-
                         else
                         {
                             <li class="page-item"><a class="page-link" href="@Url.Action("ViewQuestion", "Manager", new { txtSearch = (txtSearch != "" ? txtSearch : null), page = position })">@position</a></li>
                         }
-
                     }
                     if (pageCurrent > 0 && pageCurrent < numSize)
                     {

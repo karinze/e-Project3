@@ -119,6 +119,34 @@ namespace AptitudeWebApp.Migrations
                     b.ToTable("Managers");
                 });
 
+            modelBuilder.Entity("AptitudeWebApp.Models.Answer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("ExamQuestionsQuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsCorrect")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExamQuestionsQuestionId");
+
+                    b.ToTable("Answers");
+                });
+
             modelBuilder.Entity("AptitudeWebApp.Models.ApplicantCompanies", b =>
                 {
                     b.Property<int>("ApplicantCompanyId")
@@ -238,14 +266,13 @@ namespace AptitudeWebApp.Migrations
                     b.ToTable("Exams");
                 });
 
-            modelBuilder.Entity("AptitudeWebApp.Models.ExamQuestion", b =>
+            modelBuilder.Entity("AptitudeWebApp.Models.ExamQuestions", b =>
                 {
                     b.Property<int>("QuestionId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("CorrectQuestion")
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("QuestionId"));
 
                     b.Property<int?>("ExamId")
                         .HasColumnType("int");
@@ -253,34 +280,24 @@ namespace AptitudeWebApp.Migrations
                     b.Property<int>("ExamTypeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("QuestionA")
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
-
-                    b.Property<string>("QuestionB")
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
-
-                    b.Property<string>("QuestionC")
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
-
-                    b.Property<string>("QuestionD")
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
-
                     b.Property<int?>("QuestionScore")
                         .HasColumnType("int");
 
                     b.Property<string>("QuestionText")
-                        .HasMaxLength(3000)
-                        .HasColumnType("nvarchar(3000)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("QuestionId");
 
                     b.HasIndex("ExamId");
 
                     b.ToTable("ExamQuestions");
+                });
+
+            modelBuilder.Entity("AptitudeWebApp.Models.Answer", b =>
+                {
+                    b.HasOne("AptitudeWebApp.Models.ExamQuestions", null)
+                        .WithMany("Answers")
+                        .HasForeignKey("ExamQuestionsQuestionId");
                 });
 
             modelBuilder.Entity("AptitudeWebApp.Models.ApplicantCompanies", b =>
@@ -301,7 +318,7 @@ namespace AptitudeWebApp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AptitudeWebApp.Models.ExamQuestion", b =>
+            modelBuilder.Entity("AptitudeWebApp.Models.ExamQuestions", b =>
                 {
                     b.HasOne("AptitudeWebApp.Models.Exam", null)
                         .WithMany("ExamQuestions")
@@ -318,6 +335,11 @@ namespace AptitudeWebApp.Migrations
             modelBuilder.Entity("AptitudeWebApp.Models.Exam", b =>
                 {
                     b.Navigation("ExamQuestions");
+                });
+
+            modelBuilder.Entity("AptitudeWebApp.Models.ExamQuestions", b =>
+                {
+                    b.Navigation("Answers");
                 });
 #pragma warning restore 612, 618
         }

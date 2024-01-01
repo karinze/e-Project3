@@ -34,16 +34,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBwbGljYW50XENvbXB1dGVyVGVjaG5vbG9neUV4YW0uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/\#FPTAPTECH/eProject-3/AptitudeWebApp/Views/Applicant/Exam.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBwbGljYW50XEV4YW0uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/\#FPTAPTECH/eProject-3/AptitudeWebApp/Views/Applicant/ExamDashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBwbGljYW50XEV4YW1EYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/\#FPTAPTECH/eProject-3/AptitudeWebApp/Views/Applicant/ExamPage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBwbGljYW50XEV4YW1QYWdlLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/\#FPTAPTECH/eProject-3/AptitudeWebApp/Views/Applicant/ExamPage1.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXBwbGljYW50XEV4YW1QYWdlMS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/\#FPTAPTECH/eProject-3/AptitudeWebApp/Views/Applicant/ExamPage2.cshtml]
@@ -120,6 +120,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/\#FPTAPTECH/eProject-3/AptitudeWebApp/Views/Manager/ViewQuestion.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlclxWaWV3UXVlc3Rpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/\#FPTAPTECH/eProject-3/AptitudeWebApp/Views/Manager/_Narbar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFuYWdlclxfTmFyYmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/\#FPTAPTECH/eProject-3/AptitudeWebApp/Views/Shared/Error.cshtml]

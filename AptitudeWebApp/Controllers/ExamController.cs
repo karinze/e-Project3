@@ -21,17 +21,32 @@ namespace AptitudeWebApp.Controllers
         [Route("index")]
         [Route("")]
         [Route("~")]
-
         public IActionResult Index(int? examTypeId)
         {
-            if (examTypeId == 1 || examTypeId == 2 || examTypeId == 3)
+            var model = new List<ExamQuestions>();
+            Random random = new Random();
+
+            var exam = _context.Exams
+            .Include(e => e.ExamQuestions)
+            .FirstOrDefault(e => e.ExamTypeId == examTypeId);
+
+            if (exam == null)
             {
-                Random random = new Random();
-                var questions = _context.ExamQuestions.OrderBy(q => random.Next()).Where(x => x.ExamTypeId == examTypeId);
-                ViewBag.Questions = questions.ToList();
+                return NotFound(); // Handle case where exam type is not found
             }
-            
-            return View(/*_db.GetAll()*/);
+
+            var questions = exam.ExamQuestions.ToList();
+            // Group questions by exam type
+            var groupedQuestions = questions.GroupBy(q => q.ExamTypeId).ToList();
+
+            // Shuffle questions within each group
+            var shuffledQuestions = groupedQuestions.SelectMany(g => g.OrderBy(q => random.Next()).ToList());
+
+            ViewBag.ExamTypeId = examTypeId;
+            //ViewBag.ExamDurationMinutes = exam.DurationMinutes;
+
+            return View(shuffledQuestions);
+            return View(model);
         }
 
         public IActionResult Privacy()
@@ -40,51 +55,29 @@ namespace AptitudeWebApp.Controllers
         }
         [HttpPost]
         [Route("submit")]
-        public IActionResult Submit(List<ExamQuestion> examQuestions)
+        public IActionResult Submit(List<int> answers)
         {
-            int scoreType1 = 0;
-            int scoreType2 = 0;
-            int scoreType3 = 0;
-            List<int> scores = new List<int>();
-            string correctAns = "";
-            foreach(var q in examQuestions)
+            var questions = _context.ExamQuestions.Include(q => q.Answers).ToList();
+            var totalQuestions = questions.Count;
+            var correctAnswers = 0;
+
+            for (int i = 0; i < totalQuestions; i++)
             {
-                if (q.QuestionA != null)
+                var selectedAnswerId = answers[i];
+                var correctAnswerId = questions[i].Answers.FirstOrDefault(a => a.IsCorrect)?.Id;
+
+                if (selectedAnswerId == correctAnswerId)
                 {
-                    correctAns = q.QuestionA;
+                    correctAnswers++;
                 }
-                if (q.QuestionB != null)
-                {
-                    correctAns = q.QuestionB;
-                }
-                if (q.QuestionC != null)
-                {
-                    correctAns = q.QuestionC;
-                }
-                if (q.QuestionD != null)
-                {
-                    correctAns = q.QuestionD;
-                }
-                if (correctAns.Equals(q.CorrectQuestion))
-                {
-                    switch (q.ExamTypeId)
-                    {
-                        case 1:
-                            scoreType1++;
-                            break;
-                        case 2:
-                            scoreType2++;
-                            break;
-                        case 3:
-                            scoreType3++;
-                            break;
-                    }
-                }
-                scores.Add(scoreType1);
-                scores.Add(scoreType2);
-                scores.Add(scoreType3);
             }
-            return View("ExamResults", scores);
+
+            var score = (correctAnswers * 100) / totalQuestions;
+
+            ViewBag.Score = score;
+
+            return View("Result");
+
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

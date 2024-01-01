@@ -26,7 +26,7 @@ namespace AptitudeWebApp.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
-            return View();
+            return View("Exam");
         }
 
         public IActionResult ExamPage2()

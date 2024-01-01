@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "ziClGcCoO/Q5ErgzhfOvk7xqKJQnTkVctvOU4d6h9NA=",
+  "Hash": "LrjJ8fr/PC4f7Db3O8uMAuJ2KVgVpmQkv/pnMveDjN4=",
   "Source": "AptitudeWebApp",
   "BasePath": "_content/AptitudeWebApp",
   "Mode": "Default",
@@ -186,6 +186,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\result.css"
+    },
+    {
+      "Identity": "D:\\#FPTAPTECH\\eProject-3\\AptitudeWebApp\\wwwroot\\css\\search.css",
+      "SourceId": "AptitudeWebApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\#FPTAPTECH\\eProject-3\\AptitudeWebApp\\wwwroot\\",
+      "BasePath": "_content/AptitudeWebApp",
+      "RelativePath": "css/search.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\search.css"
     },
     {
       "Identity": "D:\\#FPTAPTECH\\eProject-3\\AptitudeWebApp\\wwwroot\\css\\site.css",

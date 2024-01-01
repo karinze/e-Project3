@@ -1,0 +1,54 @@
+﻿@* <h3>Login</h3>
+ *@
+ @model List<ExamQuestions>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>Exam Page</title>
+    <link rel="stylesheet" href="~/css/exam.css" asp-append-version="true" />
+
+</head>
+<body>
+    < class="wrapper">
+
+        <div>
+            <a class="result">General knowledge</a>
+        </div>
+        <div id="timer"></div>
+
+        <form asp-controller="Exam" asp-action="Submit" method="post">
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <h4>@Model[i].QuestionText</h4>
+                <ul>
+                    @for (int j = 0; j < Model[i].Answers.Count; j++)
+                    {
+                        <li>
+                            <input type="radio" name="answers[@i]" value="@Model[i].Answers[j].Id" />
+                            @Model[i].Answers[j].Text
+                        </li>
+                    }
+                </ul>
+            }
+
+            <input type="hidden" name="examType" value="@ViewBag.ExamType" />
+            <input type="submit" value="Submit" />
+        </form>
+        
+        <div>
+            <a href="#" class="logout">logout</a>
+        </div>
+
+        <div>
+            <a class="exit1"></a>
+            <a href="#" class="exit">EXIT</a>
+            <a href="#" class="exit2">EXIT</a>
+        </div>
+    </div>
+</body>
+</html>

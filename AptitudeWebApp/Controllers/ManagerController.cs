@@ -12,6 +12,8 @@ using Microsoft.EntityFrameworkCore;
 
 using System.Drawing.Printing;
 using Microsoft.AspNetCore.Mvc.Razor.TagHelpers;
+using System.Collections.Generic;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AptitudeWebApp.Controllers
 {
@@ -33,7 +35,7 @@ namespace AptitudeWebApp.Controllers
             page = page < 1 ? 1 : page;
             int pageSize = 2;
             var data = (from s in _db.Applicants select s);
-            if (!String.IsNullOrEmpty(txtSearch))
+            if (!System.String.IsNullOrEmpty(txtSearch))
             {
                 ViewBag.txtSearch = txtSearch;
                 data = data.Where(s => s.Email.Contains(txtSearch));
@@ -186,130 +188,300 @@ namespace AptitudeWebApp.Controllers
         [Authentication]
         public IActionResult ViewQuestion(string? txtSearch, int page = 1)
         {
-            page = page < 1 ? 1 : page;
-            int pageSize = 2;
-            var data = (from s in _db.ExamQuestions select s);
-            if (!String.IsNullOrEmpty(txtSearch))
+            const int pageSize = 10;
+
+            // Initial query for all questions
+            var query = _db.ExamQuestions.AsQueryable();
+
+            // Apply search filter if provided
+            if (!string.IsNullOrEmpty(txtSearch))
             {
                 ViewBag.txtSearch = txtSearch;
-                data = data.Where(s => s.QuestionText.Contains(txtSearch));
+                query = query.Where(q => q.QuestionText.Contains(txtSearch));
             }
 
-            if (page > 0)
-            {
-                page = page;
-            }
-            else
-            {
-                page = 1;
-            }
-            int start = (int)(page - 1) * pageSize;
+            // Pagination
+            page = Math.Max(page, 1);
+            int start = (page - 1) * pageSize;
 
-            ViewBag.pageCurrent = page;
-            int totalPage = data.Count();
-            float totalNumsize = (totalPage / (float)pageSize);
-            int numSize = (int)Math.Ceiling(totalNumsize);
-            ViewBag.numSize = numSize;
-            ViewBag.posts = data.OrderByDescending(x => x.QuestionId).Skip(start).Take(pageSize);
+            // Get total number of pages
+            int totalQuestions = query.Count();
+            int numPages = (int)Math.Ceiling(totalQuestions / (double)pageSize);
+
+            // Apply ordering, skip, and take for the current page
+            var questions = query.OrderByDescending(q => q.QuestionId)
+                                 .Skip(start)
+                                 .Take(pageSize)
+                                 .ToList();
+
+            // Pass data to ViewBag
+            ViewBag.Questions = questions;
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = numPages;
+            ViewBag.Posts = questions.OrderByDescending(x => x.QuestionId).Skip(start).Take(pageSize);
+
             return View();
         }
 
         [Authentication]
         public IActionResult AddQuestion()
         {
-            return View();
+            var model = new ExamQuestions
+            {
+                Answers = new List<Answer>
+                {
+                    new Answer(),
+                    new Answer(),
+                    new Answer(),
+                    new Answer()
+                }
+            };
+            return View(model);
         }
-        [HttpPost]
-        public IActionResult AddQuestion(ExamQuestion exam, int btnradiotype, int btnradio)
+        //[HttpPost]
+        //public IActionResult AddQuestion(ExamQuestions exam, int btnradiotype, int btnradio)
+        //{
+        //    if (btnradiotype == 1)
+        //    {
+        //        exam.ExamTypeId = 1;
+        //    }
+        //    else if (btnradiotype == 2)
+        //    {
+        //        exam.ExamTypeId = 2;
+        //    }
+        //    else if (btnradiotype == 3)
+        //    {
+        //        exam.ExamTypeId = 3;
+        //    }
+
+        //    if (btnradio == 1)
+        //    {
+        //        exam.CorrectQuestion = exam.QuestionA;
+        //    }
+        //    else if (btnradio == 2)
+        //    {
+        //        exam.CorrectQuestion = exam.QuestionB;
+        //    }
+        //    else if (btnradio == 3)
+        //    {
+        //        exam.CorrectQuestion = exam.QuestionC;
+        //    }
+        //    else if (btnradio == 4)
+        //    {
+        //        exam.CorrectQuestion = exam.QuestionD;
+        //    }
+
+        //    _db.ExamQuestions.Add(exam);
+        //    _db.SaveChanges();
+        //    return RedirectToAction("ViewQuestion", "Manager");
+
+        //}
+
+        //[Authentication]
+        //public IActionResult EditQuestion(int QuestionId)
+        //{
+        //    //var model = _db.Applicants;
+        //    //ViewBag.news = new SelectList(model, "QuestionId", "Title");
+        //    var item = _db.ExamQuestions.Find(QuestionId);
+        //    return View(item);
+        //}
+
+        //[HttpPost]
+        //public IActionResult EditQuestion(ExamQuestions exam, int btnradiotype, int btnradio)
+        //{
+
+
+        //    if (btnradiotype == 1)
+        //    {
+        //        exam.ExamTypeId = 1;
+        //    }
+        //    else if (btnradiotype == 2)
+        //    {
+        //        exam.ExamTypeId = 2;
+        //    }
+        //    else if (btnradiotype == 3)
+        //    {
+        //        exam.ExamTypeId = 3;
+        //    }
+
+        //    if (btnradio == 1)
+        //    {
+        //        exam.CorrectQuestion = exam.QuestionA;
+        //    }
+        //    else if (btnradio == 2)
+        //    {
+        //        exam.CorrectQuestion = exam.QuestionB;
+        //    }
+        //    else if (btnradio == 3)
+        //    {
+        //        exam.CorrectQuestion = exam.QuestionC;
+        //    }
+        //    else if (btnradio == 4)
+        //    {
+        //        exam.CorrectQuestion = exam.QuestionD;
+        //    }
+
+        //    _db.ExamQuestions.Update(exam);
+        //    _db.SaveChanges();
+        //    return RedirectToAction("ViewQuestion", "Manager");
+        //}
+        [Authentication]
+        public IActionResult EditQuestion(int QuestionId)
         {
-            if (btnradiotype == 1)
+            //    var existingQuestion = _db.ExamQuestions
+            //.Include(q => q.Answers).ToList()
+            //.FirstOrDefault(q => q.QuestionId == QuestionId);
+            var existingQuestion = (from question in _db.ExamQuestions
+                                   join answer in _db.Answers on question.QuestionId equals answer.QuestionId
+                                   select new ExamQuestions
+                                   {
+                                       QuestionId = QuestionId,
+                                       QuestionText = question.QuestionText,
+                                       ExamTypeId = question.ExamTypeId,
+                                       Answers = (from x in _db.Answers
+                                                  join y in _db.ExamQuestions on x.QuestionId equals y.QuestionId select x).ToList()
+                                   }).FirstOrDefault();
+            if (existingQuestion == null)
             {
-                exam.ExamTypeId = 1;
-            }
-            else if (btnradiotype == 2)
+                // If the question with the specified QuestionId is not found, create a new instance
+                var newQuestion = new ExamQuestions
+                {
+                    Answers = new List<Answer>() // Initialize Answers to an empty list
+                };
+                return View(newQuestion);
+            } else
             {
-                exam.ExamTypeId = 2;
-            }
-            else if (btnradiotype == 3)
-            {
-                exam.ExamTypeId = 3;
+                return View(existingQuestion);
+
             }
 
-            if (btnradio == 1)
+        }
+
+        [HttpPost]
+        public IActionResult EditQuestion(ExamQuestions question, string[] answerTexts, int correctAnswerIndex, int examTypeId)
+        {
+            if (ModelState.IsValid)
             {
-                exam.CorrectQuestion = exam.QuestionA;
-            }
-            else if (btnradio == 2)
-            {
-                exam.CorrectQuestion = exam.QuestionB;
-            }
-            else if (btnradio == 3)
-            {
-                exam.CorrectQuestion = exam.QuestionC;
-            }
-            else if (btnradio == 4)
-            {
-                exam.CorrectQuestion = exam.QuestionD;
+                
+                // Update the question details
+                var existingQuestion = _db.ExamQuestions
+                    .Include(q => q.Answers)
+                    .FirstOrDefault(q => q.QuestionId == question.QuestionId);
+
+                if (existingQuestion != null)
+                {
+                    existingQuestion.QuestionText = question.QuestionText;
+                    existingQuestion.ExamTypeId = examTypeId;
+                    _db.ExamQuestions.Update(existingQuestion);
+                    _db.SaveChanges();
+
+                    foreach (var answer in existingQuestion.Answers.ToList())
+                    {
+                        _db.Entry(answer).State = EntityState.Detached;
+                    }
+                    // Update existing answers or add new ones
+                    for (int i = 0; i < answerTexts.Length; i++)
+                    {
+                        if (i < existingQuestion.Answers.Count)
+                        {
+                            // Update existing answer
+                            existingQuestion.Answers[i].Text = answerTexts[i];
+                            existingQuestion.Answers[i].IsCorrect = (i + 1 == correctAnswerIndex);
+                            _db.Answers.Update(existingQuestion.Answers[i]);
+                            _db.SaveChanges();
+                        }
+                        else
+                        {
+                            // Add new answer
+                            var newAnswer = new Answer
+                            {
+                                Text = answerTexts[i],
+                                IsCorrect = (i + 1 == correctAnswerIndex),
+                                QuestionId = existingQuestion.QuestionId
+                            };
+                            //existingQuestion.Answers.Add(newAnswer);
+                            _db.Answers.Add(newAnswer);
+                            _db.SaveChanges();
+
+                        }
+                    }
+
+                    // Remove extra answers if any
+                    while (existingQuestion.Answers.Count > 4)
+                    {
+                        var answerToRemove = existingQuestion.Answers.Last();
+                        _db.Answers.Remove(answerToRemove);
+                        _db.SaveChanges();
+
+                    }
+
+                    _db.SaveChanges();
+
+                    return RedirectToAction("ViewQuestion", "Manager");
+                } else
+                {
+                    existingQuestion = new ExamQuestions
+                    {
+                        QuestionScore = 5, ExamTypeId = examTypeId,
+                        QuestionText = question.QuestionText,
+                        Answers = new List<Answer>() // Initialize Answers to an empty list
+                    };
+                    _db.ExamQuestions.Add(existingQuestion);
+                    _db.SaveChanges();
+
+                    foreach (var answer in existingQuestion.Answers.ToList())
+                    {
+                        _db.Entry(answer).State = EntityState.Detached;
+                    }
+                    // Update existing answers or add new ones
+                    for (int i = 0; i < answerTexts.Length; i++)
+                    {
+                        if (i < existingQuestion.Answers.Count)
+                        {
+                            // Update existing answer
+                            existingQuestion.Answers[i].Text = answerTexts[i];
+                            existingQuestion.Answers[i].IsCorrect = (i + 1 == correctAnswerIndex);
+                        }
+                        else
+                        {
+                            // Add new answer
+                            var newAnswer = new Answer
+                            {
+                                Text = answerTexts[i],
+                                IsCorrect = (i + 1 == correctAnswerIndex),
+                                QuestionId = existingQuestion.QuestionId
+
+                            };
+                            //existingQuestion.Answers.Add(newAnswer);
+                            _db.Answers.Add(newAnswer);
+                            _db.SaveChanges();
+
+                        }
+                    }
+
+                    // Remove extra answers if any
+                    while (existingQuestion.Answers.Count > 4)
+                    {
+                        var answerToRemove = existingQuestion.Answers.Last();
+                        _db.Answers.Remove(answerToRemove);
+                        _db.SaveChanges();
+
+                    }
+                    //_db.ExamQuestions.Add(existingQuestion);
+                    _db.SaveChanges();
+
+
+                    return RedirectToAction("ViewQuestion", "Manager");
+                }
             }
 
-            _db.ExamQuestions.Add(exam);
-            _db.SaveChanges();
-            return RedirectToAction("ViewQuestion", "Manager");
-
+            return View(question);
         }
 
         [Authentication]
-        public IActionResult EditQuestion(int id)
+        public IActionResult DeleteQuestion(int QuestionId)
         {
-            //var model = _db.Applicants;
-            //ViewBag.news = new SelectList(model, "Id", "Title");
-            var item = _db.ExamQuestions.Find(id);
-            return View(item);
-        }
-        [HttpPost]
-        public IActionResult EditQuestion(ExamQuestion exam, int btnradiotype, int btnradio)
-        {
-
-
-            if (btnradiotype == 1)
-            {
-                exam.ExamTypeId = 1;
-            }
-            else if (btnradiotype == 2)
-            {
-                exam.ExamTypeId = 2;
-            }
-            else if (btnradiotype == 3)
-            {
-                exam.ExamTypeId = 3;
-            }
-
-            if (btnradio == 1)
-            {
-                exam.CorrectQuestion = exam.QuestionA;
-            }
-            else if (btnradio == 2)
-            {
-                exam.CorrectQuestion = exam.QuestionB;
-            }
-            else if (btnradio == 3)
-            {
-                exam.CorrectQuestion = exam.QuestionC;
-            }
-            else if (btnradio == 4)
-            {
-                exam.CorrectQuestion = exam.QuestionD;
-            }
-
-            _db.ExamQuestions.Update(exam);
-            _db.SaveChanges();
-            return RedirectToAction("ViewQuestion", "Manager");
-        }
-
-        [Authentication]
-        public IActionResult DeleteQuestion(int id)
-        {
-            var item = _db.ExamQuestions.SingleOrDefault(c => c.QuestionId.Equals(id));
+            var item = _db.ExamQuestions.SingleOrDefault(c => c.QuestionId.Equals(QuestionId));
             if (item != null)
             {
                 _db.ExamQuestions.Remove(item);

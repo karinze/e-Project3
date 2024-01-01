@@ -1,4 +1,4 @@
-﻿@model AptitudeWebApp.Models.ExamQuestion
+﻿@model AptitudeWebApp.Models.ExamQuestions
 
 @{
     Layout = null;
@@ -22,80 +22,74 @@
     <h3 style="text-align:center">Pick the exam type for this question</h3>
     <div class="row">
         <div>
-            <form asp-action="AddQuestion">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="radio">
-                    <input class="radio__input" type="radio" name="btnradiotype"
-                           value=1 id="myRadio1" />
-                    <label class="radio__label" for="myRadio1">GENERIC KNOWLEDGE</label>
-                    <input class="radio__input" type="radio" name="btnradiotype"
-                           value=2 id="myRadio2" checked />
-                    <label class="radio__label" for="myRadio2">MATHEMATICS</label>
-                    <input class="radio__input" type="radio" name="btnradiotype"
-                           value=3 id="myRadio3" />
-                    <label class="radio__label" for="myRadio3">COMPUTER TECHNOLOGY</label>
-                </div>
+            <div class="container">
+                <form asp-action="EditQuestion" method="post">
+                    <input asp-for="QuestionId" type="hidden" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="radio">
+                        <input class="radio__input" type="radio" name="examTypeId"
+                               value=1 id="myRadio1" />
+                        <label class="radio__label" for="myRadio1">GENERIC KNOWLEDGE</label>
+                        <input class="radio__input" type="radio" name="examTypeId"
+                               value=2 id="myRadio2" checked />
+                        <label class="radio__label" for="myRadio2">MATHEMATICS</label>
+                        <input class="radio__input" type="radio" name="examTypeId"
+                               value=3 id="myRadio3" />
+                        <label class="radio__label" for="myRadio3">COMPUTER TECHNOLOGY</label>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="QuestionText">Question Text:</label>
+                        <input asp-for="QuestionText" type="text" class="form-control" />
+                    </div>
+                    @if (Model.Answers.Count > 0)
+                    {
+                        @for (int i = 0; i < Model.Answers.Count; i++)
+                        {
+                            <div class="form-group">
+                                <label class="control-label">Answer @(Convert.ToChar('A' + i)):</label>
+                                <input name="answerTexts[@i]" type="text" class="form-control" value="@Model.Answers[i].Text" required />
+                            </div>
+                        }
+                        <div class="form-group">
+                            <label>Correct Answer:</label>
+                            <select name="correctAnswerIndex" class="form-control">
+                                @for (int i = 0; i < Model.Answers.Count; i++)
+                                {
+                                    <option value="@(i + 1)" selected=@(Model.Answers[i].IsCorrect ? "selected" : "") required>
+                                        Answer @(Convert.ToChar('A' + i))
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    }
+                    else
+                    {
+                        @for (int i = 0; i < 4; i++)
+                        {
+                            <div class="form-group">
+                                <label class="radio__label1">Answer @(Convert.ToChar('A' + i)):</label>
+                                <input name="answerTexts[@i]" type="text" class="form-control" />
+                            </div>
+                        }
 
-                <div class="form-group">
-                    <label asp-for="QuestionScore" class="control-label"></label>
-                    <input asp-for="QuestionScore" class="form-control" min="5" max="100" required />
-                    <span asp-validation-for="QuestionScore" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="QuestionText" class="control-label"></label>
-                    <input asp-for="QuestionText" class="form-control" required />
-                    <span asp-validation-for="QuestionText" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="QuestionA" class="control-label"></label>
-                    <input asp-for="QuestionA" class="form-control" required />
-                    <span asp-validation-for="QuestionA" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="QuestionB" class="control-label"></label>
-                    <input asp-for="QuestionB" class="form-control" required />
-                    <span asp-validation-for="QuestionB" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="QuestionC" class="control-label"></label>
-                    <input asp-for="QuestionC" class="form-control" required />
-                    <span asp-validation-for="QuestionC" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="QuestionD" class="control-label"></label>
-                    <input asp-for="QuestionD" class="form-control" required />
-                    <span asp-validation-for="QuestionD" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="CorrectQuestion" class="control-label"></label>
-                    <span asp-validation-for="CorrectQuestion" class="text-danger"></span>
-                </div>
-                <div class="radio1">
-                    <input class="radio__input1" type="radio" name="btnradio"
-                           value=1 id="myRadiotype1" />
-                    <label class="radio__label1" for="myRadiotype1">A</label>
-                    <input class="radio__input1" type="radio" name="btnradio"
-                           value=2 id="myRadiotype2" checked />
-                    <label class="radio__label1" for="myRadiotype2">B</label>
-                    <input class="radio__input1" type="radio" name="btnradio"
-                           value=3 id="myRadiotype3" />
-                    <label class="radio__label1" for="myRadiotype3">C</label>
-                    <input class="radio__input1" type="radio" name="btnradio"
-                           value=4 id="myRadiotype4" />
-                    <label class="radio__label1" for="myRadiotype4">D</label>
-                </div>
+                        <div class="form-group">
+                            <label>Correct Answer:</label>
+                            <select name="correctAnswerIndex" class="form-control">
+                                @for (int i = 0; i < 4; i++)
+                                {
+                                    <option value="@(i + 1)" required>
+                                        Answer @(Convert.ToChar('A' + i))
+                                    </option>
+                                }
+                            </select>
+                        </div>
 
-
-
-                <div class="form-group">
-                    <input type="submit" value="Create" class="custom-submit" />
-                </div>
-            </form>
+                    }
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>            
+            
         </div>
-    </div>
-
-    <div>
-
     </div>
 
 </body>
