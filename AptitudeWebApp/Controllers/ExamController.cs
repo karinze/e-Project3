@@ -1,5 +1,6 @@
 using AptitudeWebApp.DAL;
 using AptitudeWebApp.Models;
+using AptitudeWebApp.Models.Authentication;
 using AptitudeWebApp.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,52 @@ namespace AptitudeWebApp.Controllers
         {
             //_db = db;
             _context = context;
+        }
+        [Authentication]
+        public IActionResult StartExam1(Guid applicantId)
+        {
+            var questions = GetRandomQuestionsByExamType(1, 5);
+            var exam = InitializeExam(applicantId, questions);
+            return View("StartExam", exam);
+        }
+
+        [Authentication]
+        public IActionResult StartExam2(Guid applicantId)
+        {
+            var questions = GetRandomQuestionsByExamType(2, 5);
+            var exam = InitializeExam(applicantId, questions);
+            return View("StartExam", exam);
+        }
+
+        [Authentication]
+        public IActionResult StartExam3(Guid applicantId)
+        {
+            var questions = GetRandomQuestionsByExamType(3, 5);
+            var exam = InitializeExam(applicantId, questions);
+            return View("StartExam", exam);
+        }
+
+        private List<ExamQuestions> GetRandomQuestionsByExamType(int examTypeId, int numberOfQuestions)
+        {
+            var questions = _context.ExamQuestions
+                .Where(q => q.ExamTypeId == examTypeId)
+                .OrderBy(x => Guid.NewGuid()) // Randomize the order
+                .Take(numberOfQuestions)
+                .ToList();
+
+            return questions;
+        }
+        private Exam InitializeExam(Guid applicantId, List<ExamQuestions> questions)
+        {
+            return new Exam
+            {
+                ApplicantId = applicantId,
+                StartTime = DateTime.Now,
+                CurrentQuestionIndex = 0,
+                ExamQuestions = questions,
+                SelectedAnswers = new List<int>(),
+                TotalTimeAllowedInSeconds = 300 // Set the default total time allowed for the entire exam
+            };
         }
         [Route("index")]
         [Route("")]

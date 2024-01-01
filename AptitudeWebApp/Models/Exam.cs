@@ -12,11 +12,13 @@ namespace AptitudeWebApp.Models
         }
         [Key]
         public int ExamId { get; set; }
+        public Guid ApplicantId { get; set; }
         public int ExamTypeId { get; set; }
-        public List<ExamQuestions>? ExamQuestions { get; set; } 
+        public List<ExamQuestions>? ExamQuestions { get; set; }
+        public List<int> SelectedAnswers { get; set; }
         public DateTime? StartTime { get; set; }
-
-        public bool IsActive { get; set; } = false;
+        public int TotalTimeAllowedInSeconds { get; set; } = 300;
+        public int CurrentQuestionIndex { get; set; }
 
     }
 }
