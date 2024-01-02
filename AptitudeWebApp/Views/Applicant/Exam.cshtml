@@ -1,5 +1,7 @@
 ﻿@* <h3>Login</h3>
  *@
+ @using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor
  @model Exam
 @{
     Layout = null;
@@ -14,7 +16,7 @@
 
 </head>
 <body>
-    < class="wrapper">
+    <div class="wrapper">
 
     <div>
             @if (Model.ExamTypeId == 1)
@@ -55,11 +57,11 @@
             </div>
             }
 
-        <button type="submit" class="btn btn-primary">Next</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
     <div>
-        <a href="#" class="logout">logout</a>
+            <a asp-action="LogOut" asp-controller="Account" class="logout">LOGOUT</a>
     </div>
 
     <div>

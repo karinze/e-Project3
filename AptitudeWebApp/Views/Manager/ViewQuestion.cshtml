@@ -11,6 +11,9 @@
     <meta name="viewport" content="width=device-width" />
     <title>ViewQuestion</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
     <style>
         .create {
             width: 9.3em;
@@ -30,6 +33,7 @@
             .create a {
                 text-decoration: none;
             }
+
         .pagination {
             display: compact;
             padding-left: 0;
@@ -137,96 +141,123 @@
 </head>
 <body>
     @Html.Partial("_Narbar")
-    <h1>View Question</h1>
 
-    <form asp-action="ViewQuestion" asp-controller="Manager" method="get">
-        <input name="txtSearch" placeholder="Search..." />
-        <input type="submit" value="Search" class="btn btn-primary" />
-    </form>
-    <p class="create">
-        <a asp-action="AddQuestion" asp-controller="Manager">Create New</a>
-    </p>
-    <table class="table" border="1">
-        <thead>
-            <tr>
+    <div class="container">
 
-                <th>
-                    Id
-                </th>
-                <th>
-                    Question Text
-                </th>
-                <th>
-                    Marks
-                </th>
-                <th>
-                    ExamTypeId
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in ViewBag.Posts)
-            {
+        <h1>View Question</h1>
+        <div class="d-flex align-items-center justify-content-between">
+
+
+            <form asp-action="ViewQuestion" asp-controller="Manager" method="get">
+                <div class="d-flex">
+                    <input class="form-control" name="txtSearch" placeholder="Search..." />
+                    <input type="submit" value="Search" class="btn btn-primary ml-2" />
+                </div>
+
+            </form>
+            <button class="btn btn-warning text-white">
+                <a asp-action="AddQuestion" asp-controller="Manager">Create New</a>
+
+            </button>
+        </div>
+        <table class="table my-2" border="1">
+            <thead>
                 <tr>
-                    <td>@item.QuestionId</td>
-                    <td>
-                        @item.QuestionText
-                    </td>
-                    <td>
-                        @item.QuestionScore
-                    </td>
 
-                    <td>
-                        @item.ExamTypeId
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "EditQuestion", new { QuestionId = @item.QuestionId }, new { @class = "btn btn-sm btn-primary" })
-                        @* <a asp-action="DeleteQuestion" asp-controller="Manager" asp-route-id="@item.QuestionId">Delete</a> | *@
-                        @Html.ActionLink("Delete", "DeleteQuestion", new { QuestionId = item.QuestionId }, new { @class = "btn btn-sm btn-primary" })
-                    </td>
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        Question Text
+                    </th>
+                    <th>
+                        Marks
+                    </th>
+                    <th>
+                        Exam Type
+                    </th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-    <div class="card-footer">
-        <nav class="ca" aria-label="Page navigation example">
-            <ul class="pagination">
-
-                @{
-                    int position;
-                    int pageCurrent = ViewBag.CurrentPage;
-                    string txtSearch = ViewBag.txtSearch;
-                    float numSize = ViewBag.TotalPages;
-                    if (pageCurrent > 1)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" href="@Url.Action("ViewQuestion", "Manager", new { txtSearch = (txtSearch != "" ? txtSearch : null), page = pageCurrent-1 })" tabindex="-1">Previous</a>
-                        </li>
-                    }
-
-                    for (position = 1; position <= numSize; position++)
-                    {
-                        if (position == pageCurrent)
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.Posts)
+                {
+                    <tr>
+                        <td>@item.QuestionId</td>
+                        <td>
+                            @item.QuestionText
+                        </td>
+                        <td>
+                            @item.QuestionScore
+                        </td>
+                        @if (item.ExamTypeId == 1)
                         {
-                            <li class="page-item active"><a class="page-link" href="@Url.Action("ViewQuestion", "Manager", new { txtSearch = (txtSearch != "" ? txtSearch : null), page = position })">@position</a></li>
+                            <td>
+                                General Knowledge
+                            </td>
                         }
-                        else
+                        else if (item.ExamTypeId == 2)
                         {
-                            <li class="page-item"><a class="page-link" href="@Url.Action("ViewQuestion", "Manager", new { txtSearch = (txtSearch != "" ? txtSearch : null), page = position })">@position</a></li>
+                            <td>
+                                Mathematics
+                            </td>
                         }
-                    }
-                    if (pageCurrent > 0 && pageCurrent < numSize)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" href="@Url.Action("ViewQuestion", "Manager", new { txtSearch = (txtSearch != "" ? txtSearch : null), page = pageCurrent+1 })" tabindex="-1">Next</a>
-                        </li>
-                    }
+                        else if (item.ExamTypeId == 3)
+                        {
+                            <td>
+                                Computer Technology
+                            </td>
+                        }
 
+                        <td>
+                            @Html.ActionLink("Edit", "EditQuestion", new { QuestionId = @item.QuestionId }, new { @class = "btn btn-sm btn-primary" })
+                            @* <a asp-action="DeleteQuestion" asp-controller="Manager" asp-route-id="@item.QuestionId">Delete</a> | *@
+                            @Html.ActionLink("Delete", "DeleteQuestion", new { QuestionId = item.QuestionId }, new { @class = "btn btn-sm btn-primary" })
+                        </td>
+                    </tr>
                 }
+            </tbody>
+        </table>
+        <div class="card-footer">
+            <nav class="ca" aria-label="Page navigation example">
+                <ul class="pagination">
 
-            </ul>
-        </nav>
+                    @{
+                        int position;
+                        int pageCurrent = ViewBag.CurrentPage;
+                        string txtSearch = ViewBag.txtSearch;
+                        float numSize = ViewBag.TotalPages;
+                        if (pageCurrent > 1)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("ViewQuestion", "Manager", new { txtSearch = (txtSearch != "" ? txtSearch : null), page = pageCurrent-1 })" tabindex="-1">Previous</a>
+                            </li>
+                        }
+
+                        for (position = 1; position <= numSize; position++)
+                        {
+                            if (position == pageCurrent)
+                            {
+                                <li class="page-item active"><a class="page-link" href="@Url.Action("ViewQuestion", "Manager", new { txtSearch = (txtSearch != "" ? txtSearch : null), page = position })">@position</a></li>
+                            }
+                            else
+                            {
+                                <li class="page-item"><a class="page-link" href="@Url.Action("ViewQuestion", "Manager", new { txtSearch = (txtSearch != "" ? txtSearch : null), page = position })">@position</a></li>
+                            }
+                        }
+                        if (pageCurrent > 0 && pageCurrent < numSize)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("ViewQuestion", "Manager", new { txtSearch = (txtSearch != "" ? txtSearch : null), page = pageCurrent+1 })" tabindex="-1">Next</a>
+                            </li>
+                        }
+
+                    }
+
+                </ul>
+            </nav>
+        </div>
     </div>
+
 </body>
 </html>

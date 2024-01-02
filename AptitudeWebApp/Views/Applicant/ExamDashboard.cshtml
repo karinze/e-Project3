@@ -1,12 +1,12 @@
 ﻿@* <h3>Login</h3>
  *@
-
+ @using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor
 @{
     Layout = null;
 }
 
 <!DOCTYPE html>
-<!-- Created By CodingNepal -->
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
@@ -15,44 +15,24 @@
 
 </head>
 <body>
+    
     <div class="wrapper">
-
         <div>
-            <a href="#" class=""></a>
-            <ul>
-                <li>
-                    @Html.ActionLink("General Knowledge Exam", "Index", "Exam", new {id = "1", @class = "elements" }, null)
-                </li>
-                <li>
-                    @Html.ActionLink("General Knowledge Exam", "Index", "Exam", new {id = "2", @class = "elements" }, null)
-                </li>
-                <li>
-                    @Html.ActionLink("General Knowledge Exam", "Index", "Exam", new { id = "3", @class = "elements" }, null)
-                </li>
-            </ul>
+            <a asp-action="LogOut" asp-controller="Account" class="logout">LOGOUT</a>
         </div>
 
-        <div>
-            <a href="#" class="logout">logout</a>
+        <div class="exam">
+            @Html.ActionLink("General Knowledge Exam", "StartExam", "Applicant", new { applicantId = @Accessor.HttpContext.Session.GetString("ApplicantId"), examTypeId = 1}, null)
+        </div>
+        <div class="exam1">
+            @Html.ActionLink("Mathematics Exam", "StartExam", "Applicant", new { applicantId = @Accessor.HttpContext.Session.GetString("ApplicantId"), examTypeId = 2 }, null)
+
+        </div>
+        <div class="exam2">
+            @Html.ActionLink("Computer Technology Exam", "StartExam", "Applicant", new { applicantId = @Accessor.HttpContext.Session.GetString("ApplicantId"), examTypeId = 3 }, null)
+
         </div>
 
-        <div>
-            <a class="exam">Exam</a>
-            <a href="#" class="enter">Enter</a>
-        </div>
-        <div>
-            <a class="exam1">Exam</a>
-        </div>
-        <div>
-            <a class="exam2">Exam</a>
-        </div>
-
-
-
-
-
-        <form action="#">
-        </form>
     </div>
 </body>
 </html>

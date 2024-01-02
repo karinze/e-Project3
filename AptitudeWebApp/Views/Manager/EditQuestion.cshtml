@@ -12,28 +12,35 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="~/css/radio.css" asp-append-version="true" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
     <title>Edit Question</title>
 </head>
 <body>
     @Html.Partial("_Narbar")
     <h1>Edit Question</h1>
-    <h3 style="text-align:center">Pick the exam type for this question</h3>
+    <form asp-action="EditQuestion" method="post">
+        <div class="create">
+            <button type="submit" class="btn btn-warning">Submit</button>
+        </div>
+    <h2 style="text-align:center">Pick the exam type for this question</h2>
     <div class="row">
         <div>
             <div class="container">
-                <form asp-action="EditQuestion" method="post">
+                
                     <input asp-for="QuestionId" type="hidden" />
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="radio">
                         <input class="radio__input" type="radio" name="examTypeId"
                                value=1 id="myRadio1" checked="@(Model.ExamTypeId == 1)" />
-                        <label class="radio__label" for="myRadio1">GENERIC KNOWLEDGE</label>
+                        <label class="radio__label d-flex align-items-center justify-content-center" for="myRadio1">GENERIC KNOWLEDGE</label>
                         <input class="radio__input" type="radio" name="examTypeId"
                                value=2 id="myRadio2" checked="@(Model.ExamTypeId == 2)" />
-                        <label class="radio__label" for="myRadio2">MATHEMATICS</label>
+                        <label class="radio__label d-flex align-items-center justify-content-center" for="myRadio2">MATHEMATICS</label>
                         <input class="radio__input" type="radio" name="examTypeId"
                                value=3 id="myRadio3" checked="@(Model.ExamTypeId == 3)" />
-                        <label class="radio__label" for="myRadio3">COMPUTER TECHNOLOGY</label>
+                        <label class="radio__label d-flex align-items-center justify-content-center" for="myRadio3">COMPUTER TECHNOLOGY</label>
                     </div>
                     <div class="form-group">
                         <label asp-for="QuestionText">Question Text:</label>
@@ -84,11 +91,11 @@
 
                     }
                     <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
             </div>
 
         </div>
     </div>
+    </form>
 
 
 </body>
