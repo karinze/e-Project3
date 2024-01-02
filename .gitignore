@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/DoAn3/v17
+/AptitudeWebApp/.vs/AptitudeWebApp
+/AptitudeWebApp/bin/Debug/net8.0
+/AptitudeWebApp/obj/Debug/net8.0/AptitudeWebApp.assets.cache
+/AptitudeWebApp/obj/Debug/net8.0/AptitudeWebApp.csproj.AssemblyReference.cache
+/AptitudeWebApp/obj/Debug/net8.0/AptitudeWebApp.GeneratedMSBuildEditorConfig.editorconfig
