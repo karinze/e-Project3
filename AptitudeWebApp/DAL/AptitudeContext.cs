@@ -8,7 +8,7 @@ namespace AptitudeWebApp.DAL
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(local);Database=AptitudeDB;Encrypt=False;User=sa;Password=123456789.t", options => options.EnableRetryOnFailure());
+            optionsBuilder.UseSqlServer(@"Server=.;Database=AptitudeDB;Encrypt=False;User=sa;Password=1");
         }
         public AptitudeContext(DbContextOptions<AptitudeContext> options)
          : base(options)
@@ -19,10 +19,8 @@ namespace AptitudeWebApp.DAL
         public DbSet<ApplicantEducation> ApplicantEducations { get; set; }
         public DbSet<ApplicantExam> ApplicantExams { get; set; }
         public DbSet<Exam> Exams { get; set; }
-        public DbSet<ExamQuestions> ExamQuestions { get; set; }
+        public DbSet<ExamQuestion> ExamQuestions { get; set; }
         public DbSet<Manager> Managers { get; set; }
-        public DbSet<Answer> Answers { get; set; }
-
 
 
     }

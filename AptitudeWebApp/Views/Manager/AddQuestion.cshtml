@@ -1,4 +1,4 @@
-﻿@model AptitudeWebApp.Models.ExamQuestions
+﻿@model AptitudeWebApp.Models.ExamQuestion
 
 @{
     Layout = null;
@@ -10,87 +10,137 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <link href="" rel="stylesheet" />
-
-    <link rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="~/css/radio.css" asp-append-version="true" />
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css"
+          crossorigin="anonymous">
     <title>AddQuestion</title>
 </head>
 <body>
-    @Html.Partial("_Narbar")
-    <h1>Add Question</h1>
-    <h3 style="text-align:center">Pick the exam type for this question</h3>
-    <div class="row">
-        <div>
-            <div class="container">
-                <form asp-action="EditQuestion" method="post">
-                    <input asp-for="QuestionId" type="hidden" />
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="radio">
-                        <input class="radio__input" type="radio" name="examTypeId"
-                               value=1 id="myRadio1" />
-                        <label class="radio__label" for="myRadio1">GENERIC KNOWLEDGE</label>
-                        <input class="radio__input" type="radio" name="examTypeId"
-                               value=2 id="myRadio2" checked />
-                        <label class="radio__label" for="myRadio2">MATHEMATICS</label>
-                        <input class="radio__input" type="radio" name="examTypeId"
-                               value=3 id="myRadio3" />
-                        <label class="radio__label" for="myRadio3">COMPUTER TECHNOLOGY</label>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="QuestionText">Question Text:</label>
-                        <input asp-for="QuestionText" type="text" class="form-control" />
-                    </div>
-                    @if (Model.Answers.Count > 0)
-                    {
-                        @for (int i = 0; i < Model.Answers.Count; i++)
-                        {
-                            <div class="form-group">
-                                <label class="control-label">Answer @(Convert.ToChar('A' + i)):</label>
-                                <input name="answerTexts[@i]" type="text" class="form-control" value="@Model.Answers[i].Text" required />
-                            </div>
-                        }
-                        <div class="form-group">
-                            <label>Correct Answer:</label>
-                            <select name="correctAnswerIndex" class="form-control">
-                                @for (int i = 0; i < Model.Answers.Count; i++)
-                                {
-                                    <option value="@(i + 1)" selected=@(Model.Answers[i].IsCorrect ? "selected" : "") required>
-                                        Answer @(Convert.ToChar('A' + i))
-                                    </option>
-                                }
-                            </select>
-                        </div>
-                    }
-                    else
-                    {
-                        @for (int i = 0; i < 4; i++)
-                        {
-                            <div class="form-group">
-                                <label class="radio__label1">Answer @(Convert.ToChar('A' + i)):</label>
-                                <input name="answerTexts[@i]" type="text" class="form-control" />
-                            </div>
-                        }
 
-                        <div class="form-group">
-                            <label>Correct Answer:</label>
-                            <select name="correctAnswerIndex" class="form-control">
-                                @for (int i = 0; i < 4; i++)
-                                {
-                                    <option value="@(i + 1)" required>
-                                        Answer @(Convert.ToChar('A' + i))
-                                    </option>
-                                }
-                            </select>
-                        </div>
+<h4>ExamQuestion</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddQuestion">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <section class="btn-group" style="margin-top:5px">
+                    <input type="radio"
+                           class="btn-check"
+                           name="btnradiotype"
+                           value=1
+                           id="gfg" checked>
+                    <label class="btn btn-outline-danger"
+                           for="gfg">
+                        GENERIC KNOWLEDGE
+                    </label>
 
-                    }
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-            </div>            
-            
-        </div>
+                    <input type="radio"
+                           class="btn-check"
+                           name="btnradiotype"
+                           value=2
+                           id="gfg2">
+                    <label class="btn btn-outline-danger"
+                           for="gfg2">
+                        MATHEMATICS
+                    </label>
+
+                    <input type="radio"
+                           class="btn-check"
+                           name="btnradiotype"
+                           value=3
+                           id="gfg3">
+                    <label class="btn btn-outline-danger"
+                           for="gfg3">
+                        COMPUTER TECHNOLOGY
+                    </label>
+                </section>
+                
+            <div class="form-group">
+                <label asp-for="QuestionScore" class="control-label"></label>
+                <input asp-for="QuestionScore" class="form-control" />
+                <span asp-validation-for="QuestionScore" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuestionText" class="control-label"></label>
+                <input asp-for="QuestionText" class="form-control" />
+                <span asp-validation-for="QuestionText" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuestionA" class="control-label"></label>
+                <input asp-for="QuestionA" class="form-control" />
+                <span asp-validation-for="QuestionA" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuestionB" class="control-label"></label>
+                <input asp-for="QuestionB" class="form-control" />
+                <span asp-validation-for="QuestionB" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuestionC" class="control-label"></label>
+                <input asp-for="QuestionC" class="form-control" />
+                <span asp-validation-for="QuestionC" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuestionD" class="control-label"></label>
+                <input asp-for="QuestionD" class="form-control" />
+                <span asp-validation-for="QuestionD" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CorrectQuestion" class="control-label"></label>
+                <span asp-validation-for="CorrectQuestion" class="text-danger"></span>
+            </div>
+
+               
+                <section class="btn-group" style="margin-top:5px">
+                    <input type="radio"
+                           class="btn-check"
+                           name="btnradio"
+                           value=1
+                           id="gfg4" checked>
+                    <label class="btn btn-outline-danger"
+                           for="gfg4">
+                        A
+                    </label>
+
+                    <input type="radio"
+                           class="btn-check"
+                           name="btnradio"
+                           value=2
+                           id="gfg5">
+                    <label class="btn btn-outline-danger"
+                           for="gfg5">
+                        B
+                    </label>
+
+                    <input type="radio"
+                           class="btn-check"
+                           name="btnradio"
+                           value=3
+                           id="gfg6">
+                    <label class="btn btn-outline-danger"
+                           for="gfg6">
+                        C
+                    </label>
+                    <input type="radio"
+                           class="btn-check"
+                           name="btnradio"
+                           value=4
+                           id="gfg7">
+                    <label class="btn btn-outline-danger"
+                           for="gfg7">
+                        D
+                    </label>
+                </section>
+                <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
 
 </body>
 </html>
