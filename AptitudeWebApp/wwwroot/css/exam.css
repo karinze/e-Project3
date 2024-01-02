@@ -37,38 +37,36 @@
 }
 
 .logout {
-    width: 9.3em;
+    width: 9.3em !important;
     height: 1.875em;
     margin-top: 1.875em;
     background: #ffffff;
     border-radius: 1em;
     text-align: center;
-    position: absolute;
     font-size: larger;
     padding-top: 0.1em;
     text-decoration: none;
     color: black;
-    right: 3.2em;
+}
+
+.timer {
+    text-align:center;
 }
 
 
 
 
-
-
 .result {
-    width: 17.3em;
-    height: 1.3em;
+    width: 17.3em!important;
+    height: 1.875em;
     margin-top: 1.875em;
     background: #ffffff;
     border-radius: 1em;
     text-align: center;
-    position: absolute;
     font-size: larger;
     padding-top: 0.1em;
     text-decoration: none;
     color: black;
-    margin-left: 1.25em;
 }
 
 .result1 {

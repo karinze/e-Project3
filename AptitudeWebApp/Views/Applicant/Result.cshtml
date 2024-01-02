@@ -22,10 +22,10 @@
     <div class="container wrapper">
         <h1>Exam Results</h1>
 
-        <table>
+        <table class="table">
             <thead>
                 <tr>
-                    <th>Exam Type</th>
+                    <th>Exam</th>
                     <th>Score</th>
                 </tr>
             </thead>
@@ -33,54 +33,32 @@
                 @foreach (var applicantExam in ViewBag.ApplicantExams)
                 {
                     <tr>
-                        <td class="exam">Exam Type @(applicantExam.CurrentExamTypeId)</td>
-                        <td class="enter">@applicantExam.ApplicantScore</td>
+                        @if (applicantExam.ExamTypeId == 1)
+                        {
+                            <td>General Knowledge</td>
+                        }
+                        else if (applicantExam.ExamTypeId == 2)
+                        {
+                            <td>Mathematics</td>
+                        }
+                        else if (applicantExam.ExamTypeId == 3)
+                        {
+                            <td>Computer Technology</td>
+                        }
+                        else
+                        {
+                            <td>General Knowledge</td>
+                        }
+
+                        <td>@applicantExam.ApplicantScore</td>
                     </tr>
                 }
                 <tr>
-                    <td class="total">Total Score</td>
-                    <td class="total1">@ViewBag.TotalScore</td>
+                    <td>Total Score</td>
+                    <td>@ViewBag.TotalScore</td>
                 </tr>
             </tbody>
         </table>
-
-        <div>
-            <a class="result">RESULT</a>
-        </div>
-        <div>
-            <a class="result1">TOTAL SCORE</a>
-        </div>
-        <div>
-            <a href="#" class="logout">logout</a>
-        </div>
-        <div>
-            <a href="#" class="exit">EXIT</a>
-        </div>
-
-        <div>
-            <a class="total">Total</a>
-            <a class="total1">10/15</a>
-        </div>
-
-        <div>
-            <a class="exam">Exam</a>
-            <a class="enter">1/5</a>
-        </div>
-        <div>
-            <a class="exam1">Exam</a>
-            <a class="enter1">5/5</a>
-        </div>
-        <div>
-            <a class="exam2">Exam</a>
-            <a class="enter2">4/5</a>
-        </div>
-
-
-
-
-
-        <form action="#">
-        </form>
     </div>
 </body>
 </html>

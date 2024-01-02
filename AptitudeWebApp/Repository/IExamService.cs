@@ -13,5 +13,6 @@ namespace AptitudeWebApp.Repository
         Answer GetSelectedAnswerFromQuestion(ExamQuestions question, int selectedAnswerId);
         int ProcessAnswers(Exam exam);
         void SaveExamScore(Exam exam, int score);
+        Applicant GetApplicantByApplicantId(Guid applicantId);
     }
 }

@@ -45,60 +45,60 @@
     </script>
 </head>
 <body>
-    <div class="container wrapper d-flex align-content-around flex-wrap">
+    <div class="container wrapper d-flex align-content-around flex-column">
 
-        <div class="row">
+        <div class="row d-flex justify-content-around">
+            <h3 class="timer my-3" id="timer" style="text-align: center;">
+                Time Remaining: @TimeRemaining(Model.StartTime.Value, Model.TotalTimeAllowedInSeconds)
+            </h3>
             @if (Model.ExamTypeId == 1)
             {
-                <p class="result">General Knowledge</p>
+                <div class="result">General Knowledge</div>
             }
-            else if (Model.ExamTypeId == 1)
+            else if (Model.ExamTypeId == 2)
             {
-                <p class="result">Mathematics</p>
+                <div class="result">Mathematics</div>
             }
             else if (Model.ExamTypeId == 3)
             {
-                <p class="result">Computer Technology</p>
+                <div class="result">Computer Technology</div>
             }
             else
             {
-                <p class="result">General Knowledge</p>
+                <div class="result">General Knowledge</div>
             }
-        </div>
-        <div>
             <a asp-action="LogOut" asp-controller="Account" class="logout">LOGOUT</a>
-        </div>
-        <div class="timer" id="timer">
-            Time Remaining: @TimeRemaining(Model.StartTime.Value, Model.TotalTimeAllowedInSeconds)
+
         </div>
 
-        <form asp-action="SubmitAnswer" asp-controller="Exam" method="post">
-            @for (var i = 0; i < Model.ExamQuestions.Count; i++)
-            {
-                <div>
-                    <p>@Model.ExamQuestions[i].QuestionText</p>
+        <form asp-action="SubmitAnswer" asp-controller="Applicant" method="post" class="px-4">
+            <div class="row">
+                @for (var i = 0; i < Model.ExamQuestions.Count; i++)
+                {
+                    <div class="form-group my-3">
+                        <h1>Question @(i+1) : @Model.ExamQuestions[i].QuestionText</h1>
 
-                    @for (var j = 0; j < Model.ExamQuestions[i].Answers.Count; j++)
-                    {
-                        var answerId = $"answer-{i}-{j}";
-                        <div>
-                            <input type="radio" id="@answerId" name="SelectedAnswers[@i]" value="@Model.ExamQuestions[i].Answers[j].Id" />
-                            <label for="@answerId">@Model.ExamQuestions[i].Answers[j].Text</label>
-                        </div>
-                    }
-                </div>
-            }
+                        @for (var j = 0; j < Model.ExamQuestions[i].Answers.Count; j++)
+                        {
+                            var answerId = $"answer-{i}-{j}";
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="@answerId" name="SelectedAnswers[@i]" value="@Model.ExamQuestions[i].Answers[j].Id">
+                                <label class="form-check-label" for="@answerId">@Model.ExamQuestions[i].Answers[j].Text</label>
+                            </div>
+                        }
+                    </div>
+                }
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            <div class="row">
+                <input type="hidden" name="examId" value="@Model.ExamId" class="btn-primary btn-sm" />
+                <input type="hidden" name="examTypeId" value="@Model.ExamTypeId" class="btn-primary btn-sm" />
+                <input type="hidden" name="applicantId" value="@Accessor.HttpContext.Session.GetString("ApplicantId")" class="btn-primary btn-sm" />
+                <button type="submit" style="float: right" class="btn btn-primary btn-lg my-4">Submit</button>
+
+            </div>
         </form>
 
-        
-
-        <div class="row">
-            <a class="exit1"></a>
-            <a href="#" class="exit">EXIT</a>
-            <a href="#" class="exit2">EXIT</a>
-        </div>
     </div>
 </body>
 </html>

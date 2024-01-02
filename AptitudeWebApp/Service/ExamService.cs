@@ -2,6 +2,8 @@
 using AptitudeWebApp.Models;
 using AptitudeWebApp.Repository;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
+using System.Linq;
 
 namespace AptitudeWebApp.Service
 {
@@ -19,9 +21,16 @@ namespace AptitudeWebApp.Service
                 .Where(q => q.ExamTypeId == examTypeId)
                 .OrderBy(x => Guid.NewGuid()) // Randomize the order
                 .Take(numberOfQuestions)
+                .Distinct()
                 .ToList();
-
-            return questions;
+            HashSet<ExamQuestions> tempQuestions = new HashSet<ExamQuestions>();
+            tempQuestions.AddRange(questions);
+            foreach (var single in tempQuestions)
+            {
+                // Magic initialization (call a list it automatically adds to the object????)
+                var answers = _context.Answers.Where(x => x.QuestionId == single.QuestionId).ToList();
+            }
+            return tempQuestions.ToList();
         }
         public Exam InitializeExam(Guid applicantId, List<ExamQuestions> questions, int examTypeId)
         {
@@ -48,6 +57,10 @@ namespace AptitudeWebApp.Service
             var nextExamType = allExamTypes.Except(completedExamTypes).FirstOrDefault();
 
             return nextExamType;
+        }
+        public Applicant GetApplicantByApplicantId(Guid applicantId)
+        {
+            return _context.Applicants.FirstOrDefault(x => x.ApplicantId == applicantId);
         }
         public ApplicantExam GetApplicantExamByApplicantIdAndExamId(Guid applicantId, int examId)
         {
@@ -135,6 +148,8 @@ namespace AptitudeWebApp.Service
 
         public void SaveExamScore(Exam exam, int score)
         {
+            var currentApplicant = GetApplicantByApplicantId(exam.ApplicantId);
+
             var applicantExam = new ApplicantExam
             {
                 ApplicantId = exam.ApplicantId,
@@ -142,10 +157,10 @@ namespace AptitudeWebApp.Service
                 ApplicantScore = score,
                 CurrentExamTypeId = exam.ExamTypeId
             };
-
+            currentApplicant.CompletedExamTypes.Add(exam.ExamTypeId);
+            _context.Applicants.Update(currentApplicant);
             _context.ApplicantExams.Add(applicantExam);
             _context.SaveChanges();
         }
     }
-
 }

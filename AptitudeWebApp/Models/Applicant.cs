@@ -10,7 +10,8 @@ namespace AptitudeWebApp
     {
         public Applicant() {
             ApplicantCompanies = new List<ApplicantCompanies>();
-            ApplicantEducation = new List<ApplicantEducation>();    
+            ApplicantEducation = new List<ApplicantEducation>();
+            CompletedExamTypes = new List<int>();
         }  
         [Key]
         public Guid ApplicantId { get; set; }
@@ -45,6 +46,8 @@ namespace AptitudeWebApp
         public string Password { get; set; }
         public ICollection<ApplicantCompanies>? ApplicantCompanies { get; set; }
         public ICollection<ApplicantEducation>? ApplicantEducation { get; set; }
+        public List<int>? CompletedExamTypes { get; set; }
+
 
     }
 }

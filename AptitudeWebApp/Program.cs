@@ -37,4 +37,8 @@ app.MapControllerRoute(
     name: "applicant",
     pattern: "{controller=Applicant}/{action=StartExam}/{applicantId?}/{examTypeId?}");
 
+app.MapControllerRoute(
+    name: "applicant",
+    pattern: "{controller=Applicant}/{action=SubmitAnswer}/{applicantId?}/{examTypeId?}");
+
 app.Run();

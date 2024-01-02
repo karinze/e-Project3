@@ -20,10 +20,10 @@
     @Html.Partial("_Narbar")
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
-                <form asp-action="EditApplicant">
-                    <div class="form-group" style="float:right">
-                        <input type="submit" value="Create" class="custom-submit" />
+            <div class="col-md-12">
+                <form asp-action="EditApplicant" asp-controller="Manager" enctype="multipart/form-data" method="post" class="d-flex flex-column">
+                    <div class="form-group my-2">
+                        <input type="submit" value="Save" class="custom-submit" style="float:right" />
                     </div><br />
                     <div class="re">
                         <div>
@@ -96,23 +96,23 @@
                             {
                                 <div class="form-group">
                                     <label class="control-label">COEName</label>
-                                    <input type="text" name="education" value="@item.COEName" required />
+                                    <input type="text" name="education" class="form-control" value="@item.COEName" required />
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Description</label>
-                                    <input type="text" name="education2" value="@item.Description" required />
+                                    <input type="text" name="education2" class="form-control" value="@item.Description" required />
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Notes</label>
-                                    <input type="text" name="education3" value="@item.Notes" required />
+                                    <input type="text" name="education3" class="form-control" value="@item.Notes" required />
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">StartDate</label>
-                                    <input name="education4" value="@item.StartDate" required />
+                                    <input name="education4" class="form-control" value="@item.StartDate" required />
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">EndDate</label>
-                                    <input name="education5" value="@item.EndDate" required />
+                                    <input name="education5" class="form-control" value="@item.EndDate" required />
                                 </div>
                             }
                         </div>
@@ -124,23 +124,23 @@
                             {
                                 <div class="form-group">
                                     <label class="control-label">CompanyName</label>
-                                    <input type="text" name="companies" value="@item.CompanyName" required />
+                                    <input type="text" name="companies" class="form-control" value="@item.CompanyName" required />
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Description</label>
-                                    <input type="text" name="companies2" value="@item.Description" required />
+                                    <input type="text" name="companies2" class="form-control" value="@item.Description" required />
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Notes</label>
-                                    <input type="text" name="companies3" value="@item.Notes" required />
+                                    <input type="text" name="companies3" class="form-control" value="@item.Notes" required />
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">StartDate</label>
-                                    <input name="companies4" value="@item.StartDate" required />
+                                    <input name="companies4" class="form-control" value="@item.StartDate" required />
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">EndDate</label>
-                                    <input name="companies5" value="@item.EndDate" required />
+                                    <input name="companies5" class="form-control" value="@item.EndDate" required />
                                 </div>
                             }
                         </div>
