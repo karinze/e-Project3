@@ -2,12 +2,12 @@
 
 namespace AptitudeWebApp.Repository
 {
-    public interface IGenericRepository<I> where I : BaseEntity
+    public interface IGenericRepository<T> where T : BaseEntity
     {
-        Task<IEnumerable<I>> GetAll();
-        Task<I> GetById(int id);
-        Task Create(I entity);
-        Task Update(I entity);
-        Task<I> Delete(int id);
+        Task<IEnumerable<T>> GetAll();
+        Task<T> GetById(int id);
+        Task Create(T entity);
+        Task Update(T entity);
+        Task<T> Delete(int id);
     }   
 }

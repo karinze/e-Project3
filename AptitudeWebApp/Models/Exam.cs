@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AptitudeWebApp.Models
@@ -7,15 +8,17 @@ namespace AptitudeWebApp.Models
     {
         public Exam()
         {
-            ExamQuestions = new List<ExamQuestion>();
+            ExamQuestions = new List<ExamQuestions>();
         }
         [Key]
         public int ExamId { get; set; }
+        public Guid ApplicantId { get; set; }
         public int ExamTypeId { get; set; }
-        public ICollection<ExamQuestion>? ExamQuestions { get; set; } 
+        public List<ExamQuestions>? ExamQuestions { get; set; }
+        public List<int> SelectedAnswers { get; set; }
         public DateTime? StartTime { get; set; }
-
-        public bool IsActive { get; set; } = false;
+        public int TotalTimeAllowedInSeconds { get; set; } = 300;
+        public int CurrentQuestionIndex { get; set; }
 
     }
 }
