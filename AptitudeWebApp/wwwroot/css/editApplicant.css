@@ -1,4 +1,3 @@
-
 .radio {
     display: flex;
     justify-content: center;
@@ -32,13 +31,20 @@
     background: #FFBD59;
 }
 
+h4 {
+    font-size: 35px;
+}
 
-.Question {
-    width: 30%;
-    height: 60px;
+input {
+    width: 110%;
+    height: 35px;
     margin-left: 10px;
     margin: 10px;
+}
 
+.re {
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .control-label {
@@ -47,14 +53,16 @@
 }
 
 .custom-submit {
-    background-color: #3498db; /* Button color */
-    color: #fff; /* Text color */
-    padding: 10px 15px; /* Padding for better appearance */
-    height: 43px;
-    font-size: larger;
-    border-radius: 10px;
-    border: none; /* Remove default border */
-    cursor: pointer; /* Add pointer cursor on hover */
+    background-color: #FFBD59;
+    color: #fff;
+    padding: 7px 15px;
+    width: 140px;
+    height: 55px;
+    margin-right: 10px;
+    font-size: 29px;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
 }
 
 .radio1 {
@@ -87,21 +95,3 @@
 .radio__input1:checked + .radio__label1 {
     background: #004AAD;
 }
-.create {
-    width: 9.3em;
-    height: 1.875em;
-    margin-top: -3.125em;
-    background: #ffd800;
-    border-radius: 1em;
-    text-align: center;
-    position: absolute;
-    /* font-size: larger; */
-    padding-top: 0.5em;
-    text-decoration: none;
-    color: white;
-    right: 3.2em;
-}
-
-    .create a {
-        text-decoration: none;
-    }
