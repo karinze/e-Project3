@@ -9,6 +9,7 @@ namespace AptitudeWebApp.Models
         public Exam()
         {
             ExamQuestions = new List<ExamQuestions>();
+            SelectedAnswers = new List<int>();
         }
         [Key]
         public int ExamId { get; set; }

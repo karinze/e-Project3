@@ -10,5 +10,7 @@ namespace AptitudeWebApp.Models
         public int ExamId { get; set; }
         public int? ApplicantScore { get; set; } = 0;
         public int CurrentExamTypeId { get; set; } = 1;
+        public List<int> CompletedExamTypes { get; set; } = new List<int>();
+
     }
 }

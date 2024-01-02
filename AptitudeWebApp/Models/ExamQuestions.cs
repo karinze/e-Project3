@@ -16,6 +16,7 @@ namespace AptitudeWebApp.Models
         public int QuestionId { get; set; }
         [Required(ErrorMessage = "Type of Question must be set!")]
         public int ExamTypeId { get; set; } = 1;
+
         public int? QuestionScore { get; set; } = 0;
         public string? QuestionText { get; set; }
         public List<Answer> Answers { get; set; }

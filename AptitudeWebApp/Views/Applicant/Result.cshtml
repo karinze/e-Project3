@@ -1,12 +1,12 @@
 ﻿@* <h3>Login</h3>
  *@
 
+ @model IEnumerable<AptitudeWebApp.Models.ApplicantExam>
 @{
     Layout = null;
 }
 
 <!DOCTYPE html>
-<!-- Created By CodingNepal -->
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
@@ -16,6 +16,29 @@
 </head>
 <body>
     <div class="wrapper">
+        <h1>Exam Results</h1>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Exam Type</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var applicantExam in ViewBag.ApplicantExams)
+                {
+                    <tr>
+                        <td class="exam">Exam Type @(applicantExam.CurrentExamTypeId)</td>
+                        <td class="enter">@applicantExam.ApplicantScore</td>
+                    </tr>
+                }
+                <tr>
+                    <td class="total">Total Score</td>
+                    <td class="total1">@ViewBag.TotalScore</td>
+                </tr>
+            </tbody>
+        </table>
 
         <div>
             <a class="result">RESULT</a>

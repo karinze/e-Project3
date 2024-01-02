@@ -16,60 +16,57 @@
 <body>
     < class="wrapper">
 
-            <div>
-                @if (Model.ExamTypeId == 1)
-                {
-                    <p class="result">General Knowledge</p>
-                }
-                else if (Model.ExamTypeId == 1)
-                {
-            <p class="result">Mathematics</p>
-
-                }
-                else if (Model.ExamTypeId == 3)
-                {
-            <p class="result">Computer Technology</p>
-
-                }
-                else
-                {
+    <div>
+            @if (Model.ExamTypeId == 1)
+            {
             <p class="result">General Knowledge</p>
+            }
+            else if (Model.ExamTypeId == 1)
+            {
+            <p class="result">Mathematics</p>
+            }
+            else if (Model.ExamTypeId == 3)
+            {
+            <p class="result">Computer Technology</p>
+            }
+            else
+            {
+            <p class="result">General Knowledge</p>
+            }
+    </div>
+    <div id="timer"></div>
 
-                }
-            </div>
-        <div id="timer"></div>
+    <p>Time Remaining: @TimeRemaining(Model.StartTime.Value, Model.TotalTimeAllowedInSeconds)</p>
 
-            <p>Time Remaining: @TimeRemaining(Model.StartTime.Value, Model.TotalTimeAllowedInSeconds)</p>
-
-            <form asp-action="SubmitAnswer" asp-controller="Exam" method="post">
-                    @for (var i = 0; i < Model.ExamQuestions.Count; i++)
-                    {
-                    <div>
+    <form asp-action="SubmitAnswer" asp-controller="Exam" method="post">
+            @for (var i = 0; i < Model.ExamQuestions.Count; i++)
+            {
+            <div>
                 <p>@Model.ExamQuestions[i].QuestionText</p>
 
                     @for (var j = 0; j < Model.ExamQuestions[i].Answers.Count; j++)
-                            {
-                                var answerId = $"answer-{i}-{j}";
-                            <div>
+                    {
+                        var answerId = $"answer-{i}-{j}";
+                    <div>
                         <input type="radio" id="@answerId" name="SelectedAnswers[@i]" value="@Model.ExamQuestions[i].Answers[j].Id" />
                         <label for="@answerId">@Model.ExamQuestions[i].Answers[j].Text</label>
-                            </div>
-                            }
                     </div>
                     }
+            </div>
+            }
 
-                <button type="submit" class="btn btn-primary">Next</button>
-            </form>
-        
-        <div>
-            <a href="#" class="logout">logout</a>
-        </div>
+        <button type="submit" class="btn btn-primary">Next</button>
+    </form>
 
-        <div>
-            <a class="exit1"></a>
-            <a href="#" class="exit">EXIT</a>
-            <a href="#" class="exit2">EXIT</a>
-        </div>
+    <div>
+        <a href="#" class="logout">logout</a>
+    </div>
+
+    <div>
+        <a class="exit1"></a>
+        <a href="#" class="exit">EXIT</a>
+        <a href="#" class="exit2">EXIT</a>
+    </div>
     </div>
 </body>
 </html>
