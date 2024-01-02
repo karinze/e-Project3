@@ -13,62 +13,92 @@
     <meta charset="utf-8">
     <title>Exam Page</title>
     <link rel="stylesheet" href="~/css/exam.css" asp-append-version="true" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Set the total time allowed in seconds
+            var totalTimeAllowed = @Model.TotalTimeAllowedInSeconds;
 
+            // Get the timer element
+            var timerElement = document.getElementById("timer");
+
+            // Update the timer every second
+            var countdownInterval = setInterval(function () {
+                // Calculate remaining time
+                var remainingTime = totalTimeAllowed - Math.floor((Date.now() - @Model.StartTime.Value) / 1000);
+
+                // Check if time has expired
+                if (remainingTime <= 0) {
+                    clearInterval(countdownInterval);
+                    timerElement.innerHTML = "Time Expired";
+                } else {
+                    // Format remaining time as MM:SS
+                    var minutes = Math.floor(remainingTime / 60);
+                    var seconds = remainingTime % 60;
+
+                    // Update the timer element
+                    timerElement.innerHTML = "Time Remaining: " + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
+                }
+            }, 1000); // Update every second
+        });
+    </script>
 </head>
 <body>
-    <div class="wrapper">
+    <div class="container wrapper d-flex align-content-around flex-wrap">
 
-    <div>
+        <div class="row">
             @if (Model.ExamTypeId == 1)
             {
-            <p class="result">General Knowledge</p>
+                <p class="result">General Knowledge</p>
             }
             else if (Model.ExamTypeId == 1)
             {
-            <p class="result">Mathematics</p>
+                <p class="result">Mathematics</p>
             }
             else if (Model.ExamTypeId == 3)
             {
-            <p class="result">Computer Technology</p>
+                <p class="result">Computer Technology</p>
             }
             else
             {
-            <p class="result">General Knowledge</p>
+                <p class="result">General Knowledge</p>
             }
-    </div>
-    <div id="timer"></div>
+        </div>
+        <div>
+            <a asp-action="LogOut" asp-controller="Account" class="logout">LOGOUT</a>
+        </div>
+        <div class="timer" id="timer">
+            Time Remaining: @TimeRemaining(Model.StartTime.Value, Model.TotalTimeAllowedInSeconds)
+        </div>
 
-    <p>Time Remaining: @TimeRemaining(Model.StartTime.Value, Model.TotalTimeAllowedInSeconds)</p>
-
-    <form asp-action="SubmitAnswer" asp-controller="Exam" method="post">
+        <form asp-action="SubmitAnswer" asp-controller="Exam" method="post">
             @for (var i = 0; i < Model.ExamQuestions.Count; i++)
             {
-            <div>
-                <p>@Model.ExamQuestions[i].QuestionText</p>
+                <div>
+                    <p>@Model.ExamQuestions[i].QuestionText</p>
 
                     @for (var j = 0; j < Model.ExamQuestions[i].Answers.Count; j++)
                     {
                         var answerId = $"answer-{i}-{j}";
-                    <div>
-                        <input type="radio" id="@answerId" name="SelectedAnswers[@i]" value="@Model.ExamQuestions[i].Answers[j].Id" />
-                        <label for="@answerId">@Model.ExamQuestions[i].Answers[j].Text</label>
-                    </div>
+                        <div>
+                            <input type="radio" id="@answerId" name="SelectedAnswers[@i]" value="@Model.ExamQuestions[i].Answers[j].Id" />
+                            <label for="@answerId">@Model.ExamQuestions[i].Answers[j].Text</label>
+                        </div>
                     }
-            </div>
+                </div>
             }
 
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
 
-    <div>
-            <a asp-action="LogOut" asp-controller="Account" class="logout">LOGOUT</a>
-    </div>
+        
 
-    <div>
-        <a class="exit1"></a>
-        <a href="#" class="exit">EXIT</a>
-        <a href="#" class="exit2">EXIT</a>
-    </div>
+        <div class="row">
+            <a class="exit1"></a>
+            <a href="#" class="exit">EXIT</a>
+            <a href="#" class="exit2">EXIT</a>
+        </div>
     </div>
 </body>
 </html>

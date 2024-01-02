@@ -36,9 +36,12 @@ namespace AptitudeWebApp.Controllers
                 {
                     HttpContext.Session.SetString("Manager", "admin");
                     return RedirectToAction("ApplicantDashboard", "Manager");
-                }else if (acc != null)
+                }
+                else if (acc != null)
                 {
                     HttpContext.Session.SetString("Applicant", acc.Username.ToString());
+                    HttpContext.Session.SetString("ApplicantId", acc.ApplicantId.ToString());
+
                     return RedirectToAction("ExamDashboard", "Applicant");
                 }
             }
@@ -51,6 +54,8 @@ namespace AptitudeWebApp.Controllers
         {
             HttpContext.Session.Clear();
             HttpContext.Session.Remove("Manager");
+            HttpContext.Session.Remove("Applicant");
+
             return RedirectToAction("Login", "Account");
         }
 

@@ -10,6 +10,8 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>ViewQuestion</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -143,35 +145,28 @@
     @Html.Partial("_Narbar")
 
     <div class="container">
-
-        <h1>View Question</h1>
+        <h1 class="my-3">View Question</h1>
         <div class="d-flex align-items-center justify-content-between">
-
-
             <form asp-action="ViewQuestion" asp-controller="Manager" method="get">
                 <div class="d-flex">
                     <input class="form-control" name="txtSearch" placeholder="Search..." />
-                    <input type="submit" value="Search" class="btn btn-primary ml-2" />
+                    <input type="submit" value="Search" class="btn btn-primary mx-2" />
                 </div>
 
             </form>
             <button class="btn btn-warning text-white">
-                <a asp-action="AddQuestion" asp-controller="Manager">Create New</a>
-
+                <a style="text-decoration: none; color: white;" asp-action="AddQuestion" asp-controller="Manager">Create New</a>
             </button>
         </div>
-        <table class="table my-2" border="1">
+
+        <table class="table my-4 mx-0" border="1">
             <thead>
                 <tr>
-
                     <th>
                         Id
                     </th>
                     <th>
                         Question Text
-                    </th>
-                    <th>
-                        Marks
                     </th>
                     <th>
                         Exam Type
@@ -186,9 +181,6 @@
                         <td>@item.QuestionId</td>
                         <td>
                             @item.QuestionText
-                        </td>
-                        <td>
-                            @item.QuestionScore
                         </td>
                         @if (item.ExamTypeId == 1)
                         {
@@ -208,11 +200,9 @@
                                 Computer Technology
                             </td>
                         }
-
                         <td>
                             @Html.ActionLink("Edit", "EditQuestion", new { QuestionId = @item.QuestionId }, new { @class = "btn btn-sm btn-primary" })
-                            @* <a asp-action="DeleteQuestion" asp-controller="Manager" asp-route-id="@item.QuestionId">Delete</a> | *@
-                            @Html.ActionLink("Delete", "DeleteQuestion", new { QuestionId = item.QuestionId }, new { @class = "btn btn-sm btn-primary" })
+                            @Html.ActionLink("Delete", "DeleteQuestion", new { QuestionId = item.QuestionId }, new { @class = "btn btn-sm btn-danger" })
                         </td>
                     </tr>
                 }
@@ -221,7 +211,6 @@
         <div class="card-footer">
             <nav class="ca" aria-label="Page navigation example">
                 <ul class="pagination">
-
                     @{
                         int position;
                         int pageCurrent = ViewBag.CurrentPage;

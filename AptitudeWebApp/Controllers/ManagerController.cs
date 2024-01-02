@@ -325,6 +325,7 @@ namespace AptitudeWebApp.Controllers
         //    _db.SaveChanges();
         //    return RedirectToAction("ViewQuestion", "Manager");
         //}
+        [HttpGet]
         [Authentication]
         public IActionResult EditQuestion(int QuestionId)
         {
@@ -362,12 +363,11 @@ namespace AptitudeWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                
                 // Update the question details
                 var existingQuestion = _db.ExamQuestions
                     .Include(q => q.Answers)
                     .FirstOrDefault(q => q.QuestionId == question.QuestionId);
-
+                var questionAnswers = _db.Answers.Where(x => x.QuestionId == question.QuestionId).ToList();
                 if (existingQuestion != null)
                 {
                     existingQuestion.QuestionText = question.QuestionText;
@@ -375,19 +375,19 @@ namespace AptitudeWebApp.Controllers
                     _db.ExamQuestions.Update(existingQuestion);
                     _db.SaveChanges();
 
-                    foreach (var answer in existingQuestion.Answers.ToList())
+                    foreach (var answer in questionAnswers)
                     {
                         _db.Entry(answer).State = EntityState.Detached;
                     }
                     // Update existing answers or add new ones
                     for (int i = 0; i < answerTexts.Length; i++)
                     {
-                        if (i < existingQuestion.Answers.Count)
+                        if (i < questionAnswers.Count())
                         {
                             // Update existing answer
-                            existingQuestion.Answers[i].Text = answerTexts[i];
-                            existingQuestion.Answers[i].IsCorrect = (i + 1 == correctAnswerIndex);
-                            _db.Answers.Update(existingQuestion.Answers[i]);
+                            questionAnswers[i].Text = answerTexts[i];
+                            questionAnswers[i].IsCorrect = (i + 1 == correctAnswerIndex);
+                            _db.Answers.Update(questionAnswers[i]);
                             _db.SaveChanges();
                         }
                         else

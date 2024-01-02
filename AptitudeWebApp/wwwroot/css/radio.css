@@ -15,11 +15,10 @@
 .radio__label {
     padding: 0 14px;
     font-size: 14px;
-    font-family: sans-serif;
+    font-family: Verdana, sans-serif;
     margin: 10px 28px;
     border-radius: 30px;
     height: 40px;
-    padding-top: 17px;
     text-align: center;
     width: 20%;
     color: #000000;
@@ -71,7 +70,7 @@
 .radio__label1 {
     padding: 0 14px;
     font-size: 14px;
-    font-family: sans-serif;
+    font-family: Verdana, sans-serif;
     margin: 10px 28px;
     border-radius: 30px;
     height: 40px;
