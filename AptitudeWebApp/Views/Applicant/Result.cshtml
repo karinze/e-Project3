@@ -33,15 +33,15 @@
                 @foreach (var applicantExam in ViewBag.ApplicantExams)
                 {
                     <tr>
-                        @if (applicantExam.ExamTypeId == 1)
+                        @if (applicantExam.CurrentExamTypeId == 1)
                         {
                             <td>General Knowledge</td>
                         }
-                        else if (applicantExam.ExamTypeId == 2)
+                        else if (applicantExam.CurrentExamTypeId == 2)
                         {
                             <td>Mathematics</td>
                         }
-                        else if (applicantExam.ExamTypeId == 3)
+                        else if (applicantExam.CurrentExamTypeId == 3)
                         {
                             <td>Computer Technology</td>
                         }

@@ -17,6 +17,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            // Get the start time from the server
+            var startTime = new Date('@Model.StartTime.Value.ToString("yyyy-MM-ddTHH:mm:ss")');
+
             // Set the total time allowed in seconds
             var totalTimeAllowed = @Model.TotalTimeAllowedInSeconds;
 
@@ -25,13 +28,14 @@
 
             // Update the timer every second
             var countdownInterval = setInterval(function () {
-                // Calculate remaining time
-                var remainingTime = totalTimeAllowed - Math.floor((Date.now() - @Model.StartTime.Value) / 1000);
+                // Calculate remaining time using client-side time
+                var remainingTime = totalTimeAllowed - Math.floor((Date.now() - startTime) / 1000);
 
                 // Check if time has expired
                 if (remainingTime <= 0) {
                     clearInterval(countdownInterval);
                     timerElement.innerHTML = "Time Expired";
+                    document.forms["examForm"].submit();
                 } else {
                     // Format remaining time as MM:SS
                     var minutes = Math.floor(remainingTime / 60);
@@ -71,7 +75,7 @@
 
         </div>
 
-        <form asp-action="SubmitAnswer" asp-controller="Applicant" method="post" class="px-4">
+        <form asp-action="SubmitAnswer" name="examForm" asp-controller="Applicant" method="post" class="px-4">
             <div class="row">
                 @for (var i = 0; i < Model.ExamQuestions.Count; i++)
                 {
