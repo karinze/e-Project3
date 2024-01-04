@@ -64,114 +64,110 @@ namespace AptitudeWebApp.Controllers
         [Authentication]
         public IActionResult AddApplicant()
         {
+
             return View();
         }
         [HttpPost]
-        public IActionResult AddApplicant(Applicant applicant, IFormFile file, string? education, string? education2, string? education3, DateTime? education4, DateTime? education5, string? companies, string? companies2, string? companies3, DateTime? companies4, DateTime? companies5)
+        public IActionResult AddApplicant(ApplicantEducationCompaniesViewModel mainApplicant)
         {
-            ApplicantEducation applicantEducation = new ApplicantEducation();
-            ApplicantCompanies applicantCompanies = new ApplicantCompanies();
-            if (file != null)
+
+            if (ModelState.IsValid)
             {
-                // xử lý upload thumbnail
-                string path = Path.Combine("wwwroot/images", file.FileName);
-                var stream = new FileStream(path, FileMode.Create);
-                file.CopyToAsync(stream);
-                //add chuoi chua duongdan hinh vao doi tuong  newproduct
-                applicant.ImagePath = "images/" + file.FileName;
+                var applicant = mainApplicant.applicant;
+                var applicantEducation = mainApplicant.applicantEducation;
+                var applicantCompanies = mainApplicant.applicantCompanies;
+
+                // if (file != null)
+                //{
+                //    // xử lý upload thumbnail
+                //    string path = Path.Combine("wwwroot/images", file.FileName);
+                //    var stream = new FileStream(path, FileMode.Create);
+                //    file.CopyToAsync(stream);
+                //    //add chuoi chua duongdan hinh vao doi tuong  newproduct
+                //    applicant.ImagePath = "images/" + file.FileName;
+                //}
+
+                _db.Applicants.Add(applicant);
+
+                applicantEducation.ApplicantId = applicant.ApplicantId;
+                applicantCompanies.ApplicantId = applicant.ApplicantId;
+
+                _db.ApplicantEducations.Add(applicantEducation);
+                _db.ApplicantCompanies.Add(applicantCompanies);
+
+                _db.SaveChanges();
+                MailMessage mail = new MailMessage();
+                mail.From = new MailAddress("chientestphp@gmail.com");
+                mail.To.Add(applicant.Email);
+                mail.IsBodyHtml = true;
+                mail.Subject = "Login Account";
+
+                string content = "<span>Username: </span>" + applicant.Username;
+                content += "<br/> <span>Password: </span>" + applicant.Password;
+
+                mail.Body = content;
+
+                SmtpClient smtp = new SmtpClient("smtp.gmail.com");
+                NetworkCredential nc = new NetworkCredential("chientestphp@gmail.com", /*"chien27112004"*/"xpbqdlofwjmenume");
+                smtp.UseDefaultCredentials = false;
+                smtp.Credentials = nc;
+                smtp.Port = 587;
+                smtp.EnableSsl = true;
+                smtp.Send(mail);
+                return RedirectToAction("ViewApplicant", "Manager");
+
             }
-            _db.Applicants.Add(applicant);
+            else
+            {
+                return View();
+            }
 
-            applicantEducation.ApplicantId = applicant.ApplicantId;
-            applicantEducation.COEName = education;
-            applicantEducation.Description = education2;
-            applicantEducation.Notes = education3;
-            applicantEducation.StartDate = education4;
-            applicantEducation.EndDate = education5;
+            
 
-            applicantCompanies.ApplicantId = applicant.ApplicantId;
-            applicantCompanies.CompanyName = companies;
-            applicantCompanies.Description = companies2;
-            applicantCompanies.Notes = companies3;
-            applicantCompanies.StartDate = companies4;
-            applicantCompanies.EndDate = companies5;
 
-            _db.ApplicantCompanies.Add(applicantCompanies);
-            _db.ApplicantEducations.Add(applicantEducation);
-            _db.SaveChanges();
-            MailMessage mail = new MailMessage();
-            mail.From = new MailAddress("chientestphp@gmail.com");
-            mail.To.Add(applicant.Email);
-            mail.IsBodyHtml = true;
-            mail.Subject = "Login Account";
 
-            string content = "<span>Username: </span>" + applicant.Username;
-            content += "<br/> <span>Password: </span>" + applicant.Password;
-
-            mail.Body = content;
-
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com");
-            NetworkCredential nc = new NetworkCredential("chientestphp@gmail.com", /*"chien27112004"*/"xpbqdlofwjmenume");
-            smtp.UseDefaultCredentials = false;
-            smtp.Credentials = nc;
-            smtp.Port = 587;
-            smtp.EnableSsl = true;
-            smtp.Send(mail);
-
-            return RedirectToAction("ViewApplicant", "Manager");
 
         }
         [Authentication]
-        public IActionResult EditApplicant(Guid id)
+        public IActionResult EditApplicant(Guid id, ApplicantEducationCompaniesViewModel viewModel)
         {
-            var education = (from s in _db.ApplicantEducations where s.ApplicantId == id select s);
-            ViewBag.education = education.OrderByDescending(x => x.ApplicantEducationId);
-            var companies = (from s in _db.ApplicantCompanies where s.ApplicantId == id select s);
-            ViewBag.companies = companies.OrderByDescending(x => x.ApplicantCompanyId);
-            var item = _db.Applicants.Find(id);
-            return View(item);
+
+            var item = _db.Applicants.FirstOrDefault(x => x.ApplicantId.Equals(id));
+            var item1 = _db.ApplicantEducations.FirstOrDefault(x=>x.ApplicantId.Equals(id));
+            var item2 = _db.ApplicantCompanies.FirstOrDefault(x => x.ApplicantId.Equals(id));
+            viewModel.applicant = item;
+            viewModel.applicantEducation = item1;
+            viewModel.applicantCompanies = item2;
+
+            return View(viewModel);
         }
         [HttpPost]
-        public IActionResult EditApplicant(Applicant applicant, IFormFile file, string? education, string? education2, string? education3, DateTime? education4, DateTime? education5, string? companies, string? companies2, string? companies3, DateTime? companies4, DateTime? companies5)
+        public IActionResult EditApplicant(ApplicantEducationCompaniesViewModel mainApplicant)
         {
-            ApplicantEducation applicantEducation = new ApplicantEducation();
-            ApplicantCompanies applicantCompanies = new ApplicantCompanies();
-
-            if (file != null)
+            if (ModelState.IsValid)
             {
-                // xử lý upload thumbnail
-                string path = Path.Combine("wwwroot/images", file.FileName);
-                var stream = new FileStream(path, FileMode.Create);
-                file.CopyToAsync(stream);
-                //add chuoi chua duongdan hinh vao doi tuong  newproduct
-                applicant.ImagePath = "images/" + file.FileName;
+                var applicant = mainApplicant.applicant;
+                var applicantEducation = mainApplicant.applicantEducation;
+                var applicantCompanies = mainApplicant.applicantCompanies;
+                    _db.Applicants.Update(applicant);
+                applicantEducation.ApplicantId = applicant.ApplicantId;
+                applicantCompanies.ApplicantId = applicant.ApplicantId;
+                _db.ApplicantEducations.Update(applicantEducation);
+                    _db.ApplicantCompanies.Update(applicantCompanies);
+
+                    _db.SaveChanges();
+                return RedirectToAction("ViewApplicant", "Manager");
             }
-            applicantEducation.ApplicantId = applicant.ApplicantId;
-            applicantEducation.COEName = education;
-            applicantEducation.Description = education2;
-            applicantEducation.Notes= education3;
-            applicantEducation.StartDate = education4;
-            applicantEducation.EndDate= education5; 
+            else
+            {
+                return View();
+            }
 
-            applicantCompanies.ApplicantId= applicant.ApplicantId;
-            applicantCompanies.CompanyName = companies;
-            applicantCompanies.Description = companies2;
-            applicantCompanies.Notes = companies3;
-            applicantCompanies.StartDate = companies4;
-            applicantCompanies.EndDate= companies5;
-
-            var haha= _db.ApplicantCompanies.Where(x => x.ApplicantId == applicant.ApplicantId).FirstOrDefault();
-            var hehe= _db.ApplicantEducations.Where(x=>x.ApplicantId==applicant.ApplicantId).FirstOrDefault();
-            _db.ApplicantCompanies.Remove(haha);
-            _db.ApplicantCompanies.Add(applicantCompanies);
-            _db.ApplicantEducations.Remove(hehe);
-            _db.ApplicantEducations.Add(applicantEducation);
-            _db.Applicants.Update(applicant);
-            _db.SaveChanges();
+            
 
 
 
-            return RedirectToAction("ViewApplicant", "Manager");
+            
         }
         [Authentication]
         public IActionResult DeleteApplicant(Guid id)
@@ -243,6 +239,7 @@ namespace AptitudeWebApp.Controllers
         [Authentication]
         public IActionResult EditQuestion(int QuestionId)
         {
+            
             //    var existingQuestion = _db.ExamQuestions
             //.Include(q => q.Answers).ToList()
             //.FirstOrDefault(q => q.QuestionId == QuestionId);
@@ -411,7 +408,20 @@ namespace AptitudeWebApp.Controllers
 
             return View();
         }
-
+        [AcceptVerbs("Get","Post")]
+        public JsonResult IsUserName(string userName)
+        {
+            bool item = _db.Applicants.Any(x => x.Username.Equals(userName));
+            if (item)
+            {
+                return Json(data: false);
+            }
+            else
+            {
+                return Json(data:true);
+            }
+            
+        }
 
 
 

@@ -1,4 +1,4 @@
-﻿@model AptitudeWebApp.Applicant
+﻿@model AptitudeWebApp.Models.ApplicantEducationCompaniesViewModel
 
 @{
     Layout = null;
@@ -21,7 +21,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <form asp-action="EditApplicant" asp-controller="Manager" enctype="multipart/form-data" method="post" class="d-flex flex-column">
+                <form  name="form-element" asp-action="EditApplicant" asp-controller="Manager" enctype="multipart/form-data" method="post" class="d-flex flex-column">
                     <div class="form-group my-2">
                         <input type="submit" value="Save" class="custom-submit" style="float:right" />
                     </div><br />
@@ -30,47 +30,47 @@
                             <h4>Applicant</h4>
 
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <input asp-for="ApplicantId" hidden />
+                            <input asp-for="applicant.ApplicantId" hidden />
                             <div class="form-group">
-                                <label asp-for="FirstName" class="control-label"></label>
-                                <input asp-for="FirstName" class="form-control" required />
-                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                                <label asp-for="applicant.FirstName" class="control-label"></label>
+                                <input asp-for="applicant.FirstName" class="form-control" />
+                                <span asp-validation-for="applicant.FirstName" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="LastName" class="control-label"></label>
-                                <input asp-for="LastName" class="form-control" required />
-                                <span asp-validation-for="LastName" class="text-danger"></span>
+                                <label asp-for="applicant.LastName" class="control-label"></label>
+                                <input asp-for="applicant.LastName" class="form-control" />
+                                <span asp-validation-for="applicant.LastName" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="Age" class="control-label"></label><br />
-                                <input asp-for="Age" type="number" class="form-control" required />
-                                <span asp-validation-for="Age" class="text-danger"></span>
+                                <label asp-for="applicant.Age" class="control-label"></label><br />
+                                <input asp-for="applicant.Age" type="number" class="form-control" />
+                                <span asp-validation-for="applicant.Age" class="text-danger"></span>
                             </div>
 
                             <div class="form-group">
-                                <label asp-for="Address" class="control-label"></label>
-                                <input asp-for="Address" class="form-control" required />
-                                <span asp-validation-for="Address" class="text-danger"></span>
+                                <label asp-for="applicant.Address" class="control-label">Address</label>
+                                <input asp-for="applicant.Address" class="form-control" />
+                                <span asp-validation-for="applicant.Address" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="Email" class="control-label"></label>
-                                <input type="email" asp-for="Email" class="form-control" required />
-                                <span asp-validation-for="Email" class="text-danger"></span>
+                                <label asp-for="applicant.Email" class="control-label"></label>
+                                <input type="text" asp-for="applicant.Email" class="form-control" />
+                                <span asp-validation-for="applicant.Email" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="City" class="control-label"></label><br />
-                                <input asp-for="City" class="form-control" required />
-                                <span asp-validation-for="City" class="text-danger"></span>
+                                <label asp-for="applicant.City" class="control-label"></label><br />
+                                <input asp-for="applicant.City" class="form-control" />
+                                <span asp-validation-for="applicant.City" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="PhoneNumber" class="control-label"></label>
-                                <input type="number" asp-for="PhoneNumber" required class="form-control" max="9999999999999" min="1" />
-                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                <label asp-for="applicant.PhoneNumber" class="control-label"></label>
+                                <input  asp-for="applicant.PhoneNumber" class="form-control" />
+                                <span asp-validation-for="applicant.PhoneNumber" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Notes</label>
-                                <input asp-for="Notes" class="form-control" />
-                                <span asp-validation-for="Notes" class="text-danger"></span>
+                                <input asp-for="applicant.Notes" class="form-control" />
+                                <span asp-validation-for="applicant.Notes" class="text-danger"></span>
                             </div>
                             @* <div class="form-group">
                             <label asp-for="ImagePath" class="control-label"></label>
@@ -79,70 +79,90 @@
                             </div> *@
                             <div class="form-group">
                                 <label class="control-label">User Name</label>
-                                <input asp-for="Username" class="form-control" required />
-                                <span asp-validation-for="Username" class="text-danger"></span>
+                                <input asp-for="applicant.Username" class="form-control" />
+                                <span asp-validation-for="applicant.Username" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Password</label>
-                                <input asp-for="Password" class="form-control" required />
-                                <span asp-validation-for="Password" class="text-danger"></span>
+                                <input asp-for="applicant.Password" class="form-control" />
+                                <span asp-validation-for="applicant.Password" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div style="margin-right: 15%;margin-left: 15%;">
                             <h4>Applicant Education</h4>
 
-                            @foreach (var item in ViewBag.education)
-                            {
-                                <div class="form-group">
-                                    <label class="control-label">COEName</label>
-                                    <input type="text" name="education" class="form-control" value="@item.COEName" required />
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label">Description</label>
-                                    <input type="text" name="education2" class="form-control" value="@item.Description" required />
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label">Notes</label>
-                                    <input type="text" name="education3" class="form-control" value="@item.Notes" required />
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label">StartDate</label>
-                                    <input name="education4" class="form-control" value="@item.StartDate" required />
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label">EndDate</label>
-                                    <input name="education5" class="form-control" value="@item.EndDate" required />
-                                </div>
-                            }
+                            <div class="form-group">
+                                <label class="control-label">COEName</label>
+                                <input asp-for="applicantEducation.COEName" class="form-control" />
+                                <span asp-validation-for="applicantEducation.COEName" class="text-danger"></span>
+                            </div>
+
+
+
+
+                            <div class="form-group">
+                                <label class="control-label">Description</label>
+                                <input asp-for="applicantEducation.Description" class="form-control" />
+                                <span asp-validation-for="applicantEducation.Description" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Notes</label><br />
+                                <input asp-for="applicantEducation.Notes" class="form-control" />
+                                <span asp-validation-for="applicantEducation.Notes" class="text-danger"></span>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label">StartDate</label><br />
+                                <input asp-for="applicantEducation.StartDate" class="form-control" />
+                                <span asp-validation-for="applicantEducation.StartDate" class="text-danger"></span>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label">EndDate</label><br />
+                                <input asp-for="applicantEducation.EndDate" class="form-control" />
+                                <span asp-validation-for="applicantEducation.EndDate" class="text-danger"></span>
+                            </div>
                         </div>
                         <div>
 
                             <h4>Applicant Companies</h4>
 
-                            @foreach (var item in ViewBag.companies)
-                            {
-                                <div class="form-group">
-                                    <label class="control-label">CompanyName</label>
-                                    <input type="text" name="companies" class="form-control" value="@item.CompanyName" required />
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label">Description</label>
-                                    <input type="text" name="companies2" class="form-control" value="@item.Description" required />
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label">Notes</label>
-                                    <input type="text" name="companies3" class="form-control" value="@item.Notes" required />
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label">StartDate</label>
-                                    <input name="companies4" class="form-control" value="@item.StartDate" required />
-                                </div>
-                                <div class="form-group">
-                                    <label class="control-label">EndDate</label>
-                                    <input name="companies5" class="form-control" value="@item.EndDate" required />
-                                </div>
-                            }
+                            <div class="form-group">
+                                <label class="control-label">Company Name</label>
+                                <input asp-for="applicantCompanies.CompanyName" class="form-control" />
+                                <span asp-validation-for="applicantCompanies.CompanyName" class="text-danger"></span>
+                            </div>
+
+
+
+
+                            <div class="form-group">
+                                <label class="control-label">Description</label>
+                                <input asp-for="applicantCompanies.Description" class="form-control" />
+                                <span asp-validation-for="applicantCompanies.Description" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Notes</label><br />
+                                <input asp-for="applicantCompanies.Notes" class="form-control" />
+                                <span asp-validation-for="applicantCompanies.Notes" class="text-danger"></span>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label">StartDate</label><br />
+                                <input asp-for="applicantCompanies.StartDate" class="form-control" />
+                                <span asp-validation-for="applicantCompanies.StartDate" class="text-danger"></span>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label">EndDate</label><br />
+                                <input asp-for="applicantCompanies.EndDate" class="form-control" />
+                                <span asp-validation-for="applicantCompanies.EndDate" class="text-danger"></span>
+                            </div>
                         </div>
                     </div>
 
