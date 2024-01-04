@@ -20,7 +20,7 @@
 </head>
 <body>
     <div class="container wrapper">
-        <h1>Exam Results</h1>
+        <h1 class="my-4">Exam Results</h1>
 
         <table class="table">
             <thead>
@@ -50,12 +50,12 @@
                             <td>General Knowledge</td>
                         }
 
-                        <td>@applicantExam.ApplicantScore</td>
+                        <td>@applicantExam.ApplicantScore / 5</td>
                     </tr>
                 }
                 <tr>
-                    <td>Total Score</td>
-                    <td>@ViewBag.TotalScore</td>
+                    <td><b>Total Score</b></td>
+                    <td>@ViewBag.TotalScore / 15</td>
                 </tr>
             </tbody>
         </table>
