@@ -143,16 +143,10 @@ namespace AptitudeWebApp.Migrations
                     ExamTypeId = table.Column<int>(type: "int", nullable: false),
                     QuestionScore = table.Column<int>(type: "int", nullable: true),
                     QuestionText = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ExamId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ExamQuestions", x => x.QuestionId);
-                    table.ForeignKey(
-                        name: "FK_ExamQuestions_Exams_ExamId",
-                        column: x => x.ExamId,
-                        principalTable: "Exams",
-                        principalColumn: "ExamId");
                 });
 
             migrationBuilder.CreateTable(
@@ -191,10 +185,6 @@ namespace AptitudeWebApp.Migrations
                 table: "ApplicantEducations",
                 column: "ApplicantId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_ExamQuestions_ExamId",
-                table: "ExamQuestions",
-                column: "ExamId");
         }
 
         /// <inheritdoc />

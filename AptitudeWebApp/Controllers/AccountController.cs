@@ -58,7 +58,7 @@ namespace AptitudeWebApp.Controllers
                 }
                 else if (manager != null)
                 {
-                    var result = _passwordHasher.Verify(manager.Password, pass);
+                    //var result = _passwordHasher.Verify(manager.Password, pass);
 
                     if (manager.Password == pass)
                     {
