@@ -29,6 +29,7 @@ namespace AptitudeWebApp.Service
             {
                 // Magic initialization (call a list it automatically adds to the object????)
                 var answers = _context.Answers.Where(x => x.QuestionId == single.QuestionId).ToList();
+                single.Answers = answers;
             }
             return tempQuestions.ToList();
         }
@@ -157,7 +158,10 @@ namespace AptitudeWebApp.Service
                 ApplicantScore = score,
                 CurrentExamTypeId = exam.ExamTypeId
             };
-            currentApplicant.CompletedExamTypes.Add(exam.ExamTypeId);
+            if (!currentApplicant.CompletedExamTypes.Contains(exam.ExamTypeId))
+            {
+                currentApplicant.CompletedExamTypes.Add(exam.ExamTypeId);
+            }
             _context.Applicants.Update(currentApplicant);
             _context.ApplicantExams.Add(applicantExam);
             _context.SaveChanges();

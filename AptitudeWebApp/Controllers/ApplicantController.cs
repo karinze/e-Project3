@@ -47,7 +47,7 @@ namespace AptitudeWebApp.Controllers
             // Initialize the Exam parameters
             var exam = _examService.InitializeExam(applicantGuid, questions, examTypeId);
 
-            exam.ExamQuestions.AddRange(questions);
+            //exam.ExamQuestions.AddRange(questions);
             return View("Exam", exam);
         }
 
@@ -66,7 +66,7 @@ namespace AptitudeWebApp.Controllers
                 var applicant = _examService.GetApplicantByApplicantId(applicantGuid);
 
                 // Check if all three exam types are completed
-                if (applicant.CompletedExamTypes.Count == 3)
+                if (applicant.CompletedExamTypes.Contains(1) && applicant.CompletedExamTypes.Contains(2) && applicant.CompletedExamTypes.Contains(3))
                 {
                     // Display the result page with the total score
                     return RedirectToAction("Result", new { applicantId = applicant.ApplicantId.ToString() });

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AptitudeWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class v1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,17 +33,18 @@ namespace AptitudeWebApp.Migrations
                 {
                     ApplicantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Age = table.Column<int>(type: "int", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Age = table.Column<int>(type: "int", nullable: false),
                     HasPassedExam = table.Column<bool>(type: "bit", nullable: true),
-                    Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    City = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Notes = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: true),
+                    Address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: false),
                     ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Username = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false)
+                    Password = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: false),
+                    CompletedExamTypes = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -56,9 +57,12 @@ namespace AptitudeWebApp.Migrations
                 {
                     ExamId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ExamTypeId = table.Column<int>(type: "int", nullable: false),
+                    SelectedAnswers = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    TotalTimeAllowedInSeconds = table.Column<int>(type: "int", nullable: false),
+                    CurrentQuestionIndex = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -89,11 +93,11 @@ namespace AptitudeWebApp.Migrations
                     ApplicantCompanyId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ApplicantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CompanyName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Notes = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: true),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CompanyName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -113,11 +117,11 @@ namespace AptitudeWebApp.Migrations
                     ApplicantEducationId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ApplicantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    COEName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
-                    Notes = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: true),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    COEName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {

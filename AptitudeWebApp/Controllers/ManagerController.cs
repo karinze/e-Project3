@@ -237,23 +237,24 @@ namespace AptitudeWebApp.Controllers
 
         [HttpGet]
         [Authentication]
-        public IActionResult EditQuestion(int QuestionId)
+        public IActionResult EditQuestion(int questionId)
         {
             
             //    var existingQuestion = _db.ExamQuestions
             //.Include(q => q.Answers).ToList()
             //.FirstOrDefault(q => q.QuestionId == QuestionId);
-            var existingQuestion = (from question in _db.ExamQuestions
-                                   join answer in _db.Answers on question.QuestionId equals answer.QuestionId
-                                   select new ExamQuestions
-                                   {
-                                       QuestionId = QuestionId,
-                                       QuestionText = question.QuestionText,
-                                       ExamTypeId = question.ExamTypeId,
-                                       Answers = (from x in _db.Answers
-                                                  join y in _db.ExamQuestions on x.QuestionId equals y.QuestionId select x).ToList()
-                                   }).FirstOrDefault();
-            if (existingQuestion == null)
+            var existingAnswers = _db.Answers.Where(x=>x.QuestionId == questionId).ToList();
+            var question = _db.ExamQuestions.FirstOrDefault(x=>x.QuestionId == questionId);
+            //var existingQuestion = (from question in _db.ExamQuestions
+            //                       join answer in _db.Answers on question.QuestionId equals answer.QuestionId
+            //                       select new ExamQuestions
+            //                       {
+            //                           QuestionId = questionId,
+            //                           QuestionText = question.QuestionText,
+            //                           ExamTypeId = question.ExamTypeId,
+            //                           Answers = existingAnswers
+            //                       }).FirstOrDefault();
+            if (question == null)
             {
                 // If the question with the specified QuestionId is not found, create a new instance
                 var newQuestion = new ExamQuestions
@@ -263,7 +264,8 @@ namespace AptitudeWebApp.Controllers
                 return View(newQuestion);
             } else
             {
-                return View(existingQuestion);
+                question.Answers = existingAnswers;
+                return View(question);
 
             }
 
