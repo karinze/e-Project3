@@ -1,4 +1,5 @@
 ﻿using AptitudeWebApp.DAL;
+using AptitudeWebApp.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AptitudeWebApp.Controllers
@@ -6,9 +7,12 @@ namespace AptitudeWebApp.Controllers
     public class AccountController : Controller
     {
         private readonly AptitudeContext _db;
-        public AccountController(AptitudeContext db)
+        private readonly IPasswordHasher _passwordHasher;
+
+        public AccountController(AptitudeContext db, IPasswordHasher passwordHasher)
         {
             _db = db;
+            _passwordHasher = passwordHasher;
         }
         public IActionResult Login()
         {
@@ -30,19 +34,46 @@ namespace AptitudeWebApp.Controllers
         {
             if (HttpContext.Session.GetString("Manager") ==null)
             {
-                var acc = _db.Applicants.Where(x => x.Username.Equals(uname) && x.Password.Equals(pass)).FirstOrDefault();
-                var accAd = _db.Managers.Where(x => x.Username.Equals(uname)&& x.Password.Equals(pass)).FirstOrDefault();
-                if (accAd != null)
-                {
-                    HttpContext.Session.SetString("Manager", "admin");
-                    return RedirectToAction("ApplicantDashboard", "Manager");
-                }
-                else if (acc != null)
-                {
-                    HttpContext.Session.SetString("Applicant", acc.Username.ToString());
-                    HttpContext.Session.SetString("ApplicantId", acc.ApplicantId.ToString());
+                var applicant = _db.Applicants.Where(x => x.Username.Equals(uname)).FirstOrDefault();
+                var manager = _db.Managers.Where(x => x.Username.Equals(uname)).FirstOrDefault();
 
-                    return RedirectToAction("ExamDashboard", "Applicant");
+                //var acc = _db.Applicants.Where(x => x.Username.Equals(uname) && x.Password.Equals(pass)).FirstOrDefault();
+                //var accAd = _db.Managers.Where(x => x.Username.Equals(uname)&& x.Password.Equals(pass)).FirstOrDefault();
+
+                if (applicant != null)
+                {
+                    var result = _passwordHasher.Verify(applicant.Password, pass);
+
+                    if (result)
+                    {
+                        HttpContext.Session.SetString("Applicant", applicant.Username.ToString());
+                        HttpContext.Session.SetString("ApplicantId", applicant.ApplicantId.ToString());
+                        return RedirectToAction("ExamDashboard", "Applicant");
+                    }
+                    else
+                    {
+                        
+                    }
+
+                }
+                else if (manager != null)
+                {
+                    var result = _passwordHasher.Verify(manager.Password, pass);
+
+                    if (manager.Password == pass)
+                    {
+                        HttpContext.Session.SetString("Manager", "admin");
+                        return RedirectToAction("ApplicantDashboard", "Manager");
+                    }
+                    //if (result)
+                    //{
+                    //    HttpContext.Session.SetString("Manager", "admin");
+                    //    return RedirectToAction("ApplicantDashboard", "Manager");
+                    //}
+                    //else
+                    //{
+
+                    //}
                 }
             }
             

@@ -20,9 +20,12 @@ namespace AptitudeWebApp.Controllers
     public class ManagerController : Controller
     {
         private readonly AptitudeContext _db;
-        public ManagerController(AptitudeContext db)
+        private readonly IPasswordHasher _passwordHasher;
+
+        public ManagerController(AptitudeContext db, IPasswordHasher passwordHasher)
         {
             _db = db;
+            _passwordHasher = passwordHasher;
         }
         [Authentication]
         public IActionResult ApplicantDashboard()
@@ -70,13 +73,13 @@ namespace AptitudeWebApp.Controllers
         [HttpPost]
         public IActionResult AddApplicant(ApplicantEducationCompaniesViewModel mainApplicant)
         {
-
             if (ModelState.IsValid)
             {
                 var applicant = mainApplicant.applicant;
                 var applicantEducation = mainApplicant.applicantEducation;
                 var applicantCompanies = mainApplicant.applicantCompanies;
-
+                var passwordHash = _passwordHasher.Hash(applicant.Password);
+                applicant.Password = passwordHash;
                 // if (file != null)
                 //{
                 //    // xử lý upload thumbnail
@@ -100,10 +103,17 @@ namespace AptitudeWebApp.Controllers
                 mail.From = new MailAddress("chientestphp@gmail.com");
                 mail.To.Add(applicant.Email);
                 mail.IsBodyHtml = true;
-                mail.Subject = "Login Account";
+                mail.Subject = "Webster Application Login Info";
+                var applicantName = applicant.FirstName + " " + applicant.LastName;
+                string content = "Hello " + applicantName + "! Us at Webster Corporation have created an account for you as a part of our evaluation progress. Please login to the system to start your exam at any time.";
+                content += "<br/><br/> <span>Your Login Info: </span>" + applicant.Username;
 
-                string content = "<span>Username: </span>" + applicant.Username;
+                content += "<br/> <span>Username: </span>" + applicant.Username;
                 content += "<br/> <span>Password: </span>" + applicant.Password;
+                content += "<br/> <span>----------------------------</span>";
+
+                content += "<br/><br/> <span>Sincerely,</span>";
+                content += "<br/> <span>Webster Corporation</span>";
 
                 mail.Body = content;
 
@@ -121,17 +131,10 @@ namespace AptitudeWebApp.Controllers
             {
                 return View();
             }
-
-            
-
-
-
-
         }
         [Authentication]
         public IActionResult EditApplicant(Guid id, ApplicantEducationCompaniesViewModel viewModel)
         {
-
             var item = _db.Applicants.FirstOrDefault(x => x.ApplicantId.Equals(id));
             var item1 = _db.ApplicantEducations.FirstOrDefault(x=>x.ApplicantId.Equals(id));
             var item2 = _db.ApplicantCompanies.FirstOrDefault(x => x.ApplicantId.Equals(id));
@@ -139,6 +142,10 @@ namespace AptitudeWebApp.Controllers
             viewModel.applicantEducation = item1;
             viewModel.applicantCompanies = item2;
 
+            if (viewModel == null)
+            {
+                return NotFound();
+            }
             return View(viewModel);
         }
         [HttpPost]
@@ -162,12 +169,6 @@ namespace AptitudeWebApp.Controllers
             {
                 return View();
             }
-
-            
-
-
-
-            
         }
         [Authentication]
         public IActionResult DeleteApplicant(Guid id)
