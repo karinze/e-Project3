@@ -448,23 +448,39 @@ namespace AptitudeWebApp.Controllers
             return View();
         }
 
-        public IActionResult _Narbar()
+        [Authentication]
+        public IActionResult Report(string? txtSearch, int page = 1)
         {
-            return View();
-        }
-        [AcceptVerbs("Get","Post")]
-        public JsonResult IsUserName(string userName)
-        {
-            bool item = _db.Applicants.Any(x => x.Username.Equals(userName));
-            if (item)
+            page = page < 1 ? 1 : page;
+            int pageSize = 2;
+
+            var data = (from s in _db.Applicants select s);
+
+            if (!System.String.IsNullOrEmpty(txtSearch))
             {
-                return Json(data: false);
+                ViewBag.txtSearch = txtSearch;
+                data = data.Where(s => s.Email.Contains(txtSearch));
+            }
+
+            if (page > 0)
+            {
+                page = page;
             }
             else
             {
-                return Json(data:true);
+                page = 1;
             }
-            
+            int start = (int)(page - 1) * pageSize;
+
+            ViewBag.pageCurrent = page;
+            int totalPage = data.Count();
+            float totalNumsize = (totalPage / (float)pageSize);
+            int numSize = (int)Math.Ceiling(totalNumsize);
+            ViewBag.numSize = numSize;
+            ViewBag.posts = data.OrderBy(x => x.ApplicantId).Skip(start).Take(pageSize);
+            return View();
         }
+        
+        
     }
 }
