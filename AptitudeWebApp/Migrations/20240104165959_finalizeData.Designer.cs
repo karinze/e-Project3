@@ -4,6 +4,7 @@ using AptitudeWebApp.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AptitudeWebApp.Migrations
 {
     [DbContext(typeof(AptitudeContext))]
-    partial class AptitudeContextModelSnapshot : ModelSnapshot
+    [Migration("20240104165959_finalizeData")]
+    partial class finalizeData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -294,25 +297,6 @@ namespace AptitudeWebApp.Migrations
                     b.HasKey("ExamId");
 
                     b.ToTable("Exams");
-                });
-
-            modelBuilder.Entity("AptitudeWebApp.Models.ExamQuestions", b =>
-                {
-                    b.Property<int>("ExamQuestionsId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ExamQuestionsId"));
-
-                    b.Property<int>("ExamId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ExamQuestionsId");
-
-                    b.ToTable("ExamQuestions");
                 });
 
             modelBuilder.Entity("AptitudeWebApp.Models.Questions", b =>

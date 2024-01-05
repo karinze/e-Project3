@@ -21,11 +21,12 @@ namespace AptitudeWebApp.Controllers
     {
         private readonly AptitudeContext _db;
         private readonly IPasswordHasher _passwordHasher;
-
-        public ManagerController(AptitudeContext db, IPasswordHasher passwordHasher)
+        private readonly ILogger<ManagerController> _logger;
+        public ManagerController(AptitudeContext db, IPasswordHasher passwordHasher, ILogger<ManagerController> logger)
         {
             _db = db;
             _passwordHasher = passwordHasher;
+            _logger = logger;
         }
         [Authentication]
         public IActionResult ApplicantDashboard()
@@ -67,7 +68,6 @@ namespace AptitudeWebApp.Controllers
         [Authentication]
         public IActionResult AddApplicant()
         {
-
             return View();
         }
         [HttpPost]
@@ -76,6 +76,7 @@ namespace AptitudeWebApp.Controllers
             if (ModelState.IsValid)
             {
                 var applicant = mainApplicant.applicant;
+                var tempPassword = applicant.Password;
                 var applicantEducation = mainApplicant.applicantEducation;
                 var applicantCompanies = mainApplicant.applicantCompanies;
                 var passwordHash = _passwordHasher.Hash(applicant.Password);
@@ -109,7 +110,7 @@ namespace AptitudeWebApp.Controllers
                 content += "<br/><br/> <span>Your Login Info: </span>" + applicant.Username;
 
                 content += "<br/> <span>Username: </span>" + applicant.Username;
-                content += "<br/> <span>Password: </span>" + applicant.Password;
+                content += "<br/> <span>Password: </span>" + tempPassword;
                 content += "<br/> <span>----------------------------</span>";
 
                 content += "<br/><br/> <span>Sincerely,</span>";
@@ -188,7 +189,7 @@ namespace AptitudeWebApp.Controllers
             const int pageSize = 10;
 
             // Initial query for all questions
-            var query = _db.ExamQuestions.AsQueryable();
+            var query = _db.Questions.AsQueryable();
 
             // Apply search filter if provided
             if (!string.IsNullOrEmpty(txtSearch))
@@ -215,7 +216,7 @@ namespace AptitudeWebApp.Controllers
             ViewBag.Questions = questions;
             ViewBag.CurrentPage = page;
             ViewBag.TotalPages = numPages;
-            ViewBag.Posts = questions.OrderByDescending(x => x.QuestionId).Skip(start).Take(pageSize);
+            ViewBag.Posts = questions.OrderBy(x => x.QuestionId).Skip(start).Take(pageSize);
 
             return View();
         }
@@ -223,7 +224,7 @@ namespace AptitudeWebApp.Controllers
         [Authentication]
         public IActionResult AddQuestion()
         {
-            var model = new ExamQuestions
+            var model = new Questions
             {
                 Answers = new List<Answer>
                 {
@@ -245,7 +246,7 @@ namespace AptitudeWebApp.Controllers
             //.Include(q => q.Answers).ToList()
             //.FirstOrDefault(q => q.QuestionId == QuestionId);
             var existingAnswers = _db.Answers.Where(x=>x.QuestionId == questionId).ToList();
-            var question = _db.ExamQuestions.FirstOrDefault(x=>x.QuestionId == questionId);
+            var question = _db.Questions.FirstOrDefault(x=>x.QuestionId == questionId);
             //var existingQuestion = (from question in _db.ExamQuestions
             //                       join answer in _db.Answers on question.QuestionId equals answer.QuestionId
             //                       select new ExamQuestions
@@ -258,7 +259,7 @@ namespace AptitudeWebApp.Controllers
             if (question == null)
             {
                 // If the question with the specified QuestionId is not found, create a new instance
-                var newQuestion = new ExamQuestions
+                var newQuestion = new Questions
                 {
                     Answers = new List<Answer>() // Initialize Answers to an empty list
                 };
@@ -273,12 +274,12 @@ namespace AptitudeWebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditQuestion(ExamQuestions question, string[] answerTexts, int correctAnswerIndex, int examTypeId)
+        public IActionResult EditQuestion(Questions question, string[] answerTexts, int correctAnswerIndex, int examTypeId)
         {
             if (ModelState.IsValid)
             {
                 // Update the question details
-                var existingQuestion = _db.ExamQuestions
+                var existingQuestion = _db.Questions
                     .Include(q => q.Answers)
                     .FirstOrDefault(q => q.QuestionId == question.QuestionId);
                 var questionAnswers = _db.Answers.Where(x => x.QuestionId == question.QuestionId).ToList();
@@ -286,7 +287,7 @@ namespace AptitudeWebApp.Controllers
                 {
                     existingQuestion.QuestionText = question.QuestionText;
                     existingQuestion.ExamTypeId = examTypeId;
-                    _db.ExamQuestions.Update(existingQuestion);
+                    _db.Questions.Update(existingQuestion);
                     _db.SaveChanges();
 
                     foreach (var answer in questionAnswers)
@@ -334,13 +335,13 @@ namespace AptitudeWebApp.Controllers
                     return RedirectToAction("ViewQuestion", "Manager");
                 } else
                 {
-                    existingQuestion = new ExamQuestions
+                    existingQuestion = new Questions
                     {
                         QuestionScore = 5, ExamTypeId = examTypeId,
                         QuestionText = question.QuestionText,
                         Answers = new List<Answer>() // Initialize Answers to an empty list
                     };
-                    _db.ExamQuestions.Add(existingQuestion);
+                    _db.Questions.Add(existingQuestion);
                     _db.SaveChanges();
 
                     foreach (var answer in existingQuestion.Answers.ToList())
@@ -393,12 +394,19 @@ namespace AptitudeWebApp.Controllers
         }
 
         [Authentication]
-        public IActionResult DeleteQuestion(int QuestionId)
+        public IActionResult DeleteQuestion(int questionId)
         {
-            var item = _db.ExamQuestions.FirstOrDefault(c => c.QuestionId.Equals(QuestionId));
+            var item = _db.Questions.FirstOrDefault(c => c.QuestionId.Equals(questionId));
+            var answers = _db.Answers.Where(x => x.QuestionId == questionId);
+
+            foreach (var answer in answers)
+            {
+                _db.Answers.Remove(answer);
+                _db.SaveChanges();
+            }
             if (item != null)
             {
-                _db.ExamQuestions.Remove(item);
+                _db.Questions.Remove(item);
                 _db.SaveChanges();
                 return RedirectToAction("ViewQuestion", "Manager");
             }
@@ -406,9 +414,7 @@ namespace AptitudeWebApp.Controllers
         }
 
         public IActionResult _Narbar()
-
         {
-
             return View();
         }
         [AcceptVerbs("Get","Post")]
@@ -425,8 +431,5 @@ namespace AptitudeWebApp.Controllers
             }
             
         }
-
-
-
     }
 }

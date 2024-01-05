@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AptitudeWebApp.Migrations
 {
     /// <inheritdoc />
-    public partial class v1 : Migration
+    public partial class finalizeData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -87,6 +87,21 @@ namespace AptitudeWebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Questions",
+                columns: table => new
+                {
+                    QuestionId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ExamTypeId = table.Column<int>(type: "int", nullable: false),
+                    QuestionScore = table.Column<int>(type: "int", nullable: true),
+                    QuestionText = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Questions", x => x.QuestionId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ApplicantCompanies",
                 columns: table => new
                 {
@@ -135,21 +150,6 @@ namespace AptitudeWebApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ExamQuestions",
-                columns: table => new
-                {
-                    QuestionId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ExamTypeId = table.Column<int>(type: "int", nullable: false),
-                    QuestionScore = table.Column<int>(type: "int", nullable: true),
-                    QuestionText = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ExamQuestions", x => x.QuestionId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Answers",
                 columns: table => new
                 {
@@ -158,22 +158,22 @@ namespace AptitudeWebApp.Migrations
                     Text = table.Column<string>(type: "nvarchar(3000)", maxLength: 3000, nullable: true),
                     IsCorrect = table.Column<bool>(type: "bit", nullable: false),
                     QuestionId = table.Column<int>(type: "int", nullable: false),
-                    ExamQuestionsQuestionId = table.Column<int>(type: "int", nullable: true)
+                    QuestionsQuestionId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Answers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Answers_ExamQuestions_ExamQuestionsQuestionId",
-                        column: x => x.ExamQuestionsQuestionId,
-                        principalTable: "ExamQuestions",
+                        name: "FK_Answers_Questions_QuestionsQuestionId",
+                        column: x => x.QuestionsQuestionId,
+                        principalTable: "Questions",
                         principalColumn: "QuestionId");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Answers_ExamQuestionsQuestionId",
+                name: "IX_Answers_QuestionsQuestionId",
                 table: "Answers",
-                column: "ExamQuestionsQuestionId");
+                column: "QuestionsQuestionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicantCompanies_ApplicantId",
@@ -184,7 +184,6 @@ namespace AptitudeWebApp.Migrations
                 name: "IX_ApplicantEducations_ApplicantId",
                 table: "ApplicantEducations",
                 column: "ApplicantId");
-
         }
 
         /// <inheritdoc />
@@ -203,16 +202,16 @@ namespace AptitudeWebApp.Migrations
                 name: "ApplicantExams");
 
             migrationBuilder.DropTable(
+                name: "Exams");
+
+            migrationBuilder.DropTable(
                 name: "Managers");
 
             migrationBuilder.DropTable(
-                name: "ExamQuestions");
+                name: "Questions");
 
             migrationBuilder.DropTable(
                 name: "Applicants");
-
-            migrationBuilder.DropTable(
-                name: "Exams");
         }
     }
 }

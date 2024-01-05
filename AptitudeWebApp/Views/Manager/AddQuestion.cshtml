@@ -1,4 +1,4 @@
-﻿@model AptitudeWebApp.Models.ExamQuestions
+﻿@model AptitudeWebApp.Models.Questions
 
 @{
     Layout = null;
@@ -20,10 +20,13 @@
 </head>
 <body>
     @Html.Partial("_Narbar")
-    <h1>Add Question</h1>
     <form asp-action="EditQuestion" method="post">
-    
-        <button type="submit" class="btn btn-warning">Submit</button>
+        <div class="container d-flex align-items-center justify-content-between">
+            <h1>Add Question</h1>
+
+            <button type="submit" class="btn btn-warning text-white btn-lg mr-auto">Submit</button>
+        </div>
+        
     
     <h2 style="text-align:center">Pick the exam type for this question</h2>
     <div class="row">
@@ -43,8 +46,8 @@
                                value=3 id="myRadio3" />
                         <label class="radio__label d-flex align-items-center justify-content-center" for="myRadio3">COMPUTER TECHNOLOGY</label>
                     </div>
-                    <div>
-                        <h3 asp-for="QuestionText" style="margin-left: 10px;">Question Text:</h3>
+                    <div class="form-group my-3">
+                        <label asp-for="QuestionText" class="control-label">Question Text:</label>
                         <input asp-for="QuestionText" type="text" class="Question" />
                     </div>
                     @if (Model.Answers.Count > 0)

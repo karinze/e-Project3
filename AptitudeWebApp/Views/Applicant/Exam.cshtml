@@ -98,7 +98,16 @@
                 <input type="hidden" name="examId" value="@Model.ExamId" class="btn-primary btn-sm" />
                 <input type="hidden" name="examTypeId" value="@Model.ExamTypeId" class="btn-primary btn-sm" />
                 <input type="hidden" name="applicantId" value="@Accessor.HttpContext.Session.GetString("ApplicantId")" class="btn-primary btn-sm" />
-                <button type="submit" style="float: right" class="btn btn-primary btn-lg my-4">Submit</button>
+                @if (Model.ExamTypeId == 3)
+                {
+                    <button type="submit" style="float: right" class="btn btn-primary btn-lg my-4">Complete my test</button>
+
+                }
+                else
+                {
+                    <button type="submit" style="float: right" class="btn btn-primary btn-lg my-4">Submit</button>
+
+                }
 
             </div>
         </form>

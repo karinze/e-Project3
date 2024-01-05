@@ -8,14 +8,15 @@ namespace AptitudeWebApp.Models
     {
         public Exam()
         {
-            ExamQuestions = new List<ExamQuestions>();
+            ExamQuestions = new List<Questions>();
             SelectedAnswers = new List<int>();
         }
         [Key]
         public int ExamId { get; set; }
         public Guid ApplicantId { get; set; }
         public int ExamTypeId { get; set; }
-        public List<ExamQuestions>? ExamQuestions { get; set; }
+        [NotMapped]
+        public List<Questions>? ExamQuestions { get; set; }
         public List<int> SelectedAnswers { get; set; }
         public DateTime? StartTime { get; set; }
         public int TotalTimeAllowedInSeconds { get; set; } = 300;

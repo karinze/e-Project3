@@ -1,14 +1,10 @@
 ﻿@model AptitudeWebApp.Applicant
 
-@* <h3>Login</h3>
- *@
-
 @{
     Layout = null;
 }
 
 <!DOCTYPE html>
-<!-- Created By CodingNepal -->
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
@@ -32,6 +28,12 @@
             Login 
         </div>
         <div class="col-xs-12 col-md-6">
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.ErrorMessage
+                </div>
+            }
             <form asp-action="Login" asp-controller="Account" enctype="multipart/form-data" method="post">
                 <div class="field">
                     <input asp-for="Username" name="uname" required>
@@ -53,82 +55,10 @@
         </div>
         
     </div>
-    <footer class=" col-xs-12 col-md-6 footer">
+    <footer class="col-xs-12 col-md-6 footer">
         <div>© Webster Corporation 2023. For internal use only</div>
         
     </footer>
 </body>
 </html>
 
-@* @{
-    Layout = null;
-}
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Login</title>
-</head>
-<body>
-
-    <h4>Applicant</h4>
-
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="LoginManager" asp-controller="Account" enctype="multipart/form-data" method="post">
-
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                <div class="form-group">
-                    <label asp-for="Username" class="control-label"></label>
-                    <input asp-for="Username" name="uname" class="form-control" />
-                    <span asp-validation-for="Username" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Password" class="control-label"></label>
-                    <input asp-for="Password" name="pass" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Login" class="btn btn-primary" />
-                </div>
-            </form>
-        </div>
-    </div>
-    <hr />
-    <h4>Manager</h4>
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="LoginApplicant" asp-controller="Account" enctype="multipart/form-data" method="post">
-
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-                <div class="form-group">
-                    <label asp-for="Username" class="control-label"></label>
-                    <input asp-for="Username" name="uname" class="form-control" />
-                    <span asp-validation-for="Username" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Password" class="control-label"></label>
-                    <input asp-for="Password" name="pass" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Login" class="btn btn-primary" />
-                </div>
-            </form>
-        </div>
-    </div>
-    <div>
-        <a asp-action="Index">Back to List</a>
-    </div>
-
-    @section Scripts {
-        @{
-            await Html.RenderPartialAsync("_ValidationScriptsPartial");
-        }
-    }
-</body>
-</html> *@

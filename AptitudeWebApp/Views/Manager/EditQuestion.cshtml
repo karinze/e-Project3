@@ -1,4 +1,4 @@
-﻿@model AptitudeWebApp.Models.ExamQuestions
+﻿@model AptitudeWebApp.Models.Questions
 
 @{
     Layout = null;
@@ -19,16 +19,20 @@
 </head>
 <body>
     @Html.Partial("_Narbar")
-    <h1>Edit Question</h1>
     <form asp-action="EditQuestion" method="post">
+        <div class="container d-flex align-items-center justify-content-between">
+            <h1>Edit Question</h1>
 
-            <button type="submit" class="btn btn-warning">Submit</button>
+            <button type="submit" class="btn btn-warning text-white btn-lg mr-auto">Submit</button>
+        </div>
 
-    <h2 style="text-align:center">Pick the exam type for this question</h2>
-    <div class="row">
-        <div>
-            <div class="container">
-                
+
+
+        <h2 style="text-align:center">Pick the exam type for this question</h2>
+        <div class="row">
+            <div>
+                <div class="container">
+
                     <input asp-for="QuestionId" type="hidden" />
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="radio">
@@ -42,8 +46,8 @@
                                value=3 id="myRadio3" checked="@(Model.ExamTypeId == 3)" />
                         <label class="radio__label d-flex align-items-center justify-content-center" for="myRadio3">COMPUTER TECHNOLOGY</label>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="QuestionText">Question Text:</label>
+                    <div class="form-group my-3">
+                        <label asp-for="QuestionText" class="control-label">Question Text:</label>
                         <input asp-for="QuestionText" type="text" class="form-control" />
                     </div>
                     @if (Model.Answers.Count > 0)
@@ -60,9 +64,20 @@
                             <select name="correctAnswerIndex" class="form-control">
                                 @for (int i = 0; i < Model.Answers.Count; i++)
                                 {
-                                    <option value="@(i + 1)" selected=@(Model.Answers[i].IsCorrect ? "true" : "false") required>
-                                        Answer @(Convert.ToChar('A' + i))
-                                    </option>
+                                    @if (Model.Answers[i].IsCorrect)
+                                    {
+                                        <option value="@(i + 1)" selected required>
+                                            Answer @(Convert.ToChar('A' + i))
+                                        </option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@(i + 1)" required>
+                                            Answer @(Convert.ToChar('A' + i))
+                                        </option>
+
+                                    }
+
                                 }
                             </select>
                         </div>
@@ -90,11 +105,10 @@
                         </div>
 
                     }
-                    <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
+                </div>
 
+            </div>
         </div>
-    </div>
     </form>
 
 

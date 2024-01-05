@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AptitudeWebApp.Migrations
 {
     [DbContext(typeof(AptitudeContext))]
-    [Migration("20240104135901_v1")]
-    partial class v1
+    [Migration("20240105075221_addExamQuestions")]
+    partial class addExamQuestions
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -140,13 +140,13 @@ namespace AptitudeWebApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ExamQuestionsQuestionId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("bit");
 
                     b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("QuestionsQuestionId")
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
@@ -155,7 +155,7 @@ namespace AptitudeWebApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExamQuestionsQuestionId");
+                    b.HasIndex("QuestionsQuestionId");
 
                     b.ToTable("Answers");
                 });
@@ -301,14 +301,24 @@ namespace AptitudeWebApp.Migrations
 
             modelBuilder.Entity("AptitudeWebApp.Models.ExamQuestions", b =>
                 {
+                    b.Property<int>("ExamId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ExamId", "QuestionId");
+
+                    b.ToTable("ExamQuestions");
+                });
+
+            modelBuilder.Entity("AptitudeWebApp.Models.Questions", b =>
+                {
                     b.Property<int>("QuestionId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("QuestionId"));
-
-                    b.Property<int?>("ExamId")
-                        .HasColumnType("int");
 
                     b.Property<int>("ExamTypeId")
                         .HasColumnType("int");
@@ -321,16 +331,14 @@ namespace AptitudeWebApp.Migrations
 
                     b.HasKey("QuestionId");
 
-                    b.HasIndex("ExamId");
-
-                    b.ToTable("ExamQuestions");
+                    b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("AptitudeWebApp.Models.Answer", b =>
                 {
-                    b.HasOne("AptitudeWebApp.Models.ExamQuestions", null)
+                    b.HasOne("AptitudeWebApp.Models.Questions", null)
                         .WithMany("Answers")
-                        .HasForeignKey("ExamQuestionsQuestionId");
+                        .HasForeignKey("QuestionsQuestionId");
                 });
 
             modelBuilder.Entity("AptitudeWebApp.Models.ApplicantCompanies", b =>
@@ -351,13 +359,6 @@ namespace AptitudeWebApp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AptitudeWebApp.Models.ExamQuestions", b =>
-                {
-                    b.HasOne("AptitudeWebApp.Models.Exam", null)
-                        .WithMany("ExamQuestions")
-                        .HasForeignKey("ExamId");
-                });
-
             modelBuilder.Entity("AptitudeWebApp.Applicant", b =>
                 {
                     b.Navigation("ApplicantCompanies");
@@ -365,12 +366,7 @@ namespace AptitudeWebApp.Migrations
                     b.Navigation("ApplicantEducation");
                 });
 
-            modelBuilder.Entity("AptitudeWebApp.Models.Exam", b =>
-                {
-                    b.Navigation("ExamQuestions");
-                });
-
-            modelBuilder.Entity("AptitudeWebApp.Models.ExamQuestions", b =>
+            modelBuilder.Entity("AptitudeWebApp.Models.Questions", b =>
                 {
                     b.Navigation("Answers");
                 });

@@ -13,13 +13,20 @@ namespace AptitudeWebApp.Controllers
     {
         private readonly AptitudeContext _context;
         private readonly IExamService _examService;
+        private readonly ILogger<ApplicantController> _logger;
 
-        public ApplicantController(AptitudeContext context, IExamService examService)
+        public ApplicantController(AptitudeContext context, IExamService examService, ILogger<ApplicantController> logger)
         {
             _context = context;
             _examService = examService;
+            _logger = logger;
         }
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult ExamAlreadyCompleted()
         {
             return View();
         }
@@ -33,6 +40,7 @@ namespace AptitudeWebApp.Controllers
             return View();
         }
         [HttpGet]
+        [ValidateExam]
         [Route("exam/start/{applicantId}/{examTypeId:int}")]
         public IActionResult StartExam(string applicantId, int examTypeId)
         {
@@ -52,13 +60,15 @@ namespace AptitudeWebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult SubmitAnswer(string applicantId, int examId, int examTypeId)
+
+        public IActionResult SubmitAnswer(string applicantId, int examId, int examTypeId, List<int> SelectedAnswers)
         {
             Exam exam = _context.Exams.FirstOrDefault(x => x.ExamId == examId);
             var applicantGuid = Guid.Parse(applicantId);
 
             if (exam != null)
             {
+                exam.SelectedAnswers = SelectedAnswers;
                 int score = _examService.ProcessAnswers(exam);
 
                 _examService.SaveExamScore(exam, score);

@@ -1,5 +1,7 @@
 ﻿using AptitudeWebApp.DAL;
 using AptitudeWebApp.Repository;
+using AptitudeWebApp.Service;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AptitudeWebApp.Controllers
@@ -8,11 +10,14 @@ namespace AptitudeWebApp.Controllers
     {
         private readonly AptitudeContext _db;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly ILogger<AccountController> _logger;
 
-        public AccountController(AptitudeContext db, IPasswordHasher passwordHasher)
+        public AccountController(AptitudeContext db, IPasswordHasher passwordHasher, ILogger<AccountController> logger)
         {
             _db = db;
             _passwordHasher = passwordHasher;
+            _logger = logger;
+
         }
         public IActionResult Login()
         {
@@ -37,8 +42,7 @@ namespace AptitudeWebApp.Controllers
                 var applicant = _db.Applicants.Where(x => x.Username.Equals(uname)).FirstOrDefault();
                 var manager = _db.Managers.Where(x => x.Username.Equals(uname)).FirstOrDefault();
 
-                //var acc = _db.Applicants.Where(x => x.Username.Equals(uname) && x.Password.Equals(pass)).FirstOrDefault();
-                //var accAd = _db.Managers.Where(x => x.Username.Equals(uname)&& x.Password.Equals(pass)).FirstOrDefault();
+                List<int> examTypes = new List<int>();
 
                 if (applicant != null)
                 {
@@ -46,13 +50,21 @@ namespace AptitudeWebApp.Controllers
 
                     if (result)
                     {
+                        examTypes = applicant.CompletedExamTypes;
                         HttpContext.Session.SetString("Applicant", applicant.Username.ToString());
                         HttpContext.Session.SetString("ApplicantId", applicant.ApplicantId.ToString());
+                        if (examTypes != null)
+                        {
+                            HttpContext.Session.Set<List<int>>("CompletedExamType", applicant.CompletedExamTypes);
+                            var checker = HttpContext.Session.Get<List<int>>("CompletedExamType");
+                        }
+
                         return RedirectToAction("ExamDashboard", "Applicant");
                     }
                     else
                     {
-                        
+                        ViewBag.ErrorMessage = "Invalid username or password.";
+                        return View();
                     }
 
                 }
@@ -65,6 +77,11 @@ namespace AptitudeWebApp.Controllers
                         HttpContext.Session.SetString("Manager", "admin");
                         return RedirectToAction("ApplicantDashboard", "Manager");
                     }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Invalid username or password.";
+                        return View();
+                    }
                     //if (result)
                     //{
                     //    HttpContext.Session.SetString("Manager", "admin");
@@ -74,6 +91,11 @@ namespace AptitudeWebApp.Controllers
                     //{
 
                     //}
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Invalid username or password.";
+                    return View();
                 }
             }
             
@@ -86,6 +108,7 @@ namespace AptitudeWebApp.Controllers
             HttpContext.Session.Clear();
             HttpContext.Session.Remove("Manager");
             HttpContext.Session.Remove("Applicant");
+            HttpContext.Session.Remove("CompletedExamTypes");
 
             return RedirectToAction("Login", "Account");
         }
