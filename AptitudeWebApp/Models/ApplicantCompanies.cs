@@ -14,7 +14,7 @@ namespace AptitudeWebApp.Models
         [Required(ErrorMessage = "Description required")]
         [StringLength(255)]
         public string? Description { get; set; }
-        [Required(ErrorMessage = "Notes required")]
+        //[Required(ErrorMessage = "Notes required")]
         [StringLength(3000)]
         public string? Notes { get; set; }
         [Required(ErrorMessage = "Start Date required")]
