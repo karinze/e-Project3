@@ -14,11 +14,13 @@ namespace AptitudeWebApp.Service
     {
         private readonly AptitudeContext _context;
         private readonly ILogger<ExamService> _logger;
+        private readonly IHttpContextAccessor _httpContext;
 
-        public ExamService(AptitudeContext context, ILogger<ExamService> logger)
+        public ExamService(AptitudeContext context, ILogger<ExamService> logger, IHttpContextAccessor httpContext)
         {
             _context = context;
             _logger = logger;
+            _httpContext = httpContext;
         }
 
         public List<Questions> GetRandomQuestionsByExamType(int examTypeId, int numberOfQuestions)
@@ -111,8 +113,8 @@ namespace AptitudeWebApp.Service
             try
             {
                 return _context.Exams.FirstOrDefault(x => x.ExamId == examId);
-            } 
-            catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 _logger.LogError($"Error in GetApplicantByApplicantId: {ex.Message}");
                 throw;
@@ -212,29 +214,31 @@ namespace AptitudeWebApp.Service
             try
             {
                 int score = 0;
-                var examQuestions = _context.ExamQuestions.Where(x => x.ExamId == exam.ExamId);
-                var questions = _context.Questions.Where(q => examQuestions.Any(eq => eq.QuestionId == q.QuestionId));
+                int i = 0;
+
+                var examQuestions = _context.ExamQuestions
+                .Where(x => x.ExamId == exam.ExamId)
+                .ToList(); 
+
+                var questionIdsInOrder = examQuestions.Select(eq => eq.QuestionId).ToList();
+
+                var questions = _context.Questions
+                    .Where(q => questionIdsInOrder.Contains(q.QuestionId))
+                    .ToList() 
+                    .OrderBy(q => questionIdsInOrder.IndexOf(q.QuestionId));
 
                 // Loop through each question in the exam
                 foreach (var question in questions)
                 {
-                    int i = 0;
+                    var answers = _context.Answers.Where(x => x.QuestionId == question.QuestionId);
+                    question.Answers = answers.ToList();
+                    Answer selectedAnswer = GetSelectedAnswerFromQuestion(question, exam.SelectedAnswers[i]);
 
-                    // Get the correct answer for the current question from the database
-                    Answer correctAnswer = GetCorrectAnswerForQuestion(question.QuestionId);
-                    var examQuestion = examQuestions.FirstOrDefault(eq => eq.QuestionId == question.QuestionId);
-
-                    if (examQuestion != null && i < exam.SelectedAnswers.Count)
+                    if (i < exam.SelectedAnswers.Count)
                     {
-                        Answer selectedAnswer = GetSelectedAnswerFromQuestion(question, exam.SelectedAnswers[i]);
-                        // Check if the selected answer for the current question is correct
-                        if (IsAnswerCorrect(question, selectedAnswer))
+                        if (selectedAnswer.IsCorrect)
                         {
-                            score++; // Increment the total score
-                        }
-                        else
-                        {
-                            // The answer is incorrect, return nothing
+                            score++;
                         }
                     }
                     else
@@ -246,6 +250,25 @@ namespace AptitudeWebApp.Service
                 }
 
                 return score;
+
+                //// Get the correct answer for the current question from the database
+                //Answer correctAnswer = GetCorrectAnswerForQuestion(question.QuestionId);
+
+                //var examQuestion = examQuestions.FirstOrDefault(eq => eq.QuestionId == question.QuestionId);
+
+                //if (examQuestion != null && i < exam.SelectedAnswers.Count)
+                //{
+                //    Answer selectedAnswer = GetSelectedAnswerFromQuestion(question, exam.SelectedAnswers[i]);
+                //    // Check if the selected answer for the current question is correct
+                //    if (IsAnswerCorrect(question, selectedAnswer))
+                //    {
+                //        score++; // Increment the total score
+                //    }
+                //    else
+                //    {
+                //        // The answer is incorrect, return nothing
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -259,7 +282,7 @@ namespace AptitudeWebApp.Service
             try
             {
                 var currentApplicant = GetApplicantByApplicantId(exam.ApplicantId);
-
+                var currentSession = _httpContext.HttpContext.Session;
                 // Create new ApplicantExam once we Submit each Exam.
                 var applicantExam = new ApplicantExam
                 {
@@ -273,6 +296,8 @@ namespace AptitudeWebApp.Service
                 if (!currentApplicant.CompletedExamTypes.Contains(exam.ExamTypeId))
                 {
                     currentApplicant.CompletedExamTypes.Add(exam.ExamTypeId);
+                    currentSession.Remove("CompletedExamType");
+                    currentSession.Set<List<int>>("CompletedExamType", currentApplicant.CompletedExamTypes);
                 }
                 _context.Applicants.Update(currentApplicant);
                 _context.ApplicantExams.Add(applicantExam);

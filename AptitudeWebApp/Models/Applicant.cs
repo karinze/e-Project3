@@ -27,7 +27,7 @@ namespace AptitudeWebApp
         [Required(ErrorMessage = "Last Name required")]
         public string? LastName { get; set; }
         [Required(ErrorMessage = "Age required")]
-        [Range(18, 40, ErrorMessage = "Can only be between 18 .. 40")]
+        [Range(18, 40, ErrorMessage = "Can only be between 18 ands 60")]
         public int? Age { get; set; }
 
         public bool? HasPassedExam { get; set; } = false;

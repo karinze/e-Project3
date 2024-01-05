@@ -14,6 +14,7 @@ using System.Drawing.Printing;
 using Microsoft.AspNetCore.Mvc.Razor.TagHelpers;
 using System.Collections.Generic;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Linq;
 
 namespace AptitudeWebApp.Controllers
 {
@@ -451,15 +452,40 @@ namespace AptitudeWebApp.Controllers
         [Authentication]
         public IActionResult Report(string? txtSearch, int page = 1)
         {
+            ReportViewModel reportViewModel = new ReportViewModel();
+
+            var applicants = _db.Applicants.Where(x => x.HasPassedExam == true);
+
+            foreach (var applicant in applicants)
+            {
+                ApplicantWithScore applicantWithScore = new ApplicantWithScore();
+
+                var applicantExams = _db.ApplicantExams.Where(x => x.ApplicantId == applicant.ApplicantId).Select(x=>x.ApplicantScore).ToList();
+
+                int currentApplicantScore = applicantExams.Sum().Value;
+
+                applicantWithScore.Applicant = applicant;
+                applicantWithScore.ApplicantScore = currentApplicantScore;
+                reportViewModel.ApplicantWithScores.Add(applicantWithScore);
+            }
+
             page = page < 1 ? 1 : page;
             int pageSize = 2;
 
-            var data = (from s in _db.Applicants select s);
+            List<ApplicantWithScore> data = reportViewModel.ApplicantWithScores.ToList();
 
             if (!System.String.IsNullOrEmpty(txtSearch))
             {
                 ViewBag.txtSearch = txtSearch;
-                data = data.Where(s => s.Email.Contains(txtSearch));
+                data = (List<ApplicantWithScore>)data.Where(s => 
+                s.Applicant.Email.Contains(txtSearch)
+                || s.Applicant.FirstName.Contains(txtSearch)
+                || s.Applicant.LastName.Contains(txtSearch)
+                || s.Applicant.Address.Contains(txtSearch)
+                || s.Applicant.PhoneNumber.Contains(txtSearch)
+                || s.Applicant.Age.ToString().Contains(txtSearch)
+
+                );
             }
 
             if (page > 0)
@@ -477,7 +503,7 @@ namespace AptitudeWebApp.Controllers
             float totalNumsize = (totalPage / (float)pageSize);
             int numSize = (int)Math.Ceiling(totalNumsize);
             ViewBag.numSize = numSize;
-            ViewBag.posts = data.OrderBy(x => x.ApplicantId).Skip(start).Take(pageSize);
+            ViewBag.posts = data.OrderBy(x => x.Applicant.ApplicantId).Skip(start).Take(pageSize);
             return View();
         }
         

@@ -75,7 +75,7 @@ namespace AptitudeWebApp.Controllers
                     if (manager.Password == pass)
                     {
                         HttpContext.Session.SetString("Manager", "admin");
-                        return RedirectToAction("ApplicantDashboard", "Manager");
+                        return RedirectToAction("ViewApplicant", "Manager");
                     }
                     else
                     {

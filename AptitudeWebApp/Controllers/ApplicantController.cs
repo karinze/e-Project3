@@ -78,6 +78,17 @@ namespace AptitudeWebApp.Controllers
                 // Check if all three exam types are completed
                 if (applicant.CompletedExamTypes.Contains(1) && applicant.CompletedExamTypes.Contains(2) && applicant.CompletedExamTypes.Contains(3))
                 {
+                    var applicantExams = _context.ApplicantExams.Where(x => x.ApplicantId == applicant.ApplicantId).ToList();
+                    if (applicantExams.Sum(x=>x.ApplicantScore) > 12)
+                    {
+                        applicant.HasPassedExam = true;
+                    }
+                    else
+                    {
+                        applicant.HasPassedExam = false;
+                    }
+                    _context.Applicants.Update(applicant);
+                    _context.SaveChangesAsync();
                     // Display the result page with the total score
                     return RedirectToAction("Result", new { applicantId = applicant.ApplicantId.ToString() });
                 }
