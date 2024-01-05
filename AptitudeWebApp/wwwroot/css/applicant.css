@@ -47,14 +47,13 @@
 
 .exam {
     width: 64.3em;
-    height: 1.84em;
+    height: 2.6em;
     margin-top: 12.5em;
     margin-left: 1.25em;
     background: #ffffff;
-    border-radius: 1em;
+    border-radius: 2em;
     position: absolute;
     font-size: larger;
-    padding-top: 0.1em;
     text-decoration: none;
     color: black;
     padding-left: 2.5em;
@@ -62,14 +61,13 @@
 
 .exam1 {
     width: 64.3em;
-    height: 1.84em;
+    height: 2.6em;
     margin-top: 15.625em;
     margin-left: 1.25em;
     background: #ffffff;
-    border-radius: 1em;
+    border-radius: 2em;
     position: absolute;
     font-size: larger;
-    padding-top: 0.1em;
     text-decoration: none;
     color: black;
     padding-left: 2.5em;
@@ -77,14 +75,13 @@
 
 .exam2 {
     width: 64.3em;
-    height: 1.84em;
+    height: 2.6em;
     margin-top: 18.75em;
     margin-left: 1.25em;
     background: #ffffff;
-    border-radius: 1em;
+    border-radius: 2em;
     position: absolute;
     font-size: larger;
-    padding-top: 0.1em;
     text-decoration: none;
     color: black;
     padding-left: 2.5em;
@@ -103,4 +100,10 @@
     text-decoration: none;
     color: black;
     right: 3.125em;
+}
+
+.custom-btn {
+    width: 15em;
+    border-radius: 1em!important;
+    letter-spacing: 1em;
 }

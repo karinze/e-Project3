@@ -12,32 +12,88 @@
     <meta charset="utf-8">
     <title>Exam Dashboard</title>
     <link rel="stylesheet" href="~/css/applicant.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 </head>
 <body>
-    
+
     <div class="container wrapper">
         <div>
-            <button class="btn btn-primary">
                 <a asp-action="LogOut" asp-controller="Account" class="logout">LOGOUT</a>
-
-            </button>
         </div>
+        <text>
+            @{
+                var examTypes = Accessor.HttpContext.Session.GetString("CompletedExamTypes");
+                int currentExamType = 0;
+                if (!string.IsNullOrEmpty(examTypes))
+                {
+                    if (examTypes.Contains("1"))
+                    {
+                        currentExamType = 2;
 
-        <div class="exam">
-            @Html.ActionLink("General Knowledge Exam", "StartExam", "Applicant", new { applicantId = @Accessor.HttpContext.Session.GetString("ApplicantId"), examTypeId = 1}, null)
-        </div>
-        <div class="exam1">
-            @Html.ActionLink("Mathematics Exam", "StartExam", "Applicant", new { applicantId = @Accessor.HttpContext.Session.GetString("ApplicantId"), examTypeId = 2 }, null)
-
-        </div>
-        <div class="exam2">
-            @Html.ActionLink("Computer Technology Exam", "StartExam", "Applicant", new { applicantId = @Accessor.HttpContext.Session.GetString("ApplicantId"), examTypeId = 3 }, null)
-
-        </div>
-
+                    }
+                    else if (examTypes.Contains("2")){
+                        currentExamType = 3;
+                    }
+                }
+                else
+                {
+                    currentExamType = 1;
+                }
+            }
+            @if (currentExamType == 1)
+            {
+                @using (Html.BeginForm("StartExam", "Applicant", new { applicantId = @Accessor.HttpContext.Session.GetString("ApplicantId"), examTypeId = 1 }, FormMethod.Post))
+                {
+                    <div class="exam d-flex align-items-center justify-content-between">
+                        <h3 class="m-0">General Knowledge Exam</h3>
+                        <button type="submit" class="btn btn-warning text-light fs-4 custom-btn">START</button>
+                    </div>
+                }
+                <div class="exam1 d-flex align-items-center justify-content-between">
+                    <h3 class="m-0">Mathematics Exam</h3>
+                </div>
+                <div class="exam2  d-flex align-items-center justify-content-between">
+                    <h3 class="m-0">Computer Technology Exam</h3>
+                </div>
+            }
+            else if (currentExamType == 2)
+            {
+                <div class="exam d-flex align-items-center justify-content-between">
+                    <h3 class="m-0">General Knowledge Exam</h3>
+                </div>
+                @using (Html.BeginForm("StartExam", "Applicant", new { applicantId = @Accessor.HttpContext.Session.GetString("ApplicantId"), examTypeId = 2 }, FormMethod.Post))
+                {
+                    <div class="exam1 d-flex align-items-center justify-content-between">
+                        <h3 class="m-0">Mathematics Exam</h3>
+                        <button type="submit" class="btn btn-warning text-light fs-4 custom-btn">START</button>
+                    </div>
+                }
+                <div class="exam2  d-flex align-items-center justify-content-between">
+                    <h3 class="m-0">Computer Technology Exam</h3>
+                </div>
+            }
+            else if (currentExamType == 3)
+            {
+                <div class="exam d-flex align-items-center justify-content-between">
+                    <h3 class="m-0">General Knowledge Exam</h3>
+                </div>
+                <div class="exam1 d-flex align-items-center justify-content-between">
+                    <h3 class="m-0">Mathematics Exam</h3>
+                </div>
+                @using (Html.BeginForm("StartExam", "Applicant", new { applicantId = @Accessor.HttpContext.Session.GetString("ApplicantId"), examTypeId = 3 }, FormMethod.Post))
+                {
+                    <div class="exam2  d-flex align-items-center justify-content-between">
+                        <h3 class="m-0">Computer Technology Exam</h3>
+                        <button type="submit" class="btn btn-warning text-light fs-4 custom-btn">START</button>
+                    </div>
+                }
+            }
+        </text>
     </div>
+
 </body>
 </html>
