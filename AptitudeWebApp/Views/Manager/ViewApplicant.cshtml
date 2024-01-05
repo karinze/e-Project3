@@ -201,9 +201,8 @@
                         </td>
 
                         <td>
-                            @Html.ActionLink("Edit", "EditApplicant", new { id = item.ApplicantId }, new { @class = "btn btn-sm btn-primary" })
-                            @Html.ActionLink("Delete", "DeleteApplicant", new { id = item.ApplicantId }, new { @class = "btn btn-sm btn-danger" })
-
+                            <a asp-action="EditApplicant" class="btn btn-sm btn-primary" asp-route-id="@item.ApplicantId">Edit</a>
+                            <a asp-action="DeleteApplicant" class="btn btn-sm btn-danger" asp-route-id="@item.ApplicantId" onclick=" return confirm('Do you want to delete this object?')">Delete</a>
                         </td>
                     </tr>
                 }

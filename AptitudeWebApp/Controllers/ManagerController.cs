@@ -72,12 +72,22 @@ namespace AptitudeWebApp.Controllers
         }
         [HttpPost]
         public IActionResult AddApplicant(ApplicantEducationCompaniesViewModel mainApplicant)
-        {
-            if (ModelState.IsValid)
-            {
-                var applicant = mainApplicant.applicant;
+        {       var applicant = mainApplicant.applicant;
                 var applicantEducation = mainApplicant.applicantEducation;
                 var applicantCompanies = mainApplicant.applicantCompanies;
+            if (applicant.Username != null)
+            {
+                var aa = _db.Applicants.Where(x => x.Username == applicant.Username).FirstOrDefault();
+                if (aa != null)
+                {
+                    ViewBag.username = "User Name already available";
+                    return View();
+                }
+            }
+
+            if (ModelState.IsValid)
+            {
+                
                 var passwordHash = _passwordHasher.Hash(applicant.Password);
                 applicant.Password = passwordHash;
                 // if (file != null)

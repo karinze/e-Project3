@@ -82,7 +82,8 @@
                             <div class="form-group">
                                 <label class="control-label">User Name</label>
                                 <input asp-for="applicant.Username" class="form-control" />
-                                <span asp-validation-for="applicant.Username" class="text-danger"></span>
+                                <span asp-validation-for="applicant.Username" class="text-danger"></span><br />
+                                <span class="text-danger">@ViewBag.username</span>
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Password</label>
@@ -124,7 +125,8 @@
                             <div class="form-group">
                                 <label class="control-label">EndDate</label><br />
                                 <input asp-for="applicantEducation.EndDate" class="form-control" />
-                                <span asp-validation-for="applicantEducation.EndDate" class="text-danger"></span>
+                                <span asp-validation-for="applicantEducation.EndDate" class="text-danger"></span><br />
+                                <span class="text-danger">@ViewBag.enddate</span>
                             </div>
                             
 
@@ -163,7 +165,8 @@
                             <div class="form-group">
                                 <label class="control-label">EndDate</label><br />
                                 <input asp-for="applicantCompanies.EndDate" class="form-control" />
-                                <span asp-validation-for="applicantCompanies.EndDate" class="text-danger"></span>
+                                <span asp-validation-for="applicantCompanies.EndDate" class="text-danger"></span><br />
+                                <span class="text-danger">@ViewBag.enddate1</span>
                             </div>
                         </div>
 
