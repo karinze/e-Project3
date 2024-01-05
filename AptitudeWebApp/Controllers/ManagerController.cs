@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Mvc.Razor.TagHelpers;
 using System.Collections.Generic;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Linq;
+using OfficeOpenXml;
+using System.ComponentModel.DataAnnotations;
 
 namespace AptitudeWebApp.Controllers
 {
@@ -73,7 +75,7 @@ namespace AptitudeWebApp.Controllers
         }
         [HttpPost]
         public IActionResult AddApplicant(ApplicantEducationCompaniesViewModel mainApplicant)
-        {       
+        {
             if (ModelState.IsValid)
             {
                 var applicant = mainApplicant.applicant;
@@ -148,7 +150,7 @@ namespace AptitudeWebApp.Controllers
         public IActionResult EditApplicant(Guid id, ApplicantEducationCompaniesViewModel viewModel)
         {
             var item = _db.Applicants.FirstOrDefault(x => x.ApplicantId.Equals(id));
-            var item1 = _db.ApplicantEducations.FirstOrDefault(x=>x.ApplicantId.Equals(id));
+            var item1 = _db.ApplicantEducations.FirstOrDefault(x => x.ApplicantId.Equals(id));
             var item2 = _db.ApplicantCompanies.FirstOrDefault(x => x.ApplicantId.Equals(id));
             viewModel.applicant = item;
             viewModel.applicantEducation = item1;
@@ -168,13 +170,13 @@ namespace AptitudeWebApp.Controllers
                 var applicant = mainApplicant.applicant;
                 var applicantEducation = mainApplicant.applicantEducation;
                 var applicantCompanies = mainApplicant.applicantCompanies;
-                    _db.Applicants.Update(applicant);
+                _db.Applicants.Update(applicant);
                 applicantEducation.ApplicantId = applicant.ApplicantId;
                 applicantCompanies.ApplicantId = applicant.ApplicantId;
                 _db.ApplicantEducations.Update(applicantEducation);
-                    _db.ApplicantCompanies.Update(applicantCompanies);
+                _db.ApplicantCompanies.Update(applicantCompanies);
 
-                    _db.SaveChanges();
+                _db.SaveChanges();
                 return RedirectToAction("ViewApplicant", "Manager");
             }
             else
@@ -223,38 +225,6 @@ namespace AptitudeWebApp.Controllers
             ViewBag.numSize = numSize;
             ViewBag.posts = data.OrderBy(x => x.QuestionId).Skip(start).Take(pageSize);
             return View();
-
-            //// Initial query for all questions
-            //var query = _db.Questions.AsQueryable();
-
-            //// Apply search filter if provided
-            //if (!string.IsNullOrEmpty(txtSearch))
-            //{
-            //    ViewBag.txtSearch = txtSearch;
-            //    query = query.Where(q => q.QuestionText.Contains(txtSearch));
-            //}
-
-            //// Pagination
-            //page = Math.Max(page, 1);
-            //int start = (page - 1) * pageSize;
-
-            //// Get total number of pages
-            //int totalQuestions = query.Count();
-            //int numPages = (int)Math.Ceiling(totalQuestions / (double)pageSize);
-
-            //// Apply ordering, skip, and take for the current page
-            //var questions = query.OrderByDescending(q => q.QuestionId)
-            //                     .Skip(start)
-            //                     .Take(pageSize)
-            //                     .ToList();
-
-            //// Pass data to ViewBag
-            //ViewBag.Questions = questions;
-            //ViewBag.CurrentPage = page;
-            //ViewBag.TotalPages = numPages;
-            //ViewBag.Posts = questions.OrderBy(x => x.QuestionId).Skip(start).Take(pageSize);
-
-            return View();
         }
 
         [Authentication]
@@ -277,36 +247,22 @@ namespace AptitudeWebApp.Controllers
         [Authentication]
         public IActionResult EditQuestion(int questionId)
         {
-            
-            //    var existingQuestion = _db.ExamQuestions
-            //.Include(q => q.Answers).ToList()
-            //.FirstOrDefault(q => q.QuestionId == QuestionId);
-            var existingAnswers = _db.Answers.Where(x=>x.QuestionId == questionId).ToList();
-            var question = _db.Questions.FirstOrDefault(x=>x.QuestionId == questionId);
-            //var existingQuestion = (from question in _db.ExamQuestions
-            //                       join answer in _db.Answers on question.QuestionId equals answer.QuestionId
-            //                       select new ExamQuestions
-            //                       {
-            //                           QuestionId = questionId,
-            //                           QuestionText = question.QuestionText,
-            //                           ExamTypeId = question.ExamTypeId,
-            //                           Answers = existingAnswers
-            //                       }).FirstOrDefault();
+            var existingAnswers = _db.Answers.Where(x => x.QuestionId == questionId).ToList();
+            var question = _db.Questions.FirstOrDefault(x => x.QuestionId == questionId);
+
             if (question == null)
             {
-                // If the question with the specified QuestionId is not found, create a new instance
                 var newQuestion = new Questions
                 {
                     Answers = new List<Answer>() // Initialize Answers to an empty list
                 };
                 return View(newQuestion);
-            } else
+            }
+            else
             {
                 question.Answers = existingAnswers;
                 return View(question);
-
             }
-
         }
 
         [HttpPost]
@@ -369,11 +325,13 @@ namespace AptitudeWebApp.Controllers
                     _db.SaveChanges();
 
                     return RedirectToAction("ViewQuestion", "Manager");
-                } else
+                }
+                else
                 {
                     existingQuestion = new Questions
                     {
-                        QuestionScore = 5, ExamTypeId = examTypeId,
+                        QuestionScore = 5,
+                        ExamTypeId = examTypeId,
                         QuestionText = question.QuestionText,
                         Answers = new List<Answer>() // Initialize Answers to an empty list
                     };
@@ -450,7 +408,7 @@ namespace AptitudeWebApp.Controllers
         }
 
         [Authentication]
-        public IActionResult Report(string? txtSearch, int page = 1)
+        public IActionResult Report(string? txtSearch, string? errorMessage, int page = 1)
         {
             ReportViewModel reportViewModel = new ReportViewModel();
 
@@ -460,7 +418,7 @@ namespace AptitudeWebApp.Controllers
             {
                 ApplicantWithScore applicantWithScore = new ApplicantWithScore();
 
-                var applicantExams = _db.ApplicantExams.Where(x => x.ApplicantId == applicant.ApplicantId).Select(x=>x.ApplicantScore).ToList();
+                var applicantExams = _db.ApplicantExams.Where(x => x.ApplicantId == applicant.ApplicantId).Select(x => x.ApplicantScore).ToList();
 
                 int currentApplicantScore = applicantExams.Sum().Value;
 
@@ -477,15 +435,19 @@ namespace AptitudeWebApp.Controllers
             if (!System.String.IsNullOrEmpty(txtSearch))
             {
                 ViewBag.txtSearch = txtSearch;
-                data = (List<ApplicantWithScore>)data.Where(s => 
-                s.Applicant.Email.Contains(txtSearch)
-                || s.Applicant.FirstName.Contains(txtSearch)
-                || s.Applicant.LastName.Contains(txtSearch)
-                || s.Applicant.Address.Contains(txtSearch)
-                || s.Applicant.PhoneNumber.Contains(txtSearch)
-                || s.Applicant.Age.ToString().Contains(txtSearch)
 
-                );
+                if (data.Any())
+                {
+                    data = (List<ApplicantWithScore>)data.Where(s =>
+                                    s.Applicant.Email.Contains(txtSearch)
+                                    || s.Applicant.FirstName.Contains(txtSearch)
+                                    || s.Applicant.LastName.Contains(txtSearch)
+                                    || s.Applicant.Address.Contains(txtSearch)
+                                    || s.Applicant.PhoneNumber.Contains(txtSearch)
+                                    || s.Applicant.Age.ToString().Contains(txtSearch)
+                                    );
+                }
+
             }
 
             if (page > 0)
@@ -499,6 +461,11 @@ namespace AptitudeWebApp.Controllers
             int start = (int)(page - 1) * pageSize;
 
             ViewBag.pageCurrent = page;
+
+            if (errorMessage != null)
+            {
+                ViewBag.ErrorMessage = errorMessage;
+            }
             int totalPage = data.Count();
             float totalNumsize = (totalPage / (float)pageSize);
             int numSize = (int)Math.Ceiling(totalNumsize);
@@ -506,7 +473,96 @@ namespace AptitudeWebApp.Controllers
             ViewBag.posts = data.OrderBy(x => x.Applicant.ApplicantId).Skip(start).Take(pageSize);
             return View();
         }
-        
-        
+        [HttpGet]
+        public IActionResult Export(string? txtSearch)
+        {
+            // Access data from ViewBag
+            var data = ViewBag.ExportData as List<ApplicantWithScore>;
+            if (data == null || !data.Any())
+            {
+                string errorMessage = "Nothing to export!";
+                //ViewBag.ErrorMessage = "Nothing to export!";
+                return RedirectToAction("Report", new {errorMessage});
+            }
+            if (!string.IsNullOrEmpty(txtSearch) && HttpContext.Request.Query["export"] == "true")
+            {
+                    var stream = ExportToExcel(data);
+
+                    string excelName = $"WebsterPassedApplicantReport_{DateTime.Now.ToString("yyyyMMddHHmmss")}.xlsx";
+
+                    // Return the file without redirecting
+                    return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+            }
+            return RedirectToAction("Report", new { txtSearch });
+        }
+
+        // Export to Excel functionality ( DO NOT TOUCH )
+        private MemoryStream ExportToExcel(List<ApplicantWithScore> data)
+        {
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            var stream = new MemoryStream();
+            using (var package = new ExcelPackage(stream))
+            {
+                if (data == null || !data.Any())
+                {
+                    // Handle null or empty data
+                    var worksheet = package.Workbook.Worksheets.Add("No Data");
+                    worksheet.Cells["A1"].Value = "No data available for export. Sorry!";
+                }
+                else
+                {
+                    var worksheet = package.Workbook.Worksheets.Add("Report");
+
+                    // Add headers dynamically based on the properties of the Applicant class and its nested lists
+                    var headers = GetPropertyDisplayNames(typeof(Applicant))
+                                  .Concat(GetPropertyDisplayNames(typeof(ApplicantCompanies)))
+                                  .Concat(GetPropertyDisplayNames(typeof(ApplicantEducation)))
+                                  .ToList();
+
+                    for (int i = 0; i < headers.Count; i++)
+                    {
+                        worksheet.Cells[1, i + 1].Value = headers[i];
+                    }
+
+                    // Populate data
+                    int row = 2;
+                    foreach (var item in data)
+                    {
+                        var properties = item.GetType().GetProperties();
+                        var companies = item.Applicant.ApplicantCompanies;
+                        var education = item.Applicant.ApplicantEducation;
+
+                        for (int i = 0; i < properties.Length; i++)
+                        {
+                            if (properties[i].PropertyType == typeof(List<ApplicantCompanies>))
+                            {
+                                worksheet.Cells[row, i + 1].Value = string.Join("\n", companies.Select(c => $"{c.CompanyName} - {c.Description}"));
+                            }
+                            else if (properties[i].PropertyType == typeof(List<ApplicantEducation>))
+                            {
+                                worksheet.Cells[row, i + 1].Value = string.Join("\n", education.Select(e => $"{e.COEName} - {e.Description}"));
+                            }
+                            else
+                            {
+                                worksheet.Cells[row, i + 1].Value = properties[i].GetValue(item);
+                            }
+                        }
+
+                        row++;
+                    }
+                }
+
+                package.Save();
+            }
+            stream.Position = 0;
+            return stream;
+        }
+
+        private IEnumerable<string> GetPropertyDisplayNames(Type type)
+        {
+            return type.GetProperties().Select(prop => prop.GetCustomAttributes(typeof(DisplayAttribute), false).FirstOrDefault() as DisplayAttribute)
+                        .Select(displayAttr => displayAttr?.Name ?? "N/A");
+        }
     }
 }

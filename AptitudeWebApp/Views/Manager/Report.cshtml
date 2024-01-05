@@ -2,6 +2,7 @@
 
 @{
     Layout = null;
+    string errorMessage = ViewBag.ErrorMessage as string;
 }
 <!DOCTYPE html>
 <!-- Created By CodingNepal -->
@@ -127,15 +128,27 @@
     @Html.Partial("_Narbar")
     <div class="container">
         <h3 class="my-3">View Passed Applicants</h3>
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-danger" role="alert">
+                @errorMessage
+            </div>
+        }
         <div class="d-flex align-items-center justify-content-between">
             <form>
-                @* asp-action="ViewApplicant" asp-controller="Manager" method="get"> *@
                 <div class="d-flex">
-                    <input name="txtSearch" placeholder="Search..." />
+                    <input class="form-control" name="txtSearch" placeholder="Search..." />
                     <input type="submit" value="Search" class="btn btn-primary mx-2" />
                 </div>
             </form>
+            <form asp-action="Export" asp-controller="Manager" method="get">
+                <div class="d-flex">
+                    <input type="submit" value="Export" class="btn btn-primary mx-2" />
+                    <input type="hidden" name="export" value="true" />
+                    <input type="hidden" name="txtSearch" value="@ViewBag.txtSearch" />
 
+                </div>
+            </form>
         </div>
 
         <table class="table my-4 mx-0" border="1">
@@ -170,7 +183,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in  ViewBag.Posts)
+                @foreach (var item in ViewBag.Posts)
                 {
                     <tr class="clickable-row">
                         <td>
