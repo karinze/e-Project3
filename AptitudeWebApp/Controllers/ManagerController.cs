@@ -60,7 +60,7 @@ namespace AptitudeWebApp.Controllers
             float totalNumsize = (totalPage / (float)pageSize);
             int numSize = (int)Math.Ceiling(totalNumsize);
             ViewBag.numSize = numSize;
-            ViewBag.posts = data.OrderByDescending(x => x.ApplicantId).Skip(start).Take(pageSize);
+            ViewBag.posts = data.OrderBy(x => x.ApplicantId).Skip(start).Take(pageSize);
             return View();
 
 
@@ -73,9 +73,6 @@ namespace AptitudeWebApp.Controllers
         [HttpPost]
         public IActionResult AddApplicant(ApplicantEducationCompaniesViewModel mainApplicant)
         {       
-            
-            
-
             if (ModelState.IsValid)
             {
                 var applicant = mainApplicant.applicant;
@@ -200,36 +197,61 @@ namespace AptitudeWebApp.Controllers
         public IActionResult ViewQuestion(string? txtSearch, int page = 1)
         {
             const int pageSize = 10;
-
-            // Initial query for all questions
-            var query = _db.Questions.AsQueryable();
-
-            // Apply search filter if provided
-            if (!string.IsNullOrEmpty(txtSearch))
+            page = page < 1 ? 1 : page;
+            var data = (from s in _db.Questions select s);
+            if (!System.String.IsNullOrEmpty(txtSearch))
             {
                 ViewBag.txtSearch = txtSearch;
-                query = query.Where(q => q.QuestionText.Contains(txtSearch));
+                data = data.Where(s => s.QuestionText.Contains(txtSearch));
             }
 
-            // Pagination
-            page = Math.Max(page, 1);
-            int start = (page - 1) * pageSize;
+            if (page > 0)
+            {
+                page = page;
+            }
+            else
+            {
+                page = 1;
+            }
+            int start = (int)(page - 1) * pageSize;
 
-            // Get total number of pages
-            int totalQuestions = query.Count();
-            int numPages = (int)Math.Ceiling(totalQuestions / (double)pageSize);
+            ViewBag.pageCurrent = page;
+            int totalPage = data.Count();
+            float totalNumsize = (totalPage / (float)pageSize);
+            int numSize = (int)Math.Ceiling(totalNumsize);
+            ViewBag.numSize = numSize;
+            ViewBag.posts = data.OrderBy(x => x.QuestionId).Skip(start).Take(pageSize);
+            return View();
 
-            // Apply ordering, skip, and take for the current page
-            var questions = query.OrderByDescending(q => q.QuestionId)
-                                 .Skip(start)
-                                 .Take(pageSize)
-                                 .ToList();
+            //// Initial query for all questions
+            //var query = _db.Questions.AsQueryable();
 
-            // Pass data to ViewBag
-            ViewBag.Questions = questions;
-            ViewBag.CurrentPage = page;
-            ViewBag.TotalPages = numPages;
-            ViewBag.Posts = questions.OrderBy(x => x.QuestionId).Skip(start).Take(pageSize);
+            //// Apply search filter if provided
+            //if (!string.IsNullOrEmpty(txtSearch))
+            //{
+            //    ViewBag.txtSearch = txtSearch;
+            //    query = query.Where(q => q.QuestionText.Contains(txtSearch));
+            //}
+
+            //// Pagination
+            //page = Math.Max(page, 1);
+            //int start = (page - 1) * pageSize;
+
+            //// Get total number of pages
+            //int totalQuestions = query.Count();
+            //int numPages = (int)Math.Ceiling(totalQuestions / (double)pageSize);
+
+            //// Apply ordering, skip, and take for the current page
+            //var questions = query.OrderByDescending(q => q.QuestionId)
+            //                     .Skip(start)
+            //                     .Take(pageSize)
+            //                     .ToList();
+
+            //// Pass data to ViewBag
+            //ViewBag.Questions = questions;
+            //ViewBag.CurrentPage = page;
+            //ViewBag.TotalPages = numPages;
+            //ViewBag.Posts = questions.OrderBy(x => x.QuestionId).Skip(start).Take(pageSize);
 
             return View();
         }

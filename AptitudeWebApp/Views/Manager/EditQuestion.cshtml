@@ -20,7 +20,7 @@
 <body>
     @Html.Partial("_Narbar")
     <form asp-action="EditQuestion" method="post">
-        <div class="container d-flex align-items-center justify-content-between">
+        <div class="container d-flex align-items-center justify-content-between mt-3">
             <h1>Edit Question</h1>
 
             <button type="submit" class="btn btn-warning text-white btn-lg mr-auto">Submit</button>
@@ -48,7 +48,7 @@
                     </div>
                     <div class="form-group my-3">
                         <label asp-for="QuestionText" class="control-label">Question Text:</label>
-                        <input asp-for="QuestionText" type="text" class="form-control" />
+                        <input asp-for="QuestionText" type="text" class="Question p-3" />
                     </div>
                     @if (Model.Answers.Count > 0)
                     {

@@ -19,8 +19,31 @@
 </head>
 <body>
     <div class="container wrapper">
-        <h1 class="my-4">Exam Completed</h1>
+        <h1 class="my-4">This exam has already been completed</h1>
+        <div class="mt-4">
+            <p>Redirecting to Dashboard in <span id="countdown">30</span> seconds...</p>
+        </div>
 
+        <div class="mt-4">
+            <a asp-action="Logout" asp-controller="Account" class="btn btn-primary">Logout</a>
+        </div>
     </div>
+    <script>
+        // Countdown timer for automatic redirection
+        var countdown = 30;
+        var countdownElement = document.getElementById("countdown");
+
+        function updateCountdown() {
+            countdownElement.textContent = countdown;
+            if (countdown === 0) {
+                window.location.href = "/ExamDashboard"; // Adjust the URL accordingly
+            } else {
+                countdown--;
+                setTimeout(updateCountdown, 1000);
+            }
+        }
+
+        updateCountdown();
+    </script>
 </body>
 </html>
