@@ -22,7 +22,7 @@
         <div class="container d-flex align-items-center justify-content-between mt-3">
             <h1>Add Question</h1>
 
-            <button type="submit" class="btn btn-warning text-white btn-lg mr-auto">Submit</button>
+            <button type="submit" class="btn btn-warning text-white btn-lg mr-auto" onclick="return confirm('Do you want to Save the new Question?')">Submit</button>
         </div>
         
     
@@ -59,7 +59,7 @@
                         }
                         <div class="form-group">
                             <label class="control-label">Correct Answer:</label>
-                            <select name="correctAnswerIndex" class="form-control">
+                            <select name="correctAnswerIndex" class="form-control" style="width: 15%;height: 40px;margin-left: 10px;margin: 10px;">
                                 @for (int i = 0; i < Model.Answers.Count; i++)
                                 {
                                     <option value="@(i + 1)" selected=@(Model.Answers[i].IsCorrect ? "selected" : "") required style="  width: 15%;height: 40px;margin-left: 10px;margin: 10px;">
@@ -81,7 +81,7 @@
 
                         <div class="form-group">
                             <label class="control-label">Correct Answer:</label>
-                            <select name="correctAnswerIndex" class="form-control">
+                            <select name="correctAnswerIndex" class="form-control" style="width: 15%;height: 40px;margin-left: 10px;margin: 10px;">
                                 @for (int i = 0; i < 4; i++)
                                 {
                                     <option value="@(i + 1)" required>

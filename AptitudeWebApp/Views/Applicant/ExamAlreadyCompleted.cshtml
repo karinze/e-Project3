@@ -21,7 +21,7 @@
     <div class="container wrapper">
         <h1 class="my-4">This exam has already been completed</h1>
         <div class="mt-4">
-            <p>Redirecting to Dashboard in <span id="countdown">30</span> seconds...</p>
+            <p>Redirecting to Dashboard in <span id="countdown">15</span> seconds...</p>
         </div>
 
         <div class="mt-4">
@@ -30,13 +30,13 @@
     </div>
     <script>
         // Countdown timer for automatic redirection
-        var countdown = 30;
+        var countdown = 15;
         var countdownElement = document.getElementById("countdown");
 
         function updateCountdown() {
             countdownElement.textContent = countdown;
             if (countdown === 0) {
-                window.location.href = "/ExamDashboard"; // Adjust the URL accordingly
+                window.location.href = "/ExamDashboard";
             } else {
                 countdown--;
                 setTimeout(updateCountdown, 1000);

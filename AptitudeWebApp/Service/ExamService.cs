@@ -232,15 +232,18 @@ namespace AptitudeWebApp.Service
                 {
                     var answers = _context.Answers.Where(x => x.QuestionId == question.QuestionId);
                     question.Answers = answers.ToList();
-                    Answer selectedAnswer = GetSelectedAnswerFromQuestion(question, exam.SelectedAnswers[i]);
-
                     if (i < exam.SelectedAnswers.Count)
                     {
-                        if (selectedAnswer.IsCorrect)
+                        Answer selectedAnswer = GetSelectedAnswerFromQuestion(question, exam.SelectedAnswers[i]);
+
+                        if (i < exam.SelectedAnswers.Count)
                         {
-                            score++;
+                            if (selectedAnswer.IsCorrect)
+                            {
+                                score++;
+                            }
                         }
-                    }
+                    }   
                     else
                     {
 

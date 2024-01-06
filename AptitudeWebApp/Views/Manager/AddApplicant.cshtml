@@ -25,8 +25,8 @@
             <div class="col-md-12">
                 <form asp-action="AddApplicant" asp-controller="Manager" enctype="multipart/form-data" method="post" class="d-flex flex-column">
                     <div class="form-group my-2">
-                        
-                        <button type="submit" style="float: inline-end;" class="btn btn-warning text-white btn-lg mr-auto">
+                        <h3>Add Applicant</h3>
+                        <button type="submit" style="float: inline-end;" onclick="return confirm('Do you want to Save the Created Applicant?')" class="btn btn-warning text-white btn-lg mr-auto">
                             Submit
                         </button>
                     </div><br />
@@ -113,7 +113,7 @@
                             <div class="form-group">
                                 <label class="control-label">Notes</label><br />
                                 <input asp-for="applicantEducation.Notes" class="form-control" />
-                                <span asp-validation-for="applicantEducation.Notes" class="text-danger"></span>
+                                @* <span asp-validation-for="applicantEducation.Notes" class="text-danger"></span> *@
                             </div>
                            
 
@@ -153,7 +153,7 @@
                             <div class="form-group">
                                 <label class="control-label">Notes</label><br />
                                 <input asp-for="applicantCompanies.Notes" class="form-control" />
-                                <span asp-validation-for="applicantCompanies.Notes" class="text-danger"></span>
+                                @* <span asp-validation-for="applicantCompanies.Notes" class="text-danger"></span> *@
                             </div>
 
 
