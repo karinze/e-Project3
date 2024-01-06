@@ -36,14 +36,14 @@
             }
             <form asp-action="Login" asp-controller="Account" enctype="multipart/form-data" method="post">
                 <div class="field">
-                    <input asp-for="Username" name="uname" required>
-                    <label>Username</label>
+                    <input placeholder="Username" asp-for="Username" name="uname" required>
+
                     <span asp-validation-for="Username" class="text-danger"></span>
                 </div>
 
                 <div class="field">
-                    <input asp-for="Password" name="pass" type="password" required>
-                    <label>Password</label>
+                    <input placeholder="Password" asp-for="Password" name="pass" type="password" required>
+
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
 

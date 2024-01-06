@@ -178,7 +178,7 @@
             <tbody>
                 @foreach (var item in ViewBag.Posts)
                 {
-                    <tr class="clickable-row" data-url="@Url.Action("EditQuestion", new { questionId = @item.QuestionId })">
+                    <tr class="clickable-row" data-url="@Url.Action("EditQuestion", new { QuestionId = @item.QuestionId })">
                         <td>@item.QuestionId</td>
                         <td>
                             @item.QuestionText
@@ -202,7 +202,7 @@
                             </td>
                         }
                         <td>
-                            @Html.ActionLink("Edit", "EditQuestion", new { questionId = @item.QuestionId }, new { @class = "btn btn-sm btn-primary" })
+                            @Html.ActionLink("Edit", "EditQuestion", new { QuestionId = @item.QuestionId }, new { @class = "btn btn-sm btn-primary" })
                             @Html.ActionLink("Delete", "DeleteQuestion", new { QuestionId = item.QuestionId }, new { @class = "btn btn-sm btn-danger", @OnClick = " return confirm('Do you want to delete this Question?')" })
                         </td>
                     </tr>
@@ -254,14 +254,37 @@
                                 int pageCurrent = ViewBag.pageCurrent;
                                 string txtSearch = ViewBag.txtSearch;
                                 float numSize = ViewBag.numSize;
+                                int startPage = pageCurrent - 5;
+                                int endPage = pageCurrent + 4;
+
+                                if(startPage <= 1)
+                                {
+                                    endPage = endPage - (startPage - 1);
+                                    startPage = 1;
+                                }
+                                if (endPage > numSize)
+                                {
+                                    endPage =(int)numSize;
+                                    if(endPage > 10)
+                                    {
+                                        startPage = endPage - 9;
+                                    }
+
+                                }
+
                                 if (pageCurrent > 1)
                                 {
                                     <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("ViewQuestion", "Manager", new { txtSearch = (txtSearch != "" ? txtSearch : null), page = 1 })" tabindex="1">First</a>
+                                    </li>
+                                    <li class="page-item">
+                                       
+
                                         <a class="page-link" href="@Url.Action("ViewQuestion", "Manager", new { txtSearch = (txtSearch != "" ? txtSearch : null), page = pageCurrent-1 })" tabindex="-1">Previous</a>
                                     </li>
                                 }
 
-                                for (position = 1; position <= numSize; position++)
+                                for (position = startPage; position <= endPage; position++)
                                 {
 
                                     if (position == pageCurrent)
@@ -280,6 +303,9 @@
                                     <li class="page-item">
                                         <a class="page-link" href="@Url.Action("ViewQuestion", "Manager", new { txtSearch = (txtSearch != "" ? txtSearch : null), page = pageCurrent+1 })" tabindex="-1">Next</a>
                                     </li>
+                                    <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("ViewQuestion", "Manager", new { txtSearch = (txtSearch != "" ? txtSearch : null), page = numSize })" tabindex="1">Last</a>
+                                    </li>
                                 }
 
                             }
@@ -290,17 +316,6 @@
             </nav>
         </div>
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            var rows = document.querySelectorAll(".clickable-row");
-
-            rows.forEach(function (row) {
-                row.addEventListener("click", function () {
-                    var url = row.getAttribute("data-url");
-                    window.location.href = url;
-                });
-            });
-        });
-    </script>
+    
 </body>
 </html>

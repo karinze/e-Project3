@@ -40,7 +40,7 @@ namespace AptitudeWebApp.Controllers
         public IActionResult ViewApplicant(string? txtSearch, int page = 1)
         {
             page = page < 1 ? 1 : page;
-            int pageSize = 2;
+            int pageSize = 10;
             var data = (from s in _db.Applicants select s);
             if (!System.String.IsNullOrEmpty(txtSearch))
             {
@@ -199,6 +199,7 @@ namespace AptitudeWebApp.Controllers
         [Authentication]
         public IActionResult ViewQuestion(string? txtSearch, int page = 1)
         {
+            
             const int pageSize = 10;
             page = page < 1 ? 1 : page;
             var data = (from s in _db.Questions select s);
