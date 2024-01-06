@@ -1,11 +1,10 @@
-﻿@model IEnumerable<AptitudeWebApp.Applicant>
+﻿@model ReportViewModel
 
 @{
     Layout = null;
     string errorMessage = ViewBag.ErrorMessage as string;
 }
 <!DOCTYPE html>
-<!-- Created By CodingNepal -->
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
@@ -146,6 +145,12 @@
                     <input type="submit" value="Export" class="btn btn-success mx-2" />
                     <input type="hidden" name="export" value="true" />
                     <input type="hidden" name="txtSearch" value="@ViewBag.txtSearch" />
+                    @for (int i = 0; i < ViewBag.Posts.Count; i++)
+                    {
+                        <input type="hidden" name="ApplicantWithScores[@i].Applicant.FirstName" value="@Model.ApplicantWithScores[i].Applicant.FirstName" />
+                        <input type="hidden" name="ApplicantWithScores[@i].Applicant.LastName" value="@Model.ApplicantWithScores[i].Applicant.LastName" />
+                        <input type="hidden" name="ApplicantWithScores[@i].Applicant.Age" value="@Model.ApplicantWithScores[i].Applicant.Age" />
+                    }
 
                 </div>
             </form>

@@ -453,7 +453,7 @@ namespace AptitudeWebApp.Controllers
                                     || s.Applicant.Address.Contains(txtSearch)
                                     || s.Applicant.PhoneNumber.Contains(txtSearch)
                                     || s.Applicant.Age.ToString().Contains(txtSearch)
-                                    );
+                                    ).ToList();
                 }
 
             }
@@ -481,28 +481,35 @@ namespace AptitudeWebApp.Controllers
             ViewBag.posts = data.OrderBy(x => x.Applicant.ApplicantId).Skip(start).Take(pageSize);
             return View();
         }
-        [HttpGet]
-        public IActionResult Export(string? txtSearch)
+        [HttpPost]
+        public IActionResult Export(string? txtSearch, [FromBody] List<ApplicantWithScore> exportedData)
         {
-            // Access data from ViewBag
-            var data = ViewBag.ExportData as List<ApplicantWithScore>;
-            if (data == null || !data.Any())
+            try
             {
-                string errorMessage = "Nothing to export!";
-                //ViewBag.ErrorMessage = "Nothing to export!";
-                return RedirectToAction("Report", new {errorMessage});
-            }
-            if (!string.IsNullOrEmpty(txtSearch) && HttpContext.Request.Query["export"] == "true")
-            {
-                    var stream = ExportToExcel(data);
+                if (exportedData == null || !exportedData.Any())
+                {
+                    TempData["ErrorMessage"] = "Nothing to export!";
+                    return RedirectToAction("Report");
+                }
+
+                if (!string.IsNullOrEmpty(txtSearch) && HttpContext.Request.Query["export"] == "true")
+                {
+                    var stream = ExportToExcel(exportedData);
 
                     string excelName = $"WebsterPassedApplicantReport_{DateTime.Now.ToString("yyyyMMddHHmmss")}.xlsx";
 
                     // Return the file without redirecting
                     return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+                }
+                return RedirectToAction("Report", new { txtSearch });
             }
-            return RedirectToAction("Report", new { txtSearch });
+            catch (Exception ex)
+            {
+                _logger.LogError($"An error occurred in Export. Error message: {ex.Message}");
+                return View("Error");
+            }
         }
+        
 
         // Export to Excel functionality ( DO NOT TOUCH )
         private MemoryStream ExportToExcel(List<ApplicantWithScore> data)
