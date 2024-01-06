@@ -595,7 +595,7 @@ namespace AptitudeWebApp.Controllers
             
         }
         [HttpGet]
-        public IActionResult Export(string? txtSearch)
+        public IActionResult Export(string? txtSearch, [FromBody] List<ApplicantWithScore> exportedData)
         {
             try
             {
