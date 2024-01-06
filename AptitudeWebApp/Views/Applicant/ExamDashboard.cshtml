@@ -28,7 +28,7 @@
             @{
                 var examTypes = Accessor.HttpContext.Session.GetString("CompletedExamTypes");
                 int currentExamType = 0;
-                if (!string.IsNullOrEmpty(examTypes))
+                if (!string.IsNullOrEmpty(examTypes) && !examTypes.Equals("[]"))
                 {
                     if (examTypes.Contains("1"))
                     {
@@ -46,7 +46,7 @@
             }
             @if (currentExamType == 1)
             {
-                @using (Html.BeginForm("StartExam", "Applicant", new { applicantId = @Accessor.HttpContext.Session.GetString("ApplicantId"), examTypeId = 1 }, FormMethod.Post))
+                using (Html.BeginForm("StartExam", "Applicant", new { applicantId = @Accessor.HttpContext.Session.GetString("ApplicantId"), examTypeId = 1 }, FormMethod.Post))
                 {
                     <div class="exam d-flex align-items-center justify-content-between">
                         <h3 class="m-0">General Knowledge Exam</h3>
@@ -65,7 +65,7 @@
                 <div class="exam d-flex align-items-center justify-content-between">
                     <h3 class="m-0">General Knowledge Exam</h3>
                 </div>
-                @using (Html.BeginForm("StartExam", "Applicant", new { applicantId = @Accessor.HttpContext.Session.GetString("ApplicantId"), examTypeId = 2 }, FormMethod.Post))
+                using (Html.BeginForm("StartExam", "Applicant", new { applicantId = @Accessor.HttpContext.Session.GetString("ApplicantId"), examTypeId = 2 }, FormMethod.Post))
                 {
                     <div class="exam1 d-flex align-items-center justify-content-between">
                         <h3 class="m-0">Mathematics Exam</h3>
@@ -84,7 +84,7 @@
                 <div class="exam1 d-flex align-items-center justify-content-between">
                     <h3 class="m-0">Mathematics Exam</h3>
                 </div>
-                @using (Html.BeginForm("StartExam", "Applicant", new { applicantId = @Accessor.HttpContext.Session.GetString("ApplicantId"), examTypeId = 3 }, FormMethod.Post))
+                using (Html.BeginForm("StartExam", "Applicant", new { applicantId = @Accessor.HttpContext.Session.GetString("ApplicantId"), examTypeId = 3 }, FormMethod.Post))
                 {
                     <div class="exam2  d-flex align-items-center justify-content-between">
                         <h3 class="m-0">Computer Technology Exam</h3>

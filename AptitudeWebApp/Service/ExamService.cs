@@ -64,7 +64,7 @@ namespace AptitudeWebApp.Service
                     ExamQuestions = questions,
                     SelectedAnswers = new List<int>(),
                     ExamTypeId = examTypeId,
-                    TotalTimeAllowedInSeconds = 60 // Set the default total time allowed for the entire exam
+                    TotalTimeAllowedInSeconds = 180 // Set the default total time allowed for the entire exam
                 };
                 _context.Exams.Add(newExam);
                 _context.SaveChanges();
@@ -299,8 +299,8 @@ namespace AptitudeWebApp.Service
                 if (!currentApplicant.CompletedExamTypes.Contains(exam.ExamTypeId))
                 {
                     currentApplicant.CompletedExamTypes.Add(exam.ExamTypeId);
-                    currentSession.Remove("CompletedExamType");
-                    currentSession.Set<List<int>>("CompletedExamType", currentApplicant.CompletedExamTypes);
+                    currentSession.Remove("CompletedExamTypes");
+                    currentSession.Set<List<int>>("CompletedExamTypes", currentApplicant.CompletedExamTypes);
                 }
                 _context.Applicants.Update(currentApplicant);
                 _context.ApplicantExams.Add(applicantExam);

@@ -7,18 +7,10 @@ using System.Diagnostics;
 namespace AptitudeWebApp.Controllers
 {
     public class HomeController : Controller
-    {
-        //private readonly IGenericRepository<Applicant> _db;
-
-        //public HomeController(IGenericRepository<Applicant> db)
-        //{
-        //    _db = db;
-        //}
-        
-
+    {    
         public IActionResult Index()
         {
-            return View(/*_db.GetAll()*/);
+            return View();
         }
 
         public IActionResult Privacy()
