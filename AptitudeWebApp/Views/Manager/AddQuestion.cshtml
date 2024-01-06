@@ -22,7 +22,7 @@
         <div class="container d-flex align-items-center justify-content-between mt-3">
             <h1>Add Question</h1>
 
-            <button type="submit" class="btn btn-warning text-white btn-lg mr-auto" onclick="return confirm('Do you want to Save the new Question?')">Submit</button>
+            <button type="submit" class="btn btn-warning text-white btn-lg mr-auto" onclick="return confirm('Do you want to Save the new Question?')">Add</button>
         </div>
         
     
@@ -54,7 +54,7 @@
                         {
                             <div class="form-group">
                                 <label class="control-label">Answer @(Convert.ToChar('A' + i)):</label>
-                                <input name="answerTexts[@i]" type="text" class="form-control" value="@Model.Answers[i].Text" required style="  width: 15%;height: 40px;margin-left: 10px;margin: 10px;" />
+                                <input name="answerTexts[@i]" type="text" class="form-control" value="@Model.Answers[i].Text" required style="width: 15%;height: 40px;margin-left: 10px;margin: 10px;" />
                             </div>
                         }
                         <div class="form-group">

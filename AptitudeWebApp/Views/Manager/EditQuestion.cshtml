@@ -23,7 +23,7 @@
         <div class="container d-flex align-items-center justify-content-between mt-3">
             <h1>Edit Question</h1>
 
-            <button type="submit" onclick=" return confirm('Do you want to change the Updated Question?')" class="btn btn-warning text-white btn-lg mr-auto">Submit</button>
+            <button type="submit" onclick=" return confirm('Do you want to change the Updated Question?')" class="btn btn-warning text-white btn-lg mr-auto">Save</button>
         </div>
 
 
@@ -56,7 +56,7 @@
                         {
                             <div class="form-group">
                                 <label class="control-label">Answer @(Convert.ToChar('A' + i)):</label>
-                                <input name="answerTexts[@i]" type="text" class="form-control" value="@Model.Answers[i].Text" required />
+                                <input name="answerTexts[@i]" type="text" class="form-control" value="@Model.Answers[i].Text" required style="width: 15%;height: 40px;margin-left: 10px;margin: 10px;" />
                             </div>
                         }
                         <div class="form-group">
@@ -88,7 +88,7 @@
                         {   
                             <div class="form-group">
                                 <label class="radio__label1">Answer @(Convert.ToChar('A' + i)):</label>
-                                <input name="answerTexts[@i]" type="text" class="form-control" />
+                                <input name="answerTexts[@i]" type="text" class="form-control" required style="width: 15%;height: 40px;margin-left: 10px;margin: 10px;" />
                             </div>
                         }
 

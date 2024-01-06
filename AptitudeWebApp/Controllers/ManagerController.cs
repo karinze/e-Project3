@@ -542,7 +542,7 @@ namespace AptitudeWebApp.Controllers
                 }
 
                 page = page < 1 ? 1 : page;
-                int pageSize = 2;
+                int pageSize = 10;
 
                 List<ApplicantWithScore> data = reportViewModel.ApplicantWithScores.ToList();
 
