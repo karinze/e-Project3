@@ -113,22 +113,21 @@ namespace AptitudeWebApp.Controllers
         {
             try
             {
+                var applicant = mainApplicant.applicant;
+                var applicantEducation = mainApplicant.applicantEducation;
+                var applicantCompanies = mainApplicant.applicantCompanies;
+                if (applicant.Username != null)
+                {
+                    var userNameCheck = _db.Applicants.Where(x => x.Username == applicant.Username).FirstOrDefault();
+                    if (userNameCheck != null)
+                    {
+                        ViewBag.username = "This username is already taken! Please choose another one.";
+                        return View();
+                    }
+                }
                 if (ModelState.IsValid)
                 {
-                    var applicant = mainApplicant.applicant;
-                    var applicantEducation = mainApplicant.applicantEducation;
-                    var applicantCompanies = mainApplicant.applicantCompanies;
-                    if (applicant.Username != null)
-                    {
-                        var userNameCheck = _db.Applicants.Where(x => x.Username == applicant.Username).FirstOrDefault();
-                        if (userNameCheck != null)
-                        {
-                            ViewBag.username = "This username is already taken! Please choose another one.";
-                            return View();
-                        }
-                    }
                     var tempPassword = applicant.Password;
-
                     var passwordHash = _passwordHasher.Hash(applicant.Password);
                     applicant.Password = passwordHash;
                     // if (file != null)
