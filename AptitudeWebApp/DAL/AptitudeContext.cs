@@ -14,13 +14,7 @@ namespace AptitudeWebApp.DAL
          : base(options)
         {
         }
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            //builder.Entity<ExamQuestions>().HasKey(table => new {
-            //    table.ExamId,
-            //    table.QuestionId
-            //});
-        }
+
         public DbSet<Applicant> Applicants { get; set; }
         public DbSet<ApplicantCompanies> ApplicantCompanies { get; set; }
         public DbSet<ApplicantEducation> ApplicantEducations { get; set; }

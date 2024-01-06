@@ -34,9 +34,9 @@ namespace AptitudeWebApp.Models.Authentication
                 }
             }
 
-            if (context.HttpContext.Session.Get<List<int>>("CompletedExamType").Any())
+            if (context.HttpContext.Session.Get<List<int>>("CompletedExamTypes").Any())
             {
-                List<int> applicantExamTypes = context.HttpContext.Session.Get<List<int>>("CompletedExamType");
+                List<int> applicantExamTypes = context.HttpContext.Session.Get<List<int>>("CompletedExamTypes");
 
                 if (applicantExamTypes.Contains(CurrentExamType))
                 {

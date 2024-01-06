@@ -12,12 +12,10 @@
 
 .wrapper {
     width: 90%;
-    height: 6.25em;
     margin-top: 1.875em;
-    margin-left: 8%;
-    background: #5484BB;
+    background: #e3f2fd;
     border-radius: 1em;
-    padding-bottom: 40%;
+    padding: 2em;
     position: relative;
 }
 

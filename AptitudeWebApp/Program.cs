@@ -25,6 +25,7 @@ if (!app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseStatusCodePagesWithRedirects("/Home/Error/{0}");
 
 app.UseRouting();
 app.UseSession();
