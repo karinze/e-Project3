@@ -84,13 +84,13 @@ namespace AptitudeWebApp.Controllers
                 ViewBag.posts = data.OrderBy(x => x.ApplicantId).Skip(start).Take(pageSize);
                 return View();
             }
-            
+
             catch (Exception ex)
             {
                 _logger.LogError($"An error occurred in ViewApplicant. Error message: {ex.Message}");
                 return View("NotFound");
             }
-            
+
 
 
         }
@@ -188,7 +188,7 @@ namespace AptitudeWebApp.Controllers
                 _logger.LogError($"An error occurred in AddApplicant. Error message: {ex.Message}");
                 return View("NotFound");
             }
-            
+
         }
         [Authentication]
         public IActionResult EditApplicant(Guid id, ApplicantEducationCompaniesViewModel viewModel)
@@ -325,7 +325,7 @@ namespace AptitudeWebApp.Controllers
                 _logger.LogError($"An error occurred in AddQuestion. Error message: {ex.Message}");
                 return View("NotFound");
             }
-            
+
         }
 
         [HttpGet]
@@ -356,7 +356,7 @@ namespace AptitudeWebApp.Controllers
                 _logger.LogError($"An error occurred in ApplicantDashboard. Error message: {ex.Message}");
                 return View("NotFound");
             }
-            
+
         }
 
         [HttpPost]
@@ -487,7 +487,7 @@ namespace AptitudeWebApp.Controllers
                 _logger.LogError($"An error occurred in EditQuestion. Error message: {ex.Message}");
                 return View("NotFound");
             }
-            
+
         }
 
         [Authentication]
@@ -516,7 +516,7 @@ namespace AptitudeWebApp.Controllers
                 _logger.LogError($"An error occurred in DeleteQuestion. Error message: {ex.Message}");
                 return View("NotFound");
             }
-            
+
         }
 
         [Authentication]
@@ -550,17 +550,17 @@ namespace AptitudeWebApp.Controllers
                 {
                     ViewBag.txtSearch = txtSearch;
 
-                if (data.Any())
-                {
-                    data = (List<ApplicantWithScore>)data.Where(s =>
-                                    s.Applicant.Email.Contains(txtSearch)
-                                    || s.Applicant.FirstName.Contains(txtSearch)
-                                    || s.Applicant.LastName.Contains(txtSearch)
-                                    || s.Applicant.Address.Contains(txtSearch)
-                                    || s.Applicant.PhoneNumber.Contains(txtSearch)
-                                    || s.Applicant.Age.ToString().Contains(txtSearch)
-                                    ).ToList();
-                }
+                    if (data.Any())
+                    {
+                        data = (List<ApplicantWithScore>)data.Where(s =>
+                                        s.Applicant.Email.Contains(txtSearch)
+                                        || s.Applicant.FirstName.Contains(txtSearch)
+                                        || s.Applicant.LastName.Contains(txtSearch)
+                                        || s.Applicant.Address.Contains(txtSearch)
+                                        || s.Applicant.PhoneNumber.Contains(txtSearch)
+                                        || s.Applicant.Age.ToString().Contains(txtSearch)
+                                        ).ToList();
+                    }
 
                 }
 
@@ -585,6 +585,8 @@ namespace AptitudeWebApp.Controllers
                 int numSize = (int)Math.Ceiling(totalNumsize);
                 ViewBag.numSize = numSize;
                 ViewBag.posts = data.OrderBy(x => x.Applicant.ApplicantId).Skip(start).Take(pageSize);
+                ViewBag.ApplicantWithScoresJson = JsonConvert.SerializeObject(data.OrderBy(x => x.Applicant.ApplicantId).Skip(start).Take(pageSize));
+
                 return View();
             }
             catch (Exception ex)
@@ -592,29 +594,41 @@ namespace AptitudeWebApp.Controllers
                 _logger.LogError($"An error occurred in Report. Error message: {ex.Message}");
                 return View("NotFound");
             }
-            
+
         }
-        [HttpGet]
-        public IActionResult Export(string? txtSearch, [FromBody] List<ApplicantWithScore> exportedData)
+        [HttpPost]
+        public IActionResult Export(string? txtSearch, string applicantWithScoresJson)
         {
             try
             {
-                if (exportedData == null || !exportedData.Any())
-                {
-                    TempData["ErrorMessage"] = "Nothing to export!";
-                    return RedirectToAction("Report");
-                }
+                var applicantWithScores = JsonConvert.DeserializeObject<List<ApplicantWithScore>>(applicantWithScoresJson);
 
-                if (!string.IsNullOrEmpty(txtSearch) && HttpContext.Request.Query["export"] == "true")
+                if (applicantWithScores != null || applicantWithScores.Any())
                 {
-                    var stream = ExportToExcel(exportedData);
+                    var stream = ExportToExcel(applicantWithScores);
 
                     string excelName = $"WebsterPassedApplicantReport_{DateTime.Now.ToString("yyyyMMddHHmmss")}.xlsx";
 
                     // Return the file without redirecting
                     return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+                    
                 }
-                return RedirectToAction("Report", new { txtSearch });
+                else
+                {
+                    TempData["ErrorMessage"] = "Nothing to export!";
+
+                }
+                if (!string.IsNullOrEmpty(txtSearch))
+                {
+                    return RedirectToAction("Report", new { txtSearch });
+
+                }
+                else
+                {
+                    return RedirectToAction("Report");
+
+                }
+
             }
             catch (Exception ex)
             {
@@ -622,7 +636,7 @@ namespace AptitudeWebApp.Controllers
                 return View("Error");
             }
         }
-        
+
 
         // Export to Excel functionality ( DO NOT TOUCH )
         private MemoryStream ExportToExcel(List<ApplicantWithScore> data)
@@ -642,11 +656,13 @@ namespace AptitudeWebApp.Controllers
                 {
                     var worksheet = package.Workbook.Worksheets.Add("Report");
 
-                    // Add headers dynamically based on the properties of the Applicant class and its nested lists
-                    var headers = GetPropertyDisplayNames(typeof(Applicant))
-                                  .Concat(GetPropertyDisplayNames(typeof(ApplicantCompanies)))
-                                  .Concat(GetPropertyDisplayNames(typeof(ApplicantEducation)))
-                                  .ToList();
+                    var headers = typeof(Applicant)
+                    .GetProperties()
+                    .Where(x => x.Name != "Password" && x.Name != "ImagePath" &&
+                                   x.Name != "ApplicantCompanies" && x.Name != "ApplicantEducation" &&
+                                   x.Name != "CompletedExamTypes")
+                    .Select(x => x.Name)
+                    .ToList();
 
                     for (int i = 0; i < headers.Count; i++)
                     {
@@ -657,24 +673,18 @@ namespace AptitudeWebApp.Controllers
                     int row = 2;
                     foreach (var item in data)
                     {
-                        var properties = item.GetType().GetProperties();
-                        var companies = item.Applicant.ApplicantCompanies;
-                        var education = item.Applicant.ApplicantEducation;
+                        var properties = item.Applicant.GetType().GetProperties();
+
+                        // Exclude specific properties from the list of properties
+                        properties = properties
+                            .Where(prop => prop.Name != "Password" && prop.Name != "ImagePath" &&
+                                           prop.Name != "ApplicantCompanies" && prop.Name != "ApplicantEducation" &&
+                                           prop.Name != "CompletedExamTypes")
+                            .ToArray();
 
                         for (int i = 0; i < properties.Length; i++)
                         {
-                            if (properties[i].PropertyType == typeof(List<ApplicantCompanies>))
-                            {
-                                worksheet.Cells[row, i + 1].Value = string.Join("\n", companies.Select(c => $"{c.CompanyName} - {c.Description}"));
-                            }
-                            else if (properties[i].PropertyType == typeof(List<ApplicantEducation>))
-                            {
-                                worksheet.Cells[row, i + 1].Value = string.Join("\n", education.Select(e => $"{e.COEName} - {e.Description}"));
-                            }
-                            else
-                            {
-                                worksheet.Cells[row, i + 1].Value = properties[i].GetValue(item);
-                            }
+                            worksheet.Cells[row, i + 1].Value = properties[i].GetValue(item.Applicant);
                         }
 
                         row++;
@@ -686,6 +696,7 @@ namespace AptitudeWebApp.Controllers
             stream.Position = 0;
             return stream;
         }
+
 
         private IEnumerable<string> GetPropertyDisplayNames(Type type)
         {

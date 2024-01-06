@@ -24,7 +24,6 @@
 
             // Update the timer every second
             var countdownInterval = setInterval(function () {
-                // Make an AJAX request to update the timer on the server
                 $.ajax({
                     url: '/Applicant/UpdateTimer',
                     method: 'POST',
@@ -35,11 +34,8 @@
                             timerElement.innerHTML = "Time Expired";
                             submitExam();
                         } else {
-                            // Format remaining time as MM:SS
                             var minutes = Math.floor(data.remainingTime / 60);
                             var seconds = data.remainingTime % 60;
-
-                            // Update the timer element
                             timerElement.innerHTML = "Time Remaining: " + minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0');
                         }
                     },
@@ -50,11 +46,32 @@
             }, 1000); // Update every second
 
             function submitExam() {
+                clearInterval(countdownInterval);
                 document.forms["examForm"].submit();
             }
         });
-    </script>
 
+    </script>
+    <script>
+        var tabSwitchCount = 0;
+        var scriptExecuted = false;
+
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden && !scriptExecuted) {
+                // User switched to another tab or minimized the window
+                tabSwitchCount++;
+
+                if (tabSwitchCount >= 3) {
+                    // Display an alert after a delay
+                    setTimeout(function () {
+                        var confirmation = window.confirm('You have tabbed out 3 times! Your current Exam will automatically be submitted!');
+                        document.forms["examForm"].submit();
+                    }, 1000); // 1000 milliseconds (1 second) delay
+                    scriptExecuted = true;
+                }
+            }
+        });
+    </script>
 </head>
 <body>
     <div class="container d-flex align-items-center flex-column">

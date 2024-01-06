@@ -1,4 +1,5 @@
 ﻿@model ReportViewModel
+@using Newtonsoft.Json;
 
 @{
     Layout = null;
@@ -140,17 +141,12 @@
                     <input type="submit" value="Search" class="btn btn-primary mx-2" />
                 </div>
             </form>
-            <form asp-action="Export" asp-controller="Manager" method="get">
+            <form asp-action="Export" asp-controller="Manager" method="post">
                 <div class="d-flex">
                     <input type="submit" value="Export" class="btn btn-success mx-2" />
                     <input type="hidden" name="export" value="true" />
                     <input type="hidden" name="txtSearch" value="@ViewBag.txtSearch" />
-                    @for (int i = 0; i < ViewBag.Posts.Count; i++)
-                    {
-                        <input type="hidden" name="ApplicantWithScores[@i].Applicant.FirstName" value="@Model.ApplicantWithScores[i].Applicant.FirstName" />
-                        <input type="hidden" name="ApplicantWithScores[@i].Applicant.LastName" value="@Model.ApplicantWithScores[i].Applicant.LastName" />
-                        <input type="hidden" name="ApplicantWithScores[@i].Applicant.Age" value="@Model.ApplicantWithScores[i].Applicant.Age" />
-                    }
+                    <input type="hidden" name="applicantWithScoresJson" value="@ViewBag.ApplicantWithScoresJson" />
 
                 </div>
             </form>
@@ -292,5 +288,8 @@
         </div>
 
     </div>
+    <script>
+        var applicantWithScores = JSON.parse(document.getElementById('applicantWithScoresJson').value);
+    </script>
 </body>
 </html>

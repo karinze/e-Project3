@@ -18,16 +18,24 @@
 
 </head>
 <body>
-    <div class="container wrapper text-center">
-        <h1 class="my-4">This exam has already been completed</h1>
+    <div class="container wrapper">
+        <h1 class="my-4">EXAM GUIDELINES</h1>
         <div class="mt-4">
-            <h4>Redirecting to Dashboard in <span id="countdown">15</span> seconds...</h4>
+            <p class="text-alert">
+                This exam 
+            </p>
+            <ul>
+                <li>
+                    No tabbing out
+                </li>
+                <li>
+                    No cheating
+                </li>
+            </ul>
         </div>
 
-        <div class="mt-4 d-flex align-items-center justify-content-center">
-            <a asp-action="ExamDashboard" asp-controller="Applicant" class="btn btn-warning mx-2 text-light">Go back to Dashboard</a>
-
-            <a asp-action="Logout" asp-controller="Account" class="btn btn-primary mx-2">Logout</a>
+        <div class="mt-4">
+            <a asp-action="Logout" asp-controller="Account" class="btn btn-primary">Logout</a>
         </div>
     </div>
     <script>
@@ -38,7 +46,7 @@
         function updateCountdown() {
             countdownElement.textContent = countdown;
             if (countdown === 0) {
-                window.location.href = "/Applicant/ExamDashboard";
+                window.location.href = "Applicant/ExamDashboard";
             } else {
                 countdown--;
                 setTimeout(updateCountdown, 1000);
