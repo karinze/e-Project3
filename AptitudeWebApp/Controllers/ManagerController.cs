@@ -52,11 +52,18 @@ namespace AptitudeWebApp.Controllers
             {
                 page = page < 1 ? 1 : page;
                 int pageSize = 10;
-                var data = (from s in _db.Applicants select s);
+                var data = (from s in _db.Applicants select s).ToList();
+
                 if (!System.String.IsNullOrEmpty(txtSearch))
                 {
                     ViewBag.txtSearch = txtSearch;
-                    data = data.Where(s => s.Email.Contains(txtSearch));
+                    data = data.Where(s => s.Email.Contains(txtSearch)
+                                        || s.FirstName.Contains(txtSearch)
+                                        || s.LastName.Contains(txtSearch)
+                                        || s.Address.Contains(txtSearch)
+                                        || s.PhoneNumber.Contains(txtSearch)
+                                        || s.Age.ToString().Contains(txtSearch)
+                                        ).ToList();
                 }
 
                 if (page > 0)
@@ -77,6 +84,7 @@ namespace AptitudeWebApp.Controllers
                 ViewBag.posts = data.OrderBy(x => x.ApplicantId).Skip(start).Take(pageSize);
                 return View();
             }
+            
             catch (Exception ex)
             {
                 _logger.LogError($"An error occurred in ViewApplicant. Error message: {ex.Message}");
