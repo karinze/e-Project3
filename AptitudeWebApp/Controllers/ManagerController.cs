@@ -45,7 +45,13 @@ namespace AptitudeWebApp.Controllers
             if (!System.String.IsNullOrEmpty(txtSearch))
             {
                 ViewBag.txtSearch = txtSearch;
-                data = data.Where(s => s.Email.Contains(txtSearch));
+                data = data.Where(s => s.Email.Contains(txtSearch)
+                                    || s.FirstName.Contains(txtSearch)
+                                    || s.LastName.Contains(txtSearch)
+                                    || s.Address.Contains(txtSearch)
+                                    || s.PhoneNumber.Contains(txtSearch)
+                                    || s.Age.ToString().Contains(txtSearch)
+                                    );
             }
 
             if (page > 0)
@@ -76,20 +82,21 @@ namespace AptitudeWebApp.Controllers
         [HttpPost]
         public IActionResult AddApplicant(ApplicantEducationCompaniesViewModel mainApplicant)
         {
+            var applicant = mainApplicant.applicant;
+            var applicantEducation = mainApplicant.applicantEducation;
+            var applicantCompanies = mainApplicant.applicantCompanies;
+            if (applicant.Username != null)
+            {
+                var userNameCheck = _db.Applicants.FirstOrDefault(x => x.Username.Equals(applicant.Username));
+                if (userNameCheck != null)
+                {
+                    ViewBag.username = "This username is already taken! Please choose another one.";
+                    return View();
+                }
+            }
             if (ModelState.IsValid)
             {
-                var applicant = mainApplicant.applicant;
-                var applicantEducation = mainApplicant.applicantEducation;
-                var applicantCompanies = mainApplicant.applicantCompanies;
-                if (applicant.Username != null)
-                {
-                    var userNameCheck = _db.Applicants.Where(x => x.Username == applicant.Username).FirstOrDefault();
-                    if (userNameCheck != null)
-                    {
-                        ViewBag.username = "This username is already taken! Please choose another one.";
-                        return View();
-                    }
-                }
+               
                 var tempPassword = applicant.Password;
 
                 var passwordHash = _passwordHasher.Hash(applicant.Password);
