@@ -65,10 +65,6 @@
                     }
                 });
 
-                window.onblur = function () {
-                    // Handle tab switch when the window loses focus
-                    handleTabSwitch();
-                };
                 var countdownInterval = setInterval(function () {
                     $.ajax({
                         url: '/Applicant/UpdateTimer',
