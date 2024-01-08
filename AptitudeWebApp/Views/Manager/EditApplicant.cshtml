@@ -38,38 +38,38 @@
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <input asp-for="applicant.ApplicantId" hidden />
                             <div class="form-group">
-                                <label asp-for="applicant.FirstName" class="control-label"></label>
+                                <label asp-for="applicant.FirstName" class="control-label">First Name<sup style="color: red;">*</sup></label>
                                 <input asp-for="applicant.FirstName" class="form-control" />
                                 <span asp-validation-for="applicant.FirstName" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="applicant.LastName" class="control-label"></label>
+                                <label asp-for="applicant.LastName" class="control-label">Last Name<sup style="color: red;">*</sup></label>
                                 <input asp-for="applicant.LastName" class="form-control" />
                                 <span asp-validation-for="applicant.LastName" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="applicant.Age" class="control-label"></label><br />
+                                <label asp-for="applicant.Age" class="control-label">Age<sup style="color: red;">*</sup></label><br />
                                 <input asp-for="applicant.Age" type="number" class="form-control" />
                                 <span asp-validation-for="applicant.Age" class="text-danger"></span>
                             </div>
 
                             <div class="form-group">
-                                <label asp-for="applicant.Address" class="control-label">Address</label>
+                                <label asp-for="applicant.Address" class="control-label">Address<sup style="color: red;">*</sup></label>
                                 <input asp-for="applicant.Address" class="form-control" />
                                 <span asp-validation-for="applicant.Address" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="applicant.Email" class="control-label"></label>
+                                <label asp-for="applicant.Email" class="control-label">Email<sup style="color: red;">*</sup></label>
                                 <input type="text" asp-for="applicant.Email" class="form-control" />
                                 <span asp-validation-for="applicant.Email" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="applicant.City" class="control-label"></label><br />
+                                <label asp-for="applicant.City" class="control-label">City<sup style="color: red;">*</sup></label><br />
                                 <input asp-for="applicant.City" class="form-control" />
                                 <span asp-validation-for="applicant.City" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="applicant.PhoneNumber" class="control-label"></label>
+                                <label asp-for="applicant.PhoneNumber" class="control-label">Phone Number<sup style="color: red;">*</sup></label>
                                 <input  asp-for="applicant.PhoneNumber" class="form-control" />
                                 <span asp-validation-for="applicant.PhoneNumber" class="text-danger"></span>
                             </div>
@@ -92,7 +92,7 @@
                             <h4>Applicant Education</h4>
 
                             <div class="form-group">
-                                <label class="control-label">COEName</label>
+                                <label class="control-label">COE Name<sup style="color: red;">*</sup></label>
                                 <input asp-for="applicantEducation.COEName" class="form-control" />
                                 <span asp-validation-for="applicantEducation.COEName" class="text-danger"></span>
                             </div>
@@ -101,7 +101,7 @@
 
 
                             <div class="form-group">
-                                <label class="control-label">Description</label>
+                                <label class="control-label">Description<sup style="color: red;">*</sup></label>
                                 <input asp-for="applicantEducation.Description" class="form-control" />
                                 <span asp-validation-for="applicantEducation.Description" class="text-danger"></span>
                             </div>
@@ -113,16 +113,17 @@
 
 
                             <div class="form-group">
-                                <label class="control-label">StartDate</label><br />
+                                <label class="control-label">Start Date<sup style="color: red;">*</sup></label><br />
                                 <input asp-for="applicantEducation.StartDate" class="form-control" />
                                 <span asp-validation-for="applicantEducation.StartDate" class="text-danger"></span>
                             </div>
 
 
                             <div class="form-group">
-                                <label class="control-label">EndDate</label><br />
+                                <label class="control-label">End Date<sup style="color: red;">*</sup></label><br />
                                 <input asp-for="applicantEducation.EndDate" class="form-control" />
-                                <span asp-validation-for="applicantEducation.EndDate" class="text-danger"></span>
+                                <span asp-validation-for="applicantEducation.EndDate" class="text-danger"></span><br />
+                                <span class="text-danger">@ViewBag.date1</span>
                             </div>
                         </div>
                         <div>
@@ -130,7 +131,7 @@
                             <h4>Applicant Companies</h4>
 
                             <div class="form-group">
-                                <label class="control-label">Company Name</label>
+                                <label class="control-label">Company Name<sup style="color: red;">*</sup></label>
                                 <input asp-for="applicantCompanies.CompanyName" class="form-control" />
                                 <span asp-validation-for="applicantCompanies.CompanyName" class="text-danger"></span>
                             </div>
@@ -139,7 +140,7 @@
 
 
                             <div class="form-group">
-                                <label class="control-label">Description</label>
+                                <label class="control-label">Description<sup style="color: red;">*</sup></label>
                                 <input asp-for="applicantCompanies.Description" class="form-control" />
                                 <span asp-validation-for="applicantCompanies.Description" class="text-danger"></span>
                             </div>
@@ -151,16 +152,17 @@
 
 
                             <div class="form-group">
-                                <label class="control-label">StartDate</label><br />
+                                <label class="control-label">Start Date<sup style="color: red;">*</sup></label><br />
                                 <input asp-for="applicantCompanies.StartDate" class="form-control" />
                                 <span asp-validation-for="applicantCompanies.StartDate" class="text-danger"></span>
                             </div>
 
 
                             <div class="form-group">
-                                <label class="control-label">EndDate</label><br />
+                                <label class="control-label">End Date<sup style="color: red;">*</sup></label><br />
                                 <input asp-for="applicantCompanies.EndDate" class="form-control" />
-                                <span asp-validation-for="applicantCompanies.EndDate" class="text-danger"></span>
+                                <span asp-validation-for="applicantCompanies.EndDate" class="text-danger"></span><br />
+                                <span class="text-danger">@ViewBag.date</span>
                             </div>
                         </div>
                     </div>

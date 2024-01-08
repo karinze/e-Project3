@@ -116,12 +116,31 @@ namespace AptitudeWebApp.Controllers
                 var applicant = mainApplicant.applicant;
                 var applicantEducation = mainApplicant.applicantEducation;
                 var applicantCompanies = mainApplicant.applicantCompanies;
-                if (applicant.Username != null)
+                if (applicant.Username != null||(applicantCompanies.EndDate!=null && applicantCompanies.StartDate != null)||(applicantEducation.EndDate != null && applicantEducation.StartDate != null))
                 {
                     var userNameCheck = _db.Applicants.Where(x => x.Username == applicant.Username).FirstOrDefault();
                     if (userNameCheck != null)
                     {
                         ViewBag.username = "This username is already taken! Please choose another one.";
+                    }
+                    if(applicantCompanies.EndDate != null && applicantCompanies.StartDate != null)
+                    {
+                        int result = DateTime.Compare((DateTime)applicantCompanies.StartDate, (DateTime)applicantCompanies.EndDate);
+                        if(result > 0)
+                        {
+                            ViewBag.date = "EndDate must be greater than StartDate";
+                        }
+                    }
+                    if (applicantEducation.EndDate != null && applicantEducation.StartDate != null)
+                    {
+                        int result = DateTime.Compare((DateTime)applicantEducation.StartDate, (DateTime)applicantEducation.EndDate);
+                        if (result > 0)
+                        {
+                            ViewBag.date1 = "EndDate must be greater than StartDate";
+                        }
+                    }
+                    if(ViewBag.username != null || ViewBag.date != null || ViewBag.date1 != null)
+                    {
                         return View();
                     }
                 }
@@ -218,30 +237,57 @@ namespace AptitudeWebApp.Controllers
         {
             try
             {
+                var applicant = mainApplicant.applicant;
+                var applicantEducation = mainApplicant.applicantEducation;
+                var applicantCompanies = mainApplicant.applicantCompanies;
+
+                if ((applicantCompanies.EndDate != null && applicantCompanies.StartDate != null) || (applicantEducation.EndDate != null && applicantEducation.StartDate != null))
+                {
+
+                    if (applicantCompanies.EndDate != null && applicantCompanies.StartDate != null)
+                    {
+                        int result = DateTime.Compare((DateTime)applicantCompanies.StartDate, (DateTime)applicantCompanies.EndDate);
+                        if (result > 0)
+                        {
+                            ViewBag.date = "EndDate must be greater than StartDate";
+                        }
+                    }
+                    if (applicantEducation.EndDate != null && applicantEducation.StartDate != null)
+                    {
+                        int result = DateTime.Compare((DateTime)applicantEducation.StartDate, (DateTime)applicantEducation.EndDate);
+                        if (result > 0)
+                        {
+                            ViewBag.date1 = "EndDate must be greater than StartDate";
+                        }
+                    }
+                    if (ViewBag.date != null || ViewBag.date1 != null)
+                    {
+                        return View();
+                    }
+                }
+                if (ModelState.IsValid)
+                {
+
+                    _db.Applicants.Update(applicant);
+                    applicantEducation.ApplicantId = applicant.ApplicantId;
+                    applicantCompanies.ApplicantId = applicant.ApplicantId;
+                    _db.ApplicantEducations.Update(applicantEducation);
+                    _db.ApplicantCompanies.Update(applicantCompanies);
+
+                    _db.SaveChanges();
+                    return RedirectToAction("ViewApplicant", "Manager");
+                }
+                else
+                {
+                    return View();
+                }
             }
             catch (Exception ex)
             {
                 _logger.LogError($"An error occurred in ApplicantDashboard. Error message: {ex.Message}");
                 return View("NotFound");
             }
-            if (ModelState.IsValid)
-            {
-                var applicant = mainApplicant.applicant;
-                var applicantEducation = mainApplicant.applicantEducation;
-                var applicantCompanies = mainApplicant.applicantCompanies;
-                _db.Applicants.Update(applicant);
-                applicantEducation.ApplicantId = applicant.ApplicantId;
-                applicantCompanies.ApplicantId = applicant.ApplicantId;
-                _db.ApplicantEducations.Update(applicantEducation);
-                _db.ApplicantCompanies.Update(applicantCompanies);
-
-                _db.SaveChanges();
-                return RedirectToAction("ViewApplicant", "Manager");
-            }
-            else
-            {
-                return View();
-            }
+            
         }
         [Authentication]
         public IActionResult DeleteApplicant(Guid id)
