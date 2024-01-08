@@ -55,12 +55,12 @@
                         @for (int i = 0; i < Model.Answers.Count; i++)
                         {
                             <div class="form-group">
-                                <label class="control-label">Answer @(Convert.ToChar('A' + i)):</label>
+                                <label class="control-label">Answer @(Convert.ToChar('A' + i))<sup style="color: red;">*</sup>:</label>
                                 <input name="answerTexts[@i]" type="text" class="form-control" value="@Model.Answers[i].Text" required style="width: 15%;height: 40px;margin-left: 10px;margin: 10px;" />
                             </div>
                         }
                         <div class="form-group">
-                            <label class="control-label">Correct Answer:</label>
+                            <label class="control-label">Correct Answer<sup style="color: red;">*</sup>:</label>
                             <select name="correctAnswerIndex" class="form-control" style="width: 15%;height: 40px;margin-left: 10px;margin: 10px;">
                                 @for (int i = 0; i < Model.Answers.Count; i++)
                                 {
@@ -87,13 +87,13 @@
                         @for (int i = 0; i < 4; i++)
                         {   
                             <div class="form-group">
-                                <label class="radio__label1">Answer @(Convert.ToChar('A' + i)):</label>
+                                <label class="radio__label1">Answer @(Convert.ToChar('A' + i))<sup style="color: red;">*</sup>:</label>
                                 <input name="answerTexts[@i]" type="text" class="form-control" required style="width: 15%;height: 40px;margin-left: 10px;margin: 10px;" />
                             </div>
                         }
 
                         <div class="form-group">
-                            <label class="control-label">Correct Answer:</label>
+                            <label class="control-label">Correct Answer<sup style="color: red;">*</sup>:</label>
                             <select name="correctAnswerIndex" class="form-control" style="width: 15%;height: 40px;margin-left: 10px;margin: 10px;">
                                 @for (int i = 0; i < 4; i++)
                                 {

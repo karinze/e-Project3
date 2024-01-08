@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AptitudeWebApp.Models
 {
-    public class ApplicantCompanies
+    public class ApplicantCompanies : IValidatableObject
     {
         [Key]
         public int ApplicantCompanyId { get; set; }
@@ -21,6 +21,9 @@ namespace AptitudeWebApp.Models
 
         public DateTime? StartDate { get; set; }
         [Required(ErrorMessage = "End Date required")]
+
         public DateTime? EndDate { get; set; }
+
+        
     }
 }

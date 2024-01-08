@@ -41,11 +41,13 @@ namespace AptitudeWebApp
         [Required(ErrorMessage = "City required")]
         [StringLength(255)]
         public string? City { get; set; }
-        [Required(ErrorMessage = "Phone Number required")]
-        [StringLength(255)]
-        [RegularExpression("^([0-9]{10})$",ErrorMessage ="Invalid Phone Number.")]
-        public string? PhoneNumber { get; set; }
-        [Required(ErrorMessage = "Notes required")]
+        [Required(ErrorMessage = "You must provide a valid phone number")]
+        [Display(Name = "Phone Number")]
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^(?!(?:\D*0)+\D*$)\(?([0-9]{3})\)?[-. ]?[0-9]{3}[-. ]?[0-9]{4}$", ErrorMessage = "Not a valid phone number")]
+
+        public string PhoneNumber { get; set; }
+        //[Required(ErrorMessage = "Notes required")]
         [StringLength(3000)]
         public string? Notes { get; set; }
         public string? ImagePath { get; set; }
