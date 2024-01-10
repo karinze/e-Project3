@@ -267,14 +267,43 @@ namespace AptitudeWebApp.Controllers
                 }
                 if (ModelState.IsValid)
                 {
+                    var dbApplicant = _db.Applicants.AsNoTracking().FirstOrDefault(x => x.ApplicantId == applicant.ApplicantId);
+                    if (dbApplicant != null)
+                    {
+                        applicant.ApplicantId = dbApplicant.ApplicantId;
 
-                    _db.Applicants.Update(applicant);
-                    applicantEducation.ApplicantId = applicant.ApplicantId;
-                    applicantCompanies.ApplicantId = applicant.ApplicantId;
-                    _db.ApplicantEducations.Update(applicantEducation);
-                    _db.ApplicantCompanies.Update(applicantCompanies);
+                        _db.Applicants.Update(applicant);
 
+                    }
+
+                    var dbEdu = _db.ApplicantEducations.AsNoTracking().FirstOrDefault(x=>x.ApplicantId == applicant.ApplicantId);
+
+                    if (dbEdu != null)
+                    {
+                        applicantEducation.ApplicantEducationId = dbEdu.ApplicantEducationId;
+                        applicantEducation.ApplicantId = dbEdu.ApplicantId;
+
+                        _db.ApplicantEducations.Update(applicantEducation);
+
+                    }
+                    var dbCompany = _db.ApplicantCompanies.FirstOrDefault(x => x.ApplicantId == applicant.ApplicantId);
+
+                    if (dbCompany != null)
+                    {
+                        applicantCompanies.ApplicantCompanyId = applicantCompanies.ApplicantCompanyId;
+                        applicantCompanies.ApplicantId = dbCompany.ApplicantId;
+                        dbCompany.CompanyName = applicantCompanies.CompanyName;
+                        dbCompany.Description = applicantCompanies.Description;
+
+                        dbCompany.Notes = applicantCompanies.Notes;
+                        dbCompany.StartDate = applicantCompanies.StartDate;
+                        dbCompany.EndDate = applicantCompanies.EndDate;
+                        
+                        _db.ApplicantCompanies.Update(dbCompany);
+
+                    }
                     _db.SaveChanges();
+
                     return RedirectToAction("ViewApplicant", "Manager");
                 }
                 else
