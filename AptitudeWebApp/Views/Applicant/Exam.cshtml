@@ -34,10 +34,14 @@
             var examId = @Model.ExamId;
             var tabSwitchCount = 0;
             var scriptExecuted = false;
-
+            
             function submitExam() {
                 clearInterval(countdownInterval);
                 document.forms["examForm"].submit();
+            }
+            function logout() {
+                submitExam();
+                window.location.href = "/Account/LogOut";
             }
             function handleTabSwitch() {
                 tabSwitchCount++;
@@ -51,7 +55,6 @@
                     scriptExecuted = true;
                 }
             }
-
             
             var confirmationMessage = 'This test is monitored by the system, any suspicious behaviors such as switching tabs, opening new tabs are violations! Doing these 3 times will auto-submit your Exam. Exiting the tab will also auto-submit your exam. \nEnter the exam?';
 
@@ -89,16 +92,7 @@
             } else {
                 window.location.href = "/Applicant/ExamDashboard";
             }
-
-
         });
-
-    </script>
-    <script>
-        
-
-        
-
     </script>
 </head>
 <body>
